@@ -5,15 +5,15 @@
 
     <meta charset="utf-8">
 
-    <title>ExamReg</title>
+    <title>registration</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="css/studenui.css">
 </head>
 
 <body id="page-top">
@@ -134,30 +134,55 @@
 
                 <!-- Approach -->
                 <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary"></h6>
-                    </div>
                     <div class="card-body">
                         <div class="container-fluid">
-                            <table class="table table-bordered " style="color: black; text-align:center;"width="100%">
+                            <table class="table table-bordered p-0" style="color: black; text-align:center;"width="100%">
                                 <thead>
-                                <tr>
+                                <tr >
                                     <th>Môn thi/Học phần</th>
                                     <th>Mã môn học</th>
                                     <th>Giảng viên</th>
+                                    <th>Địa điểm</th>
+                                    <th>Thời gian</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <a class="collapsed" href="#" data-toggle="collapse" data-target="#collapseSub" aria-expanded="true" aria-controls="collapseSub">
                                     <td>Hệ quản trị</td>
                                     <td>INT...</td>
                                     <td>.....</td>
-                                    </a>
+                                    <td class="p-0">
+                                        <select class="form-control">
+                                            <option>phòng 303-GD2</option>
+                                            <option>phòng 304-GD2</option>
+                                            <option>phòng 307-GD2</option>
+                                        </select>
+                                    </td>
+                                    <td class="p-0">
+                                        <select class="form-control " >
+                                            <option>8h00 - 9h00</option>
+                                            <option>14h30 - 15h30</option>
+                                        </select>
+                                    </td>
                                 </tr>
-                                <div id="#collapseSub" class="collapse">
-                                    <p>hello</p>
-                                </div>
+                                <tr>
+                                    <td>Hệ quản trị</td>
+                                    <td>INT...</td>
+                                    <td>.....</td>
+                                    <td class="p-0">
+                                        <select class="form-control">
+                                            <option>phòng 303-GD2</option>
+                                            <option>phòng 304-GD2</option>
+                                            <option>phòng 307-GD2</option>
+                                        </select>
+                                    </td>
+                                    <td class="p-0">
+                                        <select class="form-control" >
+                                            <option>8h00 - 9h00</option>
+                                            <option>14h30 - 15h30</option>
+                                        </select>
+                                    </td>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>
