@@ -3,7 +3,11 @@ td{
 }
 select{
     height: 3rem!important;
+
 }
 .chon{
     padding: 0!important;
+}
+option{
+    color: black;
 }
