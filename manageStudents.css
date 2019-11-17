@@ -4,16 +4,8 @@ input[type="text"]{
 }
 td,th{
     border: 1px solid #000000!important;
-    padding: 7px!important;
 }
-.smallNumber{
-    padding: 5px!important;
-    padding-left: 0px!important;
-    padding-right: 0px!important;
-}
-label{
-    color:black;
-}
+
 table
 {
     counter-reset: rowNumber;

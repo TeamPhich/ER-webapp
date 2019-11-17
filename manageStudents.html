@@ -13,7 +13,8 @@
 
     <!-- Custom styles for this template-->
     <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.css">
-    <link rel="stylesheet" href="css/studenui.css">
+    <link rel="stylesheet" href="manageStudents.css">
+
 </head>
 
 <body id="page-top">
@@ -41,7 +42,7 @@
                 <span style="font-size: 115%">Quản lý môn thi</span>
             </a>
             <!-- sunday -->
-            <a class="nav-link " href="manageStudents.html"  aria-expanded="true" >
+            <a class="nav-link " href="manageStudents.html"  aria-expanded="true">
                 <i class="fas fa-fw fa-registered" style="font-size: 115%"></i>
                 <span style="font-size: 115%">Quản lý sinh viên</span>
             </a>
@@ -80,12 +81,7 @@
         <div id="content">
 
             <!-- Topbar -->
-            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
-                <!-- Sidebar Toggle (Topbar) -->
-                <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                    <i class="fa fa-bars"></i>
-                </button>
+            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow" id="fixed-top-bar">
 
                 <!-- Topbar Navbar -->
                 <ul class="navbar-nav ml-auto">
@@ -117,13 +113,49 @@
 
             </nav>
             <!-- End of Topbar -->
-
-
+            <!-- Begin Page Content -->
+            <div class="container-fluid" id="main-container">
+                <div class="d-sm-flex align-items-center justify-content-between mb-4"style="font-size: 200%">
+                    <p>Quản lý sinh viên</p>
+                </div>
+                <div class="card shadow mb-5">
+                    <div class="card-body">
+                        <div class="container-fluid p-0">
+                            <table id="subTable" class="table table-bordered p-0"style="color: black; text-align:center;">
+                                <thead class="thead-dark">
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Mã lớp học</th>
+                                    <th>Chuyên ngành</th>
+                                    <th>Danh sách sinh viên</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td class="p-0 align-middle"></td>
+                                    <td class="p-0"><input type="text"autofocus id="autofocus"></td>
+                                    <td class="p-0"><input type="text" ></td>
+                                    <td class="p-0 align-middle">
+                                        <input type="file">
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div style="overflow: auto">
+                            <button id="add" class="btn btn-primary"type="button" style="float:right;" >Thêm bản ghi</button>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <button class="btn btn-primary" style="float:right; margin-right: 50px!important;" >Ghi nhận</button>
+                </div>
             </div>
         </div>
-
     </div>
-    <!-- /.container-fluid -->
+
+</div>
+<!-- /.container-fluid -->
 
 </div>
 <!-- End of Main Content -->
@@ -153,15 +185,15 @@
         </div>
     </div>
 </div>
-
+<!--Show Modal-->
+<div class="modal" id="showModal" tabindex="-1" role="dialog"
 <!-- Bootstrap core JavaScript-->
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <!-- Core plugin JavaScript-->
 <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-<script src="js/login.js"></script>
-
+<script src="manageStudents.js"></script>
 
 </body>
 
