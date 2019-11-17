@@ -14,20 +14,3 @@ td,th{
 label{
     color:black;
 }
-table
-{
-    counter-reset: rowNumber;
-}
-
-table tr > td:first-child
-{
-    counter-increment: rowNumber;
-}
-
-table tr td:first-child::before
-{
-    content: counter(rowNumber);
-    padding: auto;
-    min-width: 1em;
-    margin-right: 0.5em;
-}
