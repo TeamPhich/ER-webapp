@@ -35,30 +35,27 @@
 
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
-        <!-- Nav Item  -->
+        <!-- Nav Item subject -->
         <li class="nav-item" >
             <a class="nav-link " href="#"  aria-expanded="true" >
-                <i class="fas fa-fw fa-registered" style="font-size: 115%"></i>
-                <span style="font-size: 115%">Danh sách môn thi</span>
+                <i class="fas fa-fw fa-list" style="font-size: 115%"></i>
+                <span style="font-size: 115%">Môn thi</span>
             </a>
-            <div id="collapseReg" class="collapse" aria-labelledby="headingReg" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="registration.html">Đăng kí thi ngành 1</a>
-                </div>
-            </div>
         </li>
 
-        <!-- Nav Item - Print Collapse Menu -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePrint" aria-expanded="true" aria-controls="collapsePrint">
-                <i class="fas fa-fw fa-print" style="font-size: 115%"></i>
-                <span style="font-size: 115%">In đăng kí</span>
+        <!-- Nav Item - student -->
+        <li class="nav-item" >
+            <a class="nav-link " href="#"  aria-expanded="true" >
+                <i class="fas fa-fw fa-list" style="font-size: 115%"></i>
+                <span style="font-size: 115%">Sinh viên</span>
             </a>
-            <div id="collapsePrint" class="collapse" aria-labelledby="headingPrint" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="#">In đăng kí học ngành 1</a>
-                </div>
-            </div>
+        </li>
+        <!-- Nav Item - ca -->
+        <li class="nav-item" >
+            <a class="nav-link " href="#"  aria-expanded="true" >
+                <i class="fas fa-fw fa-calendar-times" style="font-size: 115%"></i>
+                <span style="font-size: 115%">Ca thi</span>
+            </a>
         </li>
     </ul>
     <!-- End of Sidebar -->
@@ -118,27 +115,23 @@
                             <table id="subTable" class="table table-bordered p-0"style="color: black; text-align:center;">
                                 <thead>
                                     <tr>
+                                        <th class="smallNumber">Stt</th>
+                                        <th class="smallNumber">Mã LHP</th>
                                         <th>Học phần</th>
-                                        <th>Mã LHP</th>
+                                        <th class="smallNumber">TC</th>
                                         <th>Giảng viên</th>
-                                        <th>DSSV</th>
+                                        <th class="smallNumber">DSSV</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td class="p-0"><input type="text" id="autofocus"></td>
-                                        <td class="p-0"><input type="text" ></td>
-                                        <td class="p-0"><input type="text" ></td>
-                                        <td class="p-0">
-                                            <button class="btn btn-secondary m-auto"type="button" id="show">Import</button>
-                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                         <div style="overflow: auto">
-                            <button id="delete" class="btn btn-secondary"type="button" style="float:right; margin-right: 10px!important;" >Delete</button>
-                            <button id="add" class="btn btn-primary"type="button" style="float:right; margin-right: 10px!important;" >Add</button>
+                            <button id="confirm" class="btn btn-primary"type="button" style="float:right; margin-right: 10px!important;" >Confirm</button>
+                            <button id="add" class="btn btn-primary"type="button" style="float:right; margin-right: 10px!important;" onclick="modelAdd()">Add</button>
                         </div>
                     </div>
                 </div>
@@ -179,22 +172,50 @@
     </div>
 </div>
 <!--Show Modal-->
-<div class="modal fade" id="showModal" tabindex="-1" role="dialog" aria-labelledby="headerModal" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="headerModal" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content"style="width: 700px;margin-left: -100px!important;">
             <div class="modal-header">
-                <h5 class="modal-title" id="headerModal">Ready to Leave?</h5>
+                <h5 class="modal-title" id="headerModal" style="color:black">Thêm danh sách môn thi</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="inputLHP">Mã LHP</label>
+                        <input type="text"class="form-control" id="inputLHP" placeholder="Nhập mã LHP">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputSubject">Tên môn học</label>
+                        <input type="text"class="form-control" id="inputSubject" placeholder="Nhập tên môn học">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputTc">Số tín chỉ</label>
+                        <input type="text"class="form-control" id="inputTc" placeholder="Nhập số tín chỉ">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputTeacher">Tên giảng viên</label>
+                        <input type="text"class="form-control" id="inputTeacher" placeholder="Nhập tên giảng viên">
+                    </div>
+                    <div class="form-group">
+                        <label>Danh sách sinh viên</label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="inputStudent" lang="es">
+                            <label class="custom-file-label" for="inputStudent"gi>Danh sách sinh viên</label>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="login.html">Logout</a>
+                <button class="btn btn-primary" type="button">Add</button>
+                <button class="btn btn-primary" type="button">Show</button>
             </div>
         </div>
     </div>
+</div>
 <!-- Bootstrap core JavaScript-->
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
