@@ -14,7 +14,7 @@
     <!-- Custom styles for this template-->
     <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" href="manageStudents.css">
-    <link rel="stylesheet" href="subjects.css">
+    <link rel="stylesheet" href="manageSubjects.css">
 
 </head>
 
@@ -55,7 +55,7 @@
         <li class="nav-item" >
             <a class="nav-link " href="#"  aria-expanded="true" >
                 <i class="fas fa-fw fa-calendar-times" style="font-size: 115%"></i>
-                <span style="font-size: 115%">Ca thi</span>
+                <span style="font-size: 115%">Kỳ thi</span>
             </a>
         </li>
     </ul>
@@ -109,6 +109,15 @@
             <div class="container-fluid">
                 <div class="d-sm-flex align-items-center justify-content-between mb-4"style="font-size: 200%">
                     <p>Quản lý môn thi</p>
+                </div>
+                <div class="col-4" style="margin-left: 850px!important;">
+                    <p style="display: inline!important;">Chọn học kỳ :</p>
+                    <select class="custom-select custom-select-sm" style="display: inline!important;width: auto!important;">
+                        <option selected>Mã HK 191 - Học kì 1 năm 2019-2020</option>
+                        <option value="2">Mã HK 182 - Học kì 2 năm 2018-2029</option>
+                        <option value="3">Mã HK 181 - Học kì 1 năm 2019-2020</option>
+                    </select>
+
                 </div>
                 <div class="card shadow mb-5">
                     <div class="card-body">
@@ -202,8 +211,8 @@
                     <div class="form-group">
                         <label>Danh sách sinh viên</label>
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="inputStudent" lang="es">
-                            <label class="custom-file-label" for="inputStudent"gi>Danh sách sinh viên</label>
+                            <input type="file" class="custom-file-input" id="fileStudent" lang="es">
+                            <label class="custom-file-label" for="fileStudent">Danh sách sinh viên</label>
                         </div>
                     </div>
                 </form>
@@ -222,7 +231,7 @@
 
 <!-- Core plugin JavaScript-->
 <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-<script src="subjects.js"></script>
+<script src="manageSubjects.js"></script>
 
 </body>
 
