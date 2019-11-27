@@ -23,6 +23,6 @@ async function postRequest(){
         $('#loginmodal').modal('show');
     }
     else{
-        document.getElementById("login").href="index.html";
+        document.getElementById("login").href="../index.html";
     }
 }
