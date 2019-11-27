@@ -1,4 +1,7 @@
 os: linux
+language: nodejs
+node_js:
+  - 10.16.2
 branches:
   only:
   - master
