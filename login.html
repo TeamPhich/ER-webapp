@@ -31,12 +31,12 @@
                                 <div class="text-center">
                                     <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                                 </div>
-                                <form class="user">
+                                <form class="user" action="http://18.162.125.153/ER-backend/api/v1/accounts/login" method="post">
                                     <div class="form-group">
-                                        <input type="email" class="form-control form-control-user" id="InputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address...">
+                                        <input type="email" class="form-control form-control-user" id="inputUserName" aria-describedby="emailHelp" placeholder="Enter user name...">
                                     </div>
                                     <div class="form-group">
-                                        <input type="password" class="form-control form-control-user" id="InputPassword" placeholder="Password">
+                                        <input type="password" class="form-control form-control-user" id="inputPassword" placeholder="Password">
                                     </div>
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox small">
@@ -44,7 +44,7 @@
                                             <label class="custom-control-label" for="customCheck">Remember Me</label>
                                         </div>
                                     </div>
-                                    <a class="btn btn-primary btn-user btn-block" id="login" onclick="checkAdmin()" href="#">
+                                    <a class="btn btn-primary btn-user btn-block" id="login" onclick="postRequest()" href="#">
                                         Login
                                     </a>
                                 </form>
@@ -71,8 +71,8 @@
             </div>
             <div class="modal-body">You are the admin account, select "direction" below </div>
             <div class="modal-footer">
-                <a class="btn btn-secondary" href="index.html">Student</a>
-                <a class="btn btn-primary" href="#">Admin</a>
+                <a class="btn btn-primary" href="index.html">Student</a>
+                <a class="btn btn-primary" href="admin.html">Admin</a>
             </div>
         </div>
     </div>

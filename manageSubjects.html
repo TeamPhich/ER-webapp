@@ -111,7 +111,7 @@
                     <p>Quản lý môn thi</p>
                 </div>
                 <div class="col-4" style="margin-left: 850px!important;">
-                    <p style="display: inline!important;">Chọn học kỳ :</p>
+                    <p style="display: inline!important;">Chọn kỳ thi :</p>
                     <select class="custom-select custom-select-sm" style="display: inline!important;width: auto!important;">
                         <option selected>Mã HK 191 - Học kì 1 năm 2019-2020</option>
                         <option value="2">Mã HK 182 - Học kì 2 năm 2018-2029</option>
@@ -140,7 +140,7 @@
                         </div>
                         <div style="overflow: auto">
                             <button id="confirm" class="btn btn-primary"type="button" style="float:right; margin-right: 10px!important;" >Confirm</button>
-                            <button id="add" class="btn btn-primary"type="button" style="float:right; margin-right: 10px!important;" onclick="modelAdd()">Add</button>
+                            <a id="add" class="btn btn-primary " style="color:white;float:right; margin-right: 10px!important;" data-toggle="modal" data-target="#addSubjectModal">Add</a>
                         </div>
                     </div>
                 </div>
@@ -180,8 +180,8 @@
         </div>
     </div>
 </div>
-<!--Show Modal-->
-<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="headerModal" aria-hidden="true">
+<!--Add subject Modal-->
+<div class="modal fade" id="addSubjectModal" tabindex="-1" role="dialog" aria-labelledby="headerModal" aria-hidden="true">
     <div class="modal-dialog " role="document">
         <div class="modal-content"style="width: 700px;margin-left: -100px!important;">
             <div class="modal-header">
@@ -192,27 +192,31 @@
             </div>
             <div class="modal-body">
                 <form class="form-horizontal">
-                    <div class="form-group">
-                        <label for="inputLHP">Mã LHP</label>
+                    <div class="form-group ">
+                        <label for="inputLHP">Mã LHP :</label>
                         <input type="text"class="form-control" id="inputLHP" placeholder="Nhập mã LHP">
                     </div>
                     <div class="form-group">
-                        <label for="inputSubject">Tên môn học</label>
+                        <label for="inputSubject">Tên môn học :</label>
                         <input type="text"class="form-control" id="inputSubject" placeholder="Nhập tên môn học">
                     </div>
                     <div class="form-group">
-                        <label for="inputTc">Số tín chỉ</label>
+                        <label for="inputTc">Số tín chỉ :</label>
                         <input type="text"class="form-control" id="inputTc" placeholder="Nhập số tín chỉ">
                     </div>
                     <div class="form-group">
-                        <label for="inputTeacher">Tên giảng viên</label>
+                        <label for="inputTeacher">Tên giảng viên :</label>
                         <input type="text"class="form-control" id="inputTeacher" placeholder="Nhập tên giảng viên">
                     </div>
                     <div class="form-group">
-                        <label>Danh sách sinh viên</label>
+                        <label for="inputTeacher">Ngày thi :</label>
+                        <input type="date"class="form-control" id="inputDateExam">
+                    </div>
+                    <div class="form-group">
+                        <label for="fileInput">Danh sách sinh viên :</label>
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="fileStudent" lang="es">
-                            <label class="custom-file-label" for="fileStudent">Danh sách sinh viên</label>
+                            <input type="file" class="custom-file-input" id="fileInput" lang="en">
+                            <label class="custom-file-label" for="fileInput">Danh sách sinh viên</label>
                         </div>
                     </div>
                 </form>
