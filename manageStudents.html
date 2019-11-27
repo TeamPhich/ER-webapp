@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
     <meta charset="utf-8">
@@ -14,6 +13,7 @@
     <!-- Custom styles for this template-->
     <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" href="manageStudents.css">
+
 
 </head>
 
@@ -35,42 +35,28 @@
 
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
-        <!-- Nav Item  -->
+        <!-- Nav Item subject -->
         <li class="nav-item" >
-            <a class="nav-link " href="subjects.html"  aria-expanded="true" >
-                <i class="fas fa-fw fa-registered" style="font-size: 115%"></i>
-                <span style="font-size: 115%">Quản lý môn thi</span>
+            <a class="nav-link " href="manageSubjects.html"  aria-expanded="true" >
+                <i class="fas fa-fw fa-clipboard-list" style="font-size: 115%"></i>
+                <span style="font-size: 115%">Môn học</span>
             </a>
-            <!-- sunday -->
-            <a class="nav-link " href="manageStudents.html"  aria-expanded="true">
-                <i class="fas fa-fw fa-registered" style="font-size: 115%"></i>
-                <span style="font-size: 115%">Quản lý sinh viên</span>
-            </a>
-            <a class="nav-link " href="manageExaminations.html"  aria-expanded="true" >
-                <i class="fas fa-fw fa-registered" style="font-size: 115%"></i>
-                <span style="font-size: 115%">Quản lý kỳ thi</span>
-            </a>
-            <!-- sunday -->
-            <!-- <div id="collapseReg" class="collapse" aria-labelledby="headingReg" data-parent="#accordionSidebar">
-                 <div class="bg-white py-2 collapse-inner rounded">
-                 <a class="collapse-item" href="registration.html">Đăng kí thi ngành 1</a>
-                 </div>
-            </div> -->
         </li>
 
-
-        <!-- Nav Item - Print Collapse Menu
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePrint" aria-expanded="true" aria-controls="collapsePrint">
-                <i class="fas fa-fw fa-print" style="font-size: 115%"></i>
-                <span style="font-size: 115%">In đăng kí</span>
+        <!-- Nav Item - student -->
+        <li class="nav-item" >
+            <a class="nav-link " href="manageStudents.html"  aria-expanded="true" >
+                <i class="fas fa-fw fa-user-friends" style="font-size: 115%"></i>
+                <span style="font-size: 115%">Sinh viên</span>
             </a>
-            <div id="collapsePrint" class="collapse" aria-labelledby="headingPrint" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="#">In đăng kí học ngành 1</a>
-                </div>
-            </div>
-        </li> -->
+        </li>
+        <!-- Nav Item - ca -->
+        <li class="nav-item" >
+            <a class="nav-link " href="#"  aria-expanded="true" >
+                <i class="fas fa-fw fa-calendar-times" style="font-size: 115%"></i>
+                <span style="font-size: 115%">Kỳ thi</span>
+            </a>
+        </li>
     </ul>
     <!-- End of Sidebar -->
 
@@ -81,7 +67,12 @@
         <div id="content">
 
             <!-- Topbar -->
-            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow" id="fixed-top-bar">
+            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                <!-- Sidebar Toggle (Topbar) -->
+                <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                    <i class="fa fa-bars"></i>
+                </button>
 
                 <!-- Topbar Navbar -->
                 <ul class="navbar-nav ml-auto">
@@ -114,42 +105,69 @@
             </nav>
             <!-- End of Topbar -->
             <!-- Begin Page Content -->
-            <div class="container-fluid" id="main-container">
+            <div class="container-fluid">
                 <div class="d-sm-flex align-items-center justify-content-between mb-4"style="font-size: 200%">
                     <p>Quản lý sinh viên</p>
                 </div>
                 <div class="card shadow mb-5">
                     <div class="card-body">
-                        <div class="container-fluid p-0">
-                            <table id="subTable" class="table table-bordered p-0"style="color: black; text-align:center;">
+                        <div class="container-fluid p-0 table-responsive">
+                            <table id="subTable" class="table table-bordered p-0 table-striped my-table"style="color: black; text-align:center;">
                                 <thead class="thead-dark">
                                 <tr>
-                                    <th>STT</th>
-                                    <th>Mã lớp học</th>
-                                    <th>Chuyên ngành</th>
-                                    <th>Danh sách sinh viên</th>
+                                    <th>Stt</th>
+                                    <th>MSSV</th>
+                                    <th>Họ tên</th>
+                                    <th>Lớp</th>
+                                    <th>Ngày sinh</th>
+                                    <th>Tên tài khoản</th>
+                                    <th>Mật khẩu</th>
+                                    <th>#</th>
                                 </tr>
                                 </thead>
+
+                                <thead id="thead-fillter">
+                                <tr>
+                                    <th></th>
+                                    <th><input id="myInput-mssv" type="text" placeholder="..."></th>
+                                    <th><input id="myInput-hoten" type="text" placeholder="..."></th>
+                                    <th><input id="myInput-lop" type="text" placeholder="..."></th>
+                                    <th><input id="myInput-ngaysinh" type="text" placeholder="..."></th>
+                                    <th><input id="myInput-tentaikhoan" type="text" placeholder="..."></th>
+                                    <th><input id="myInput-matkhau" type="text" placeholder="..."></th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+
                                 <tbody>
                                 <tr>
-                                    <td class="p-0 align-middle"></td>
-                                    <td class="p-0"><input type="text"autofocus id="autofocus"></td>
-                                    <td class="p-0"><input type="text" ></td>
-                                    <td class="p-0 align-middle">
-                                        <input type="file">
-                                    </td>
+                                    <td class="stt"></td>
+                                    <td class="mssv">17021004</td>
+                                    <td class="hoten">Phạm Hoàng Sơn</td>
+                                    <td class="lop">K62-CD</td>
+                                    <td class="ngaysinh">18/01/1999</td>
+                                    <td class="tentaikhoan">abc</td>
+                                    <td class="matkhau">xyz</td>
+                                    <td><i class="far fa-edit" onclick="modelAdd(this)"></i><i class="far fa-trash-alt"></i></td>
+                                </tr>
+
+                                <tr>
+                                    <td class="stt"></td>
+                                    <td class="mssv">MSSV</td>
+                                    <td class="hoten">Họ tên</td>
+                                    <td class="lop">K62-CD</td>
+                                    <td class="ngaysinh">Ngày sinh</td>
+                                    <td class="tentaikhoan">Tên tài khoản</td>
+                                    <td class="matkhau">Mật khẩu</td>
+                                    <td><i class="far fa-edit" onclick="modelAdd(this)"></i><i class="far fa-trash-alt"></i></td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
-                        <div style="overflow: auto">
-                            <button id="add" class="btn btn-primary"type="button" style="float:right;" >Thêm bản ghi</button>
-                        </div>
+
                     </div>
                 </div>
-                <div>
-                    <button class="btn btn-primary" style="float:right; margin-right: 50px!important;" >Ghi nhận</button>
-                </div>
+
             </div>
         </div>
     </div>
@@ -186,7 +204,48 @@
     </div>
 </div>
 <!--Show Modal-->
-<div class="modal" id="showModal" tabindex="-1" role="dialog"
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="headerModal" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content"style="width: 700px;margin-left: -100px!important;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="headerModal" style="color:black">Chỉnh sửa thông tin sinh viên</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="inputMSSV">Mã số sinh viên</label>
+                        <input type="text"class="form-control" id="inputMSSV">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputHoten">Họ tên</label>
+                        <input type="text"class="form-control" id="inputHoten">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputLop">Lớp</label>
+                        <input type="text"class="form-control" id="inputLop">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputNgaysinh">Ngày sinh</label>
+                        <input type="text"class="form-control" id="inputNgaysinh">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputTentaikhoan">Tên tài khoản</label>
+                        <input type="text"class="form-control" id="inputTentaikhoan">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputMatkhau">Mật khẩu</label>
+                        <input type="text"class="form-control" id="inputMatkhau">
+                    </div>
+                    <button class="btn btn-primary" type="submit" style="float:right;">Confirm</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Bootstrap core JavaScript-->
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
