@@ -1,5 +1,5 @@
 os: linux
-language: javascript
+language: nodejs
 branches:
   only:
   - master
