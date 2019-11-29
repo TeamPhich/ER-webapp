@@ -10,7 +10,6 @@ table
 {
     counter-reset: rowNumber;
 }
-
 table tr > td:first-child
 {
     counter-increment: rowNumber;
@@ -23,9 +22,7 @@ table tr td:first-child::before
     min-width: 1em;
     margin-right: 0.5em;
 }
-#thead-fillter th{
-    border:0;
-    border-radius: 0px;
-    padding: 0px;
+.clickable{
+    cursor: pointer;
 }
 
