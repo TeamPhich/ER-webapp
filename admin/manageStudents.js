@@ -25,8 +25,7 @@ $(document).ready(function(){
     //js print
     $("#printButton").on("click",function(){
         newWin= window.open("");
-        stylesheet = '//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css';
-        newWin.document.write('<html><head><title></title>' + '<link rel="stylesheet" href="' + stylesheet + '">' + '</head><body>' + $('#subTable')[0].outerHTML + '</body></html>');
+        newWin.document.write($('#subTable')[0].outerHTML);
         newWin.print();
         newWin.close();
     })
@@ -53,6 +52,8 @@ $(document).ready(function(){
         $("#modalEdit").modal("hide");
         //update to server here
     });
+
+    //js import and comfirm
     $("#importButton").on("click", function () {
         $("#importModal").modal("show");
     });
@@ -60,6 +61,9 @@ $(document).ready(function(){
         var fileName = $(this).val().split("\\").pop();
         $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
     });
+
+    //js auto increment
+
 });
 
 
