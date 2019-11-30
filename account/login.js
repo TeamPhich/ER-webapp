@@ -18,11 +18,17 @@ async function postRequest(){
         body: JSON.stringify(data)
     });
     let res=await response.json();
-    console.log(res);
     if(res["status"]===20){
-        $('#loginmodal').modal('show');
+        if(res["data"]["isAdmin"]) {
+            $('#loginmodal').modal('show');
+            document.getElementById("loi_user").style.display="none";
+        }
+        else{
+            document.getElementById("login").href="../index.html";
+        }
     }
-    else{
-        document.getElementById("login").href="../index.html";
+    else {
+        document.getElementById("loi_user").innerHTML = "user name hoặc password không đúng";
     }
+    window.localStorage.setItem('token', res["data"]["token"]);
 }

@@ -13,8 +13,9 @@
 
     <!-- Custom styles for this template-->
     <link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap.css">
+    <script src="registration.js"></script>
 </head>
-
+git
 <body id="page-top">
 
 <!-- Page Wrapper -->
@@ -128,21 +129,22 @@
 
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4"style="font-size: 200%">
-                   <p>Danh sách môn</p>
+                    <p>Danh sách môn</p>
                 </div>
 
                 <!-- Approach -->
                 <div class="card shadow mb-4">
                     <div class="card-body">
                         <div class="container-fluid">
-                            <table id="subTable" class="table table-bordered p-0" style="color: black; text-align:center;"width="100%"
-                                <tr >
-                                    <th>Môn thi/Học phần</th>
-                                    <th>Mã môn học</th>
-                                    <th>Giảng viên</th>
-                                    <th>Địa điểm</th>
-                                    <th>Thời gian</th>
-                                </tr>
+                            <table id="subTable" class="table table-bordered p-0" style="color: black; text-align:center;">
+                                <thead>
+                                    <tr >
+                                        <th>Môn thi/Học phần</th>
+                                        <th>Mã môn học</th>
+                                        <th>Giảng viên</th>
+                                        <th>Địa điểm</th>
+                                        <th>Thời gian</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
                                 <tr>
@@ -181,7 +183,7 @@
                                         </select>
                                     </td>
                                 </tr>
-                                </tbody>
+                            </tbody>
                             </table>
                         </div>
                     </div>
@@ -216,7 +218,7 @@
             <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="../account/login.html">Logout</a>
+                <a class="btn btn-primary" href="../account/login.html"onclick="removeToken()">Logout</a>
             </div>
         </div>
     </div>
