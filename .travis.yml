@@ -21,6 +21,6 @@ before_deploy:
 deploy:
   provider: script
   cleanup: true
-  script: rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/ ubuntu@18.162.125.153:/var/www/ER-webapp
+  script: rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/ ubuntu@18.162.125.153:/var/www/html/ER-webapp
   on:
     branch: master
