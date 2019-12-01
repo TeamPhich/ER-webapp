@@ -1,16 +1,20 @@
 input[type="text"]{
-    height: 2.5em;
+    height: 1.75em;
     width: 100%;
 }
-td,th{
-    border: 1px solid #000000!important;
-    padding: 7px!important;
+table
+{
+    counter-reset: rowNumber;
 }
-.smallNumber{
-    padding: 5px!important;
-    padding-left: 0px!important;
-    padding-right: 0px!important;
+table tr > td:first-child
+{
+    counter-increment: rowNumber;
 }
-label{
-    color:black;
+
+table tr td:first-child::before
+{
+    content: counter(rowNumber);
+    padding: auto;
+    min-width: 1em;
+    margin-right: 0.5em;
 }
