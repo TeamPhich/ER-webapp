@@ -49,7 +49,7 @@ $(document).ready(function(){
         editField[4].innerText=$("#inputNgaysinh")[0].value;
         editField[5].innerText=$("#inputTentaikhoan")[0].value;
         editField[6].innerText=$("#inputMatkhau")[0].value;
-        $("#modalEdit").modal("hide");
+
         //update to server here
     });
 
