@@ -1,20 +1,9 @@
-
-if (typeof(Storage) !== "undefined") {
-    if (localStorage.token==null) {
-        window.location = "../account/login.html";
-    }
-} else {
-    document.getElementById("result").innerHTML = "Sorry, your browser does not support web storage...";
-}
-function removeToken() {
-    window.localStorage.removeItem('token');
-}
 var editField;
 $(document).ready(function(){
     //js delete row
     $(".fa-trash-alt").on("click", function() {
-            $(this).parent().parent().toggle();
-            //update to server here
+        $(this).parent().parent().toggle();
+        //update to server here
     });
 
     //customize table
@@ -60,7 +49,7 @@ $(document).ready(function(){
         editField[4].innerText=$("#inputNgaysinh")[0].value;
         editField[5].innerText=$("#inputTentaikhoan")[0].value;
         editField[6].innerText=$("#inputMatkhau")[0].value;
-
+        $("#modalEdit").modal("hide");
         //update to server here
     });
 

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+
+    <title>admin</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../vendor/datatables/datatables.min.css">
+    <link rel="stylesheet" type="text/css" href="../vendor/datatables/Buttons-1.6.1/css/buttons.bootstrap4.min.css">
+    <link rel="stylesheet" href="manageExam.css">
+
+
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper" >
+
+    <!-- Sidebar -->
+    <div>
+        <div class="position-fixed">
+            <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar" style="background-color: #2d4373">
+
+                <!-- Sidebar - Brand -->
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="admin.html">
+                    <div class="sidebar-brand-icon rotate-n-15">
+                        <i class="fas fa-laugh-wink"></i>
+                    </div>
+                    <div class="sidebar-brand-text mx-3">ExamReg</div>
+                </a>
+
+                <!-- Divider -->
+                <hr class="sidebar-divider my-0">
+                <!-- Nav Item subject -->
+                <li class="nav-item" >
+                    <a class="nav-link " href="manageSubjects.html"  aria-expanded="true" >
+                        <i class="fas fa-fw fa-clipboard-list" style="font-size: 115%"></i>
+                        <span style="font-size: 115%">Môn học</span>
+                    </a>
+                </li>
+
+                <!-- Nav Item - student -->
+                <li class="nav-item" >
+                    <a class="nav-link " href="manageStudents.html"  aria-expanded="true" >
+                        <i class="fas fa-fw fa-user-friends" style="font-size: 115%"></i>
+                        <span style="font-size: 115%">Sinh viên</span>
+                    </a>
+                </li>
+                <!-- Nav Item - ca -->
+                <li class="nav-item" >
+                    <a class="nav-link " href="manageExam.html"  aria-expanded="true" >
+                        <i class="fas fa-fw fa-calendar-times" style="font-size: 115%"></i>
+                        <span style="font-size: 115%">Kỳ thi</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <ul class="navbar-nav sidebar">
+            <li class="nav-item" >
+                <a class="nav-link "></a>
+            </li>
+        </ul>
+    </div>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <nav class="navbar navbar-expand navbar-light bg-white topbar flex-grow-1 mb-4 shadow">
+
+                <!-- Topbar Navbar -->
+                <ul class="navbar-nav ml-auto">
+                    <!-- Nav Item - User Information -->
+                    <li class="nav-item dropdown no-arrow">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Đỗ Văn Quang-[17020977]</span>
+                            <img class="img-profile rounded-circle" src="../image/user.png" >
+                        </a>
+                        <!-- Dropdown - User Information -->
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Profile
+                            </a>
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Settings
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Logout
+                            </a>
+                        </div>
+                    </li>
+
+                </ul>
+
+            </nav>
+            <!-- End of Topbar -->
+            <!-- Begin Page Content -->
+            <div class="container-fluid" id="container">
+                <div class="d-sm-flex align-items-center justify-content-between mb-4"style="font-size: 200%">
+                    <p>Quản lý kỳ thi</p>
+                </div>
+                <div class="d-flex justify-content-end mb-2 mr-0">
+                    <div>
+                    <p style="display: inline!important;">Kỳ thi :</p>
+                    <select class="custom-select custom-select-sm" style="display: inline!important;width: auto!important;">
+                        <option selected>Mã HK 191 - Học kì 1 năm 2019-2020</option>
+                        <option value="2">Mã HK 182 - Học kì 2 năm 2018-2029</option>
+                        <option value="3">Mã HK 181 - Học kì 1 năm 2019-2020</option>
+                    </select>
+                    </div>
+                </div>
+                <div class="card shadow mb-3" >
+                    <div class="card-body" >
+                        <div class="container-fluid p-0 table-responsive">
+
+                            <table id="subTable" class="table table-bordered p-0 table-striped my-table"style="color: black; text-align:center;">
+
+                                <thead class="thead-dark">
+                                <tr>
+                                    <th class="no-sort">Stt</th>
+                                    <th>Mã kỳ thi</th>
+                                    <th>Kỳ thi</th>
+                                    <th>Ngày thi</th>
+                                    <th>Ca thi</th>
+                                    <th>Phòng</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+                    <div class="card-footer">
+                        <div class="float-right">
+                            <button class="btn btn-primary" id="confirmButton">Ghi nhận</button>
+
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn btn-outline-primary" id="addButton">Thêm</button>
+                            <button class="btn btn-outline-primary" id="printButton">In</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- End of Page Content -->
+        </div>
+        <!-- End of Main Content -->
+    </div>
+    <!-- End of Content Wrapper -->
+</div>
+<!-- End of Page Wrapper -->
+
+
+<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary" href="../account/login.html">Logout</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Import Modal-->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thêm danh sách sinh viên</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="customFile">
+                        <label class="custom-file-label" for="customFile">Choose file</label>
+                    </div>
+                    <button class="btn btn-primary float-right" id="confirmImportModal" type="submit" style="margin-top: 1rem">Ghi nhận</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Edit Modal-->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="headerModal" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content"style="width: 700px;margin-left: -100px!important;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="headerModal" style="color:black">Chỉnh sửa thông tin sinh viên</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="inputMSSV">Mã số sinh viên</label>
+                        <input type="text"class="form-control" id="inputMSSV">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputHoten">Họ tên</label>
+                        <input type="text"class="form-control" id="inputHoten">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputLop">Lớp</label>
+                        <input type="text"class="form-control" id="inputLop">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputNgaysinh">Ngày sinh</label>
+                        <input type="text"class="form-control" id="inputNgaysinh">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputTentaikhoan">Tên tài khoản</label>
+                        <input type="text"class="form-control" id="inputTentaikhoan">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputMatkhau">Mật khẩu</label>
+                        <input type="text"class="form-control" id="inputMatkhau">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="button" id="confirmEditButton">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Bootstrap core JavaScript-->
+<script src="../vendor/jquery/jquery.min.js"></script>
+<script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="manageExam.js"></script>
+<!-- Data tabes script-->
+<script src="../vendor/datatables/datatables.min.js" type="text/javascript"></script>
+<script src="../vendor/datatables/Buttons-1.6.1/js/dataTables.buttons.min.js" type="text/javascript"></script>
+<script src="../vendor/datatables/Buttons-1.6.1/js/buttons.bootstrap4.min.js" type="text/javascript"></script>
+<script src="../vendor/datatables/Buttons-1.6.1/js/buttons.html5.min.js" type="text/javascript"></script>
+<script src="../vendor/datatables/Buttons-1.6.1/js/buttons.print.min.js" type="text/javascript"></script>
+
+
+</body>
+
+</html>
