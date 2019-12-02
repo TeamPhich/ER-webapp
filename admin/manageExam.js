@@ -53,10 +53,11 @@ $(document).ready(function(){
         //update to server here
     });
 
-    //js import and comfirm
-    $("#importButton").on("click", function () {
-        $("#importModal").modal("show");
+    //js add and comfirm
+    $("#addButton").on("click", function () {
+        $("#addModal").modal("show");
     });
+
     $(".custom-file-input").on("change", function() {
         var fileName = $(this).val().split("\\").pop();
         $(this).siblings(".custom-file-label").addClass("selected").html(fileName);

@@ -57,6 +57,12 @@
                 <!-- Nav Item - ca -->
                 <li class="nav-item" >
                     <a class="nav-link " href="manageExam.html"  aria-expanded="true" >
+                        <i class="fas fa-fw fa-list-alt" style="font-size: 115%"></i>
+                        <span style="font-size: 115%">Lớp học phần</span>
+                    </a>
+                </li>
+                <li class="nav-item" >
+                    <a class="nav-link " href="manageExam.html"  aria-expanded="true" >
                         <i class="fas fa-fw fa-calendar-times" style="font-size: 115%"></i>
                         <span style="font-size: 115%">Kỳ thi</span>
                     </a>
@@ -115,7 +121,7 @@
                 <div class="d-sm-flex align-items-center justify-content-between mb-4"style="font-size: 200%">
                     <p>Quản lý kỳ thi</p>
                 </div>
-                <div class="d-flex justify-content-end mb-2 mr-0">
+                <div class="d-flex justify-content-end mb-2">
                     <div>
                     <p style="display: inline!important;">Kỳ thi :</p>
                     <select class="custom-select custom-select-sm" style="display: inline!important;width: auto!important;">
@@ -192,23 +198,44 @@
     </div>
 </div>
 
-<!-- Import Modal-->
+<!-- Add Modal-->
 <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Thêm danh sách sinh viên</h5>
+                <h5 class="modal-title">Thêm kỳ thi mới</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form>
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="customFile">
-                        <label class="custom-file-label" for="customFile">Choose file</label>
+                <form action="">
+                    <div class="form-group">
+                        <label class="" for="inputKythi">Chọn kỳ thi</label>
+                        <select id="inputKythi" class="form-control">
+                            <option class="addKythiOption">Thêm</option>
+                        </select>
                     </div>
-                    <button class="btn btn-primary float-right" id="confirmImportModal" type="submit" style="margin-top: 1rem">Ghi nhận</button>
+                    <button class="btn btn-primary float-right" id="confirmAddModal" type="submit" style="margin-top: 1rem">Ghi nhận</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Ky Thi Modal-->
+<div class="modal fade" id="addKythiModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thêm kỳ thi mới</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="">
+
                 </form>
             </div>
         </div>

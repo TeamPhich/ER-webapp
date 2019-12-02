@@ -46,20 +46,16 @@ $(document).ready(function(){
         editField=$(this).parent().parent().children();
         $("#inputMSSV").val(editField[1].innerText);
         $("#inputHoten").val(editField[2].innerText);
-        $("#inputLop").val(editField[3].innerText);
-        $("#inputNgaysinh").val(editField[4].innerText);
-        $("#inputTentaikhoan").val(editField[5].innerText);
-        $("#inputMatkhau").val(editField[6].innerText);
+        $("#inputNgaysinh").val(editField[3].innerText);
+        $("#inputEmail").val(editField[4].innerText);
     });
 
     //js confirm and close modal
     $("#confirmEditButton").on("click",function () {
         editField[1].innerText=$("#inputMSSV")[0].value;
         editField[2].innerText=$("#inputHoten")[0].value;
-        editField[3].innerText=$("#inputLop")[0].value;
-        editField[4].innerText=$("#inputNgaysinh")[0].value;
-        editField[5].innerText=$("#inputTentaikhoan")[0].value;
-        editField[6].innerText=$("#inputMatkhau")[0].value;
+        editField[3].innerText=$("#inputNgaysinh")[0].value;
+        editField[4].innerText=$("#inputEmail")[0].value;
 
         //update to server here
     });
