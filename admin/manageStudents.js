@@ -11,11 +11,6 @@ function removeToken() {
 }
 var editField;
 $(document).ready(function(){
-    //js delete row
-    $(".fa-trash-alt").on("click", function() {
-            $(this).parent().parent().toggle();
-            //update to server here
-    });
 
     //customize table
     table = $("#subTable").DataTable( {
@@ -33,9 +28,16 @@ $(document).ready(function(){
         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
 
     } );
+    $('#subTable tbody').on( 'click', '.fa-trash-alt', function () {
+        table
+            .row( $(this).parents('tr') )
+            .remove()
+            .draw();
+    } );
     //js print
     $("#printButton").on("click",function(){
         newWin= window.open("");
+        console.log($('#subTable'));
         newWin.document.write($('#subTable')[0].outerHTML);
         newWin.print();
         newWin.close();
