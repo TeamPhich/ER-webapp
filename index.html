@@ -5,16 +5,15 @@
 
   <meta charset="utf-8">
 
-  <title>ExamReg</title>
+  <title>admin</title>
 
   <!-- Custom fonts for this template-->
-  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="./vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
   <!-- Custom styles for this template-->
-  <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.css">g
+  <link rel="stylesheet" href="./vendor/bootstrap/css/bootstrap.css">
   <script src="index.js"></script>
-
 </head>
 
 <body id="page-top">
@@ -49,14 +48,14 @@
     <!-- Heading -->
 
     <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item">
-      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReg" aria-expanded="true" aria-controls="collapseReg">
-        <i class="fas fa-registered" style="font-size: 115%"></i>
+    <li class="nav-item" >
+      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReg" aria-expanded="true" aria-controls="collapseReg" >
+        <i class="fas fa-fw fa-registered" style="font-size: 115%"></i>
         <span style="font-size: 115%">Đăng ký thi</span>
       </a>
       <div id="collapseReg" class="collapse" aria-labelledby="headingReg" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
-          <a class="collapse-item" href="student/registration.html">Đăng kí thi ngành 1</a>
+          <a class="collapse-item" href="./student/registration.html">Đăng kí thi ngành 1</a>
         </div>
       </div>
     </li>
@@ -75,6 +74,7 @@
     </li>
   </ul>
   <!-- End of Sidebar -->
+
 
   <!-- Content Wrapper -->
   <div id="content-wrapper" class="d-flex flex-column">
@@ -100,7 +100,7 @@
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-              <a class="dropdown-item" href="#">
+              <a class="dropdown-item" href="#"onclick="checkSession()">
                 <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                 Profile
               </a>
@@ -108,12 +108,8 @@
                 <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                 Settings
               </a>
-              <a class="dropdown-item" href="#">
-                <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                Activity Log
-              </a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+              <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal"onclick="removeToken()">
                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                 Logout
               </a>
@@ -124,8 +120,6 @@
 
       </nav>
       <!-- End of Topbar -->
-
-      <!-- Begin Page Content -->
       <div class="container-fluid">
 
         <!-- Page Heading -->
@@ -195,10 +189,13 @@
         </div>
 
       </div>
-    </div>
 
+
+    </div>
   </div>
-  <!-- /.container-fluid -->
+
+</div>
+<!-- /.container-fluid -->
 
 </div>
 <!-- End of Main Content -->
@@ -223,24 +220,19 @@
       <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
       <div class="modal-footer">
         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-        <a class="btn btn-primary" href="account/login.html" onclick="removeToken()">Logout</a>
+        <a class="btn btn-primary" href="account/login.html">Logout</a>
       </div>
     </div>
   </div>
 </div>
 
-<<<<<<< HEAD
 <!-- Bootstrap core JavaScript-->
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-=======
-  <!-- Bootstrap core JavaScript-->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script>
-    console.log("ok");
-  </script>
->>>>>>> 49a394c64e12afbff2de41ab0213052bcc5367d5
+
+<!-- Core plugin JavaScript-->
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
 </body>
 
 </html>
