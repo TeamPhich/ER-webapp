@@ -132,7 +132,7 @@
                                         <td>PHI1004</td>
                                         <td>Những nguyên lý cơ bản của chủ nghĩa Mac-Lenin 1</td>
                                         <td>2</td>
-                                        <td><i class="clickable far fa-edit"></i><i class="clickable far fa-trash-alt ml-2"></i></td>
+                                        <td><i class="clickable far fa-edit" ></i><i class="clickable far fa-trash-alt ml-2"></i></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -140,7 +140,9 @@
                         <div class="card-footer">
                             <div class="float-right">
                                 <button class="btn btn-primary" id="confirmButton">Ghi nhận</button>
-
+                            </div>
+                            <div class="float-right" style="margin-right:5px ">
+                                <button class="btn btn-primary" id="addButton">Thêm</button>
                             </div>
                         </div>
                     </div>
@@ -149,17 +151,9 @@
             </div>
         </div>
     </div>
-
-</div>
 <!-- /.container-fluid -->
-
-</div>
 <!-- End of Main Content -->
-
-</div>
 <!-- End of Content Wrapper -->
-
-</div>
 <!-- End of Page Wrapper -->
 
 
@@ -181,12 +175,12 @@
         </div>
     </div>
 </div>
-<!--edit subject Modal-->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="headerModal" aria-hidden="true">
+<!--add subject modal-->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="headerAddModal" aria-hidden="true">
     <div class="modal-dialog " role="document">
         <div class="modal-content"style="width: 700px;margin-left: -100px!important;">
             <div class="modal-header">
-                <h5 class="modal-title" id="headerModal" style="color:black">Chỉnh sửa thông tin môn học</h5>
+                <h5 class="modal-title" id="headerAddModal" style="color:black">Chỉnh sửa thông tin môn học</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -204,6 +198,38 @@
                     <div class="form-group">
                         <label for="inputTc">TC</label>
                         <input type="text"class="form-control" id="inputTc">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="button" id="confirmAddButton">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--edit subject modal-->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="headerModal" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content"style="width: 700px;margin-left: -100px!important;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="headerModal" style="color:black">Chỉnh sửa thông tin môn học</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="inputMaMon">Mã môn</label>
+                        <input type="text"class="form-control" id="editMaMon">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputTenMon">Tên học phần</label>
+                        <input type="text"class="form-control" id="editTenMon">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputTc">TC</label>
+                        <input type="text"class="form-control" id="editTc">
                     </div>
                 </form>
             </div>
