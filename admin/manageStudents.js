@@ -37,7 +37,6 @@ $(document).ready(function(){
     //js print
     $("#printButton").on("click",function(){
         newWin= window.open("");
-        console.log($('#subTable'));
         newWin.document.write($('#subTable')[0].outerHTML);
         newWin.print();
         newWin.close();
@@ -71,9 +70,60 @@ $(document).ready(function(){
         $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
     });
 
-    //js auto increment
-
+    $("#confirmImportModal").on("click", function () {
+        postRequest($("#customFile")[0].files[0]);
+    });
 });
+
+async function postRequest(file){
+    let url="http://er-backend.sidz.tools/api/v1/students/";
+    let data= new FormData().append("students",file);
+    const response= await fetch(url,{
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'token': window.localStorage.token
+        },
+        redirect: 'follow',
+        referrer: 'no-referrer',
+        body: data
+    });
+    let res=await response.json();
+    console.log(res["status"]);
+    if(res["status"]===20){
+
+    }
+}
+
+async function getRequest(){
+    let url="http://er-backend.sidz.tools/api/v1/students/";
+    const response= await fetch(url,{
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'token': window.localStorage.token
+        }
+    });
+
+    let res=await response.json();
+    console.log(res);
+    var datatbody;
+    if(res["status"==20]) {
+        for (var i = 0; i < res["data"]["students"].length; i++) {
+            datatbody += "<tr><td></td><td>" + res["data"]["students"][i]["user_name"]
+                + "</td><td>" + res["data"]["students"][i]["fullname"]
+                + "</td><td>" + res["data"]["students"][i]["birthday"]
+                + "</td><td>" + res["data"]["students"][i]["email"]
+                + "</td><td><i class=\"far fa-edit\" ></i><i class=\"far fa-trash-alt ml-2\"></i></td></tr>";
+        }
+        $(datatbody).appendTo("tbody");
+    }
+}
+
 
 
 

@@ -66,6 +66,9 @@ $(document).ready(function(){
     //js auto increment
 
 });
+$('#inputKythi').change(function(){
+    var vaue = $(this).val();
+});
 
 
 
