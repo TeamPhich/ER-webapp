@@ -1,10 +1,10 @@
-
 async function postRequest(){
-    let url="http://18.162.125.153/ER-backend/api/v1/accounts/login";
+    let url="http://er-backend.sidz.tools/api/v1/accounts/login";
     let data={
         "user_name":document.getElementById("inputUserName").value,
         "password":document.getElementById("inputPassword").value
     }
+    console.log(data);
     const response= await fetch(url,{
         method: 'POST',
         mode: 'cors',
