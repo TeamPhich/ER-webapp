@@ -8,43 +8,83 @@ if (typeof(Storage) !== "undefined") {
 function removeToken() {
     window.localStorage.removeItem('token');
 }
-$(document).ready(function() {
+var editField;
+$(document).ready(async function() {
+    //js load data subject
+    let url="http://er-backend.sidz.tools/api/v1/subjects";
+    const response = await fetch(url,{
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json',
+            'token': window.localStorage.token
+        }
+    });
+    let res = await response.json();
+    var datatbody;
+    if(res["status"]==20) {
+        for (var i = 0; i < res["data"]["subjectsInformation"].length; i++) {
+            datatbody += "<tr><td></td><td>" + res['data']['subjectsInformation'][i]['subject_id']
+                + "</td><td>" + res['data']['subjectsInformation'][i]['name']
+                + "</td><td>" + res['data']['subjectsInformation'][i]['credit']
+                + "</td><td><i class=\"far fa-edit\" ></i><i class=\"far fa-trash-alt ml-2\"></i></td></tr>";
+        }
+       $("#subTable>tbody").append(datatbody)
+    }
     //js show add modal
     $("#addButton").on("click",function () {
         $("#addModal").modal("show");
     });
     //js confirm and close add modal
-    $("#confirmAddButton").on("click",function () {
-        $("#subTable").find("tbody")
-            .append($('<tr>')
-                .append($('<td>'))
-                .append($('<td>')
-                    .text($("#inputMaMon").val())
-                )
-                .append($('<td>')
-                    .text($("#inputTenMon").val())
-                )
-                .append($('<td>')
-                    .text($("#inputTc").val())
-                )
-                .append($('<td>')
-                    .append($('<i>')
-                        .addClass("clickable far fa-edit")
-                    )
-                    .append($('<i>')
-                        .addClass("clickable far fa-trash-alt ml-2")
-                    )
-                )
-
-            );
+    $("#confirmAddButton").on("click",async function () {
+        let addSubject="<tr><td></td><td>" + $("#inputMaMon").val()
+            + "</td><td>" + $("#inputTenMon").val()
+            + "</td><td>" + $("#inputTc").val()
+            + "</td><td><i class=\"far fa-edit\"></i><i class=\"far fa-trash-alt ml-2\"></i></td></tr>";
+        $("#subTable>tbody").append(addSubject);
         $("#addModal").modal("hide");
-    });
-    //js delete row
-    $(".fa-trash-alt").on("click", function () {
-        $(this).parent().parent().toggle();
-        //update to server here
+        let urlCreate="http://er-backend.sidz.tools/api/v1/subjects/";
+        let dataCreate={
+            "subject_id": $("#inputMaMon").val(),
+            "name":$("#inputTenMon").val(),
+            "credit": $("#inputTc").val()
+        }
+        const resCreate= await fetch(urlCreate,{
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+                'token': window.localStorage.token
+            },
+            body:JSON.stringify(dataCreate)
+        });
+        let res=await resCreate.json();
+        location.reload();
     });
 
+    //js delete row
+    $(".fa-trash-alt").on("click", async function () {
+        let subject_id=$(this).parent().parent().children();
+        let urlDelete="http://er-backend.sidz.tools/api/v1/subjects/"+subject_id[1].innerText;
+        const resDelete= await fetch(urlDelete,{
+            method: 'DELETE',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+                'token': window.localStorage.token
+            }
+        });
+        let res = await resDelete.json();
+        console.log(res);
+        if(res["status"]==20){
+            $(this).parent().parent().toggle();
+        }
+    });
     //customize table
     table = $("#subTable").DataTable({
         retrieve: true,
@@ -62,21 +102,41 @@ $(document).ready(function() {
 
     });
     //js show edit modal
-    $(".fa-edit").on("click",function () {
+    var subjectIdOld;
+    $(".fa-edit").on('click',function () {
         $("#editModal").modal("show");
         editField=$(this).parent().parent().children();
         $("#editMaMon").val(editField[1].innerText);
+        subjectIdOld=editField[1].innerText;
         $("#editTenMon").val(editField[2].innerText);
         $("#editTc").val(editField[3].innerText);
-    });
-
+    })
     //js confirm and close modal
-    $("#confirmEditButton").on("click",function () {
+    $("#confirmEditButton").on("click",async function () {
         editField[1].innerText=$("#editMaMon")[0].value;
         editField[2].innerText=$("#editTenMon")[0].value;
         editField[3].innerText=$("#editTc")[0].value;
         $("#editModal").modal("hide");
         //update to server here
+        let urlUpdate="http://er-backend.sidz.tools/api/v1/subjects/";
+        let dataUpdate={
+            "subject_id":subjectIdOld,
+            "new_subject_id":editField[1].innerText,
+            "name":editField[2].innerText,
+            "credit":editField[3].innerText
+        }
+        const resUpdate= await fetch(urlUpdate,{
+            method: 'PUT',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+                'token': window.localStorage.token
+            },
+            body:JSON.stringify(dataUpdate)
+        });
+        let res=await resUpdate.json();
     });
 
-})
+});
