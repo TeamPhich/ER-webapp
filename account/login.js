@@ -1,11 +1,10 @@
 async function postRequest(){
-    let url="http://er-backend.sidz.tools/api/v1/accounts/login";
+    let urlLogin="http://er-backend.sidz.tools/api/v1/accounts/login";
     let data={
         "user_name":document.getElementById("inputUserName").value,
         "password":document.getElementById("inputPassword").value
     }
-    console.log(data);
-    const response= await fetch(url,{
+    const response= await fetch(urlLogin,{
         method: 'POST',
         mode: 'cors',
         cache: 'no-cache',
@@ -18,7 +17,8 @@ async function postRequest(){
         body: JSON.stringify(data)
     });
     let res=await response.json();
-    if(res["status"]===20){
+    console.log(res);
+    if(res["status"]==20){
         if(res["data"]["isAdmin"]) {
             $('#loginmodal').modal('show');
             document.getElementById("loi_user").style.display="none";
