@@ -23,7 +23,12 @@ $(document).ready(async function(){
             "targets": -1,
             "data": null,
             "defaultContent": "<i class='fa fa-edit'></i><i class='fa fa-trash-alt ml-2'></i>"
-        } ],
+        },
+            {
+                "searchable": false,
+                "orderable": false,
+                "targets": 0
+            } ],
         order: [[1, 'asc']],
         language: {
             paginate: {
@@ -34,6 +39,12 @@ $(document).ready(async function(){
         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
 
     } );
+
+    table.on( 'order.dt search.dt', function () {
+        table.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+            cell.innerHTML = i+1;
+        } );
+    } ).draw();
 
     //bat su kien nut xoa
     $('#subTable tbody').on( 'click', '.fa-trash-alt', function () {
@@ -56,6 +67,23 @@ $(document).ready(async function(){
     $("#printButton").on("click",function(){
         newWin= window.open("");
         newWin.document.write($('#subTable')[0].outerHTML);
+        $(newWin.document.getElementsByTagName("head")).append("<style>\n" +
+            "table {\n" +
+            "  font-family: arial, sans-serif;\n" +
+            "  border-collapse: collapse;\n" +
+            "  width: 100%;\n" +
+            "}\n" +
+            "\n" +
+            "td, th {\n" +
+            "  border: 1px solid #dddddd;\n" +
+            "  text-align: left;\n" +
+            "  padding: 8px;\n" +
+            "}\n" +
+            "\n" +
+            "tr:nth-child(even) {\n" +
+            "  background-color: #dddddd;\n" +
+            "}\n" +
+            "</style>");
         newWin.print();
         newWin.close();
     })
