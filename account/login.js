@@ -22,6 +22,7 @@ async function postRequest(){
         if(res["data"]["isAdmin"]) {
             $('#loginmodal').modal('show');
             document.getElementById("loi_user").style.display="none";
+            window.localStorage.setItem('isAdmin','true');
         }
         else{
             document.getElementById("login").href="../index.html";

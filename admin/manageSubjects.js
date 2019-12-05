@@ -8,7 +8,6 @@ if (typeof(Storage) !== "undefined") {
 function removeToken() {
     window.localStorage.removeItem('token');
 }
-var editField;
 $(document).ready(async function() {
     //js load data subject
     let url="http://er-backend.sidz.tools/api/v1/subjects";
@@ -63,30 +62,41 @@ $(document).ready(async function() {
             body:JSON.stringify(dataCreate)
         });
         let res=await resCreate.json();
+        console.log(res);
         location.reload();
     });
 
     //js delete row
-    $(".fa-trash-alt").on("click", async function () {
+    $('#subTable tbody').on( 'click', '.fa-trash-alt',function () {
         let subject_id=$(this).parent().parent().children();
-        let urlDelete="http://er-backend.sidz.tools/api/v1/subjects/"+subject_id[1].innerText;
-        const resDelete= await fetch(urlDelete,{
-            method: 'DELETE',
-            mode: 'cors',
-            cache: 'no-cache',
-            credentials: 'same-origin',
-            headers: {
-                'token': window.localStorage.token
+        let subject=$(this).parent().parent();
+        console.log(subject);
+        $("#deleteModal").modal("show");
+        $("#confirmDelete").on('click',async function() {
+            $("#deleteModal").modal("hide");
+            let urlDelete="http://er-backend.sidz.tools/api/v1/subjects/"+subject_id[1].innerText;
+            const resDelete= await fetch(urlDelete,{
+                method: 'DELETE',
+                mode: 'cors',
+                cache: 'no-cache',
+                credentials: 'same-origin',
+                headers: {
+                    'token': window.localStorage.token
+                }
+            });
+            let res = await resDelete.json();
+            if(res["status"]==20){
+                subject.remove();
             }
-        });
-        let res = await resDelete.json();
-        console.log(res);
-        if(res["status"]==20){
-            $(this).parent().parent().toggle();
-        }
-    });
+            else{
+                window.alert("can not delete subject");
+            }
+        })
+
+    } );
+
     //customize table
-    table = $("#subTable").DataTable({
+    var table = $("#subTable").DataTable({
         retrieve: true,
         "columnDefs": [
             {"orderable": false, "targets": 'no-sort'}
@@ -102,6 +112,7 @@ $(document).ready(async function() {
 
     });
     //js show edit modal
+    var editField;
     var subjectIdOld;
     $(".fa-edit").on('click',function () {
         $("#editModal").modal("show");
@@ -113,6 +124,8 @@ $(document).ready(async function() {
     })
     //js confirm and close modal
     $("#confirmEditButton").on("click",async function () {
+        let subjectOld=editField;
+        console.log(subjectOld)
         editField[1].innerText=$("#editMaMon")[0].value;
         editField[2].innerText=$("#editTenMon")[0].value;
         editField[3].innerText=$("#editTc")[0].value;
@@ -137,6 +150,13 @@ $(document).ready(async function() {
             body:JSON.stringify(dataUpdate)
         });
         let res=await resUpdate.json();
+        console.log(res);
+        if(res["reason"]=="Subject_id isn't change"){
+            window.alert("Subject_id không thay đổi");
+            editField[1].innerText=subjectOld[1].innerText;
+            editField[2].innerText=subjectOld[2].innerText;
+            editField[3].innerText=subjectOld[3].innerText;
+        }
     });
 
 });
