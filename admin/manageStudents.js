@@ -1,4 +1,4 @@
-
+//dang xuat khi token het han
 if (typeof(Storage) !== "undefined") {
     if (localStorage.token==null) {
         window.location = "../account/login.html";
@@ -9,15 +9,21 @@ if (typeof(Storage) !== "undefined") {
 function removeToken() {
     window.localStorage.removeItem('token');
 }
+//
 var editField;
-$(document).ready(function(){
-
+$(document).ready(async function(){
+    getRequest();
     //customize table
     table = $("#subTable").DataTable( {
         retrieve: true,
         "columnDefs": [
             { "orderable": false, "targets": 'no-sort' }
         ],
+        "columnDefs": [ {
+            "targets": -1,
+            "data": null,
+            "defaultContent": "<i class='fa fa-edit'></i><i class='fa fa-trash-alt ml-2'></i>"
+        } ],
         order: [[1, 'asc']],
         language: {
             paginate: {
@@ -28,12 +34,25 @@ $(document).ready(function(){
         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
 
     } );
+
+    //bat su kien nut xoa
     $('#subTable tbody').on( 'click', '.fa-trash-alt', function () {
         table
             .row( $(this).parents('tr') )
             .remove()
             .draw();
     } );
+
+    //bat su kien nut edit
+    $('#subTable tbody').on( 'click', '.fa-edit', function () {
+        $("#editModal").modal("show");
+        editField=$(this).parent().parent().children();
+        $("#inputMSSV").val(editField[1].innerText);
+        $("#inputHoten").val(editField[2].innerText);
+        $("#inputNgaysinh").val(editField[3].innerText);
+        $("#inputEmail").val(editField[4].innerText);
+    } );
+
     //js print
     $("#printButton").on("click",function(){
         newWin= window.open("");
@@ -41,15 +60,6 @@ $(document).ready(function(){
         newWin.print();
         newWin.close();
     })
-    //js add modal
-    $(".fa-edit").on("click",function () {
-        $("#editModal").modal("show");
-        editField=$(this).parent().parent().children();
-        $("#inputMSSV").val(editField[1].innerText);
-        $("#inputHoten").val(editField[2].innerText);
-        $("#inputNgaysinh").val(editField[3].innerText);
-        $("#inputEmail").val(editField[4].innerText);
-    });
 
     //js confirm and close modal
     $("#confirmEditButton").on("click",function () {
@@ -70,36 +80,38 @@ $(document).ready(function(){
         $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
     });
 
-    $("#confirmImportModal").on("click", function () {
-        postRequest($("#customFile")[0].files[0]);
+    $("#confirmImportModal").on("click",function () {
+        postReq_import(document.getElementById("customFile").files[0]);
     });
 });
 
-async function postRequest(file){
+async function postReq_import(file){
     let url="http://er-backend.sidz.tools/api/v1/students/";
-    let data= new FormData().append("students",file);
+    let data=new FormData();
+    data.append("students",file);
     const response= await fetch(url,{
         method: 'POST',
-        mode: 'cors',
-        cache: 'no-cache',
-        credentials: 'same-origin',
         headers: {
-            'token': window.localStorage.token
+            'token': window.localStorage.token,
         },
-        redirect: 'follow',
-        referrer: 'no-referrer',
         body: data
     });
     let res=await response.json();
-    console.log(res["status"]);
-    if(res["status"]===20){
-
+    if (res["status"]==20){
+        $("#importModal").modal("hide");
+        getRequest();
     }
+    else{
+        $("#importModal").modal("hide");
+        window.alert(res["reason"]);
+    }
+
 }
+
 
 async function getRequest(){
     let url="http://er-backend.sidz.tools/api/v1/students/";
-    const response= await fetch(url,{
+    const getResponse= await fetch(url,{
         method: 'GET',
         mode: 'cors',
         cache: 'no-cache',
@@ -108,22 +120,40 @@ async function getRequest(){
             'token': window.localStorage.token
         }
     });
-
-    let res=await response.json();
-    console.log(res);
-    var datatbody;
-    if(res["status"==20]) {
-        for (var i = 0; i < res["data"]["students"].length; i++) {
-            datatbody += "<tr><td></td><td>" + res["data"]["students"][i]["user_name"]
-                + "</td><td>" + res["data"]["students"][i]["fullname"]
-                + "</td><td>" + res["data"]["students"][i]["birthday"]
-                + "</td><td>" + res["data"]["students"][i]["email"]
-                + "</td><td><i class=\"far fa-edit\" ></i><i class=\"far fa-trash-alt ml-2\"></i></td></tr>";
+    let res=await getResponse.json();
+    if(res["status"]==20) {
+        var para = document.createElement("p");
+        var node = document.createTextNode("This is new.");
+        para.appendChild(node);
+        table.clear().draw();
+        for (var i = 0; i < res.data.students.length; i++) {
+            table.row.add([
+                "",
+                res.data.students[i].user_name,
+                res.data.students[i].fullname,
+                convertTime(res.data.students[i].birthday),
+                res.data.students[i].email,
+                ""
+            ]).draw(false);
         }
-        $(datatbody).appendTo("tbody");
     }
+
 }
 
+function convertTime(unixtimestamp){
+    // Convert timestamp to milliseconds
+    let date = new Date(unixtimestamp*1000);
+    // Year
+    let year = date.getFullYear();
+    // Day
+    let day = date.getDate();
+    // Month
+    let month =date.getMonth();
+
+    let convdataTime = day+'/'+month+'/'+year;
+    return convdataTime;
+
+}
 
 
 
