@@ -50,7 +50,6 @@ $(document).ready(async function(){
         $("#inputMSSV").val(editField[1].innerText);
         $("#inputHoten").val(editField[2].innerText);
         $("#inputNgaysinh").val(editField[3].innerText);
-        $("#inputEmail").val(editField[4].innerText);
     } );
 
     //js print
@@ -66,7 +65,6 @@ $(document).ready(async function(){
         editField[1].innerText=$("#inputMSSV")[0].value;
         editField[2].innerText=$("#inputHoten")[0].value;
         editField[3].innerText=$("#inputNgaysinh")[0].value;
-        editField[4].innerText=$("#inputEmail")[0].value;
 
         //update to server here
     });
@@ -132,7 +130,6 @@ async function getRequest(){
                 res.data.students[i].user_name,
                 res.data.students[i].fullname,
                 convertTime(res.data.students[i].birthday),
-                res.data.students[i].email,
                 ""
             ]).draw(false);
         }
