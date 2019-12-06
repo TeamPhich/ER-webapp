@@ -40,12 +40,6 @@ $(document).ready(async function() {
     });
     //js confirm and close add modal
     $("#confirmAddButton").on("click",async function () {
-        let addSubject="<tr><td></td><td>" + $("#inputMaMon").val()
-            + "</td><td>" + $("#inputTenMon").val()
-            + "</td><td>" + $("#inputTc").val()
-            + "</td><td><i class=\"far fa-edit\"></i><i class=\"far fa-trash-alt ml-2\"></i></td></tr>";
-        $("#subTable>tbody").append(addSubject);
-        $("#addModal").modal("hide");
         let urlCreate="http://er-backend.sidz.tools/api/v1/subjects/";
         let dataCreate={
             "subject_id": $("#inputMaMon").val(),
@@ -65,7 +59,20 @@ $(document).ready(async function() {
         });
         let res=await resCreate.json();
         console.log(res);
-        location.reload();
+        //location.reload();
+        if(res["status"]==20){
+            let addSubject="<tr><td></td><td>" + $("#inputMaMon").val()
+                + "</td><td>" + $("#inputTenMon").val()
+                + "</td><td>" + $("#inputTc").val()
+                + "</td><td><i class=\"far fa-edit\"></i><i class=\"far fa-trash-alt ml-2\"></i></td></tr>";
+            $("#subTable>tbody").append(addSubject);
+            $("#addModal").modal("hide");
+            location.reload();
+        }
+        else {
+            $("#addModal").modal("hide");
+            window.alert("Tên môn học hoặc mã môn học đã tồn tại");
+        }
     });
 
     //js delete row
@@ -124,7 +131,7 @@ $(document).ready(async function() {
         $("#editTenMon").val(editField[2].innerText);
         $("#editTc").val(editField[3].innerText);
     })
-    //js confirm and close modal
+    //js confirm and close edit modal
     $("#confirmEditButton").on("click",async function () {
         let subjectOld=editField;
         console.log(subjectOld)

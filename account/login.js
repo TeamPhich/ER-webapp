@@ -1,15 +1,4 @@
-$(function () {
-
-    if (localStorage.chkbox && localStorage.chkbox != '') {
-        $('#rememberMe').attr('checked', 'checked');
-        $('#inputUserName').val(localStorage.username);
-        $('#inputPassword').val(localStorage.pass);
-    } else {
-        $('#rememberMe').removeAttr('checked');
-        $('#inputUserName').val('');
-        $('#inputPassword').val('');
-    }
-});
+localStorage.clear();
 async function postRequest(){
     let urlLogin="http://er-backend.sidz.tools/api/v1/accounts/login";
     let data={
@@ -40,7 +29,7 @@ async function postRequest(){
         }
     }
     else {
-        document.getElementById("loi_user").innerHTML = "user name hoặc password không đúng";
+        document.getElementById("loi_user").innerHTML = "User name hoặc password không đúng";
     }
     window.localStorage.setItem('token', res["data"]["token"]);
 }
@@ -61,6 +50,19 @@ $(document).on('keypress',function(event){
         }
     }
 });
+//remember me
+$(function () {
+
+    if (localStorage.chkbox && localStorage.chkbox != '') {
+        $('#rememberMe').attr('checked', 'checked');
+        $('#inputUserName').val(localStorage.username);
+        $('#inputPassword').val(localStorage.pass);
+    } else {
+        $('#rememberMe').removeAttr('checked');
+        $('#inputUserName').val('');
+        $('#inputPassword').val('');
+    }
+});
 $("#rememberMe").click(function () {
     if ($('#rememberMe').is(':checked')) {
         // save username and password
@@ -72,5 +74,4 @@ $("#rememberMe").click(function () {
         localStorage.pass = '';
         localStorage.chkbox = '';
     }
-    console.log(window.localStorage);
-})
+});
