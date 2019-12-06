@@ -10,30 +10,11 @@ function removeToken() {
     window.localStorage.removeItem('isAdmin');
     window.location="../account/login.html";
 }
+var page=1;
+var pageSize=10;
 $(document).ready(async function() {
     //js load data subject
-    let url="http://er-backend.sidz.tools/api/v1/subjects";
-    const response = await fetch(url,{
-        method: 'GET',
-        mode: 'cors',
-        cache: 'no-cache',
-        credentials: 'same-origin',
-        headers: {
-            'Content-Type': 'application/json',
-            'token': window.localStorage.token
-        }
-    });
-    let res = await response.json();
-    var datatbody;
-    if(res["status"]==20) {
-        for (var i = 0; i < res["data"]["subjectsInformation"].length; i++) {
-            datatbody += "<tr><td></td><td>" + res['data']['subjectsInformation'][i]['subject_id']
-                + "</td><td>" + res['data']['subjectsInformation'][i]['name']
-                + "</td><td>" + res['data']['subjectsInformation'][i]['credit']
-                + "</td><td><i class=\"far fa-edit\" ></i><i class=\"far fa-trash-alt ml-2\"></i></td></tr>";
-        }
-       $("#subTable>tbody").append(datatbody)
-    }
+    getSubject();
     //js show add modal
     $("#addButton").on("click",function () {
         $("#addModal").modal("show");
@@ -105,22 +86,28 @@ $(document).ready(async function() {
     } );
 
     //customize table
-    var table = $("#subTable").DataTable({
-        retrieve: true,
-        "columnDefs": [
-            {"orderable": false, "targets": 'no-sort'}
-        ],
-        order: [[1, 'asc']],
-        language: {
-            paginate: {
-                next: '<i class="fas fa-angle-double-right"></i>',
-                previous: '<i class="fas fa-angle-double-left"></i>'
-            }
-        },
-        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
+    // table = $("#subTable").DataTable( {
+    //     retrieve: true,
+    //     "paging": false,
+    //     "lengthChange": false,
+    //     "searching": false,
+    //     "ordering": false,
+    //     "info": false,
+    //     "columnDefs": [
+    //         { "orderable": false, "targets": 'no-sort' }
+    //     ],
+    //
+    //     "columnDefs": [ {
+    //         "targets": -1,
+    //         "data": null,
+    //         "defaultContent": "<i class='fa fa-edit'></i><i class='fa fa-trash-alt ml-2'></i>"
+    //     },
+    //         {
+    //             "targets": 1,
+    //             "visible": false
+    //         }],
+    // } );
 
-    });
-    //js show edit modal
     var editField;
     var subjectIdOld;
     $(".fa-edit").on('click',function () {
@@ -167,5 +154,70 @@ $(document).ready(async function() {
             editField[3].innerText=subjectOld[3].innerText;
         }
     });
+    $('select[name="subTable_length"]').on("change",async function () {
+        pageSize=$(this)[0].value;
+        getSubject();
+
+    });
 
 });
+async function getSubject() {
+    let url=("http://er-backend.sidz.tools/api/v1/subjects/?page="+page+"&pageSize="+pageSize);
+    const response = await fetch(url,{
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json',
+            'token': window.localStorage.token
+        }
+    });
+    let res = await response.json();
+    var datatbody;
+    if(res["status"]==20) {
+        $("#subTable tbody tr").remove();
+        for (var i = 0; i < res["data"]["subjectsInformation"].length; i++) {
+            datatbody += "<tr><td></td><td>" + res['data']['subjectsInformation'][i]['subject_id']
+                + "</td><td>" + res['data']['subjectsInformation'][i]['name']
+                + "</td><td>" + res['data']['subjectsInformation'][i]['credit']
+                + "</td><td><i class=\"far fa-edit\" ></i><i class=\"far fa-trash-alt ml-2\"></i></td></tr>";
+        }
+        $("#subTable>tbody").append(datatbody)
+    }
+    //js get page
+    let length=await getLength();
+    let pageNumber=length/pageSize;
+    let num=1;
+    let syntaxPage="";
+    if(pageNumber>1){
+        $("[name='new']").remove();
+        for (let i = 1; i < Math.ceil(pageNumber); i++) {
+            num += i;
+            syntaxPage += "<li class=\"paginate_button page-item\">"
+                + "<a class=\"page-link\"id='"+num+"' name='new'>" + num + "</a>"
+                + "</li>"
+        }
+        $("#page_but").after(syntaxPage);
+    }
+    else {
+        $("[name='new']").remove();
+    }
+    //end get page
+}
+async function getLength() {
+    let url="http://er-backend.sidz.tools/api/v1/subjects";
+    const response = await fetch(url,{
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json',
+            'token': window.localStorage.token
+        }
+    });
+    let res= await response.json();
+    return res["data"]["subjectsInformation"].length;
+
+}

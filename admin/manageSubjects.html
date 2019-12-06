@@ -129,25 +129,77 @@
                 <div class="card shadow mb-3">
                     <div class="card-body">
                         <div class="container-fluid p-0 table-responsive">
+                            <div class="row w-100 m-0">
+                                <div class="col-md-6">
+                                    <div class="d-flex" id="subTable_length">
+                                        <div class="mt-1">
+                                            <label>Hiển thị:</label>
+                                        </div>
+                                        <div class="ml-2 mr-2">
+                                            <select name="subTable_length" aria-controls="subTable" class="custom-select custom-select-sm form-control form-control-sm">
+                                                <option name="optionPageSize" value="10">10</option>
+                                                <option name="optionPageSize" value="25">25</option>
+                                                <option name="optionPageSize" value="50">50</option>
+                                            </select>
+                                        </div>
+                                        <div class="mt-1">
+                                            <label>hàng</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 p-0">
+                                    <div id="subTable_filter" class="dataTables_filter d-flex justify-content-end">
+                                        <div class="mt-1"><label>Tìm kiếm:</label></div>
+                                        <div class="ml-2"><input type="search" class="form-control form-control-sm" placeholder="" aria-controls="subTable"></div>
+                                    </div>
+                                </div>
+                            </div>
                             <table id="subTable" class="table table-bordered p-0 table-striped my-table"style="color: black; text-align:center;">
                                 <thead class="thead-dark">
                                     <tr>
-                                        <th >Stt</th>
-                                        <th >Mã học phần</th>
+                                        <th class="no-sort">Stt</th>
+                                        <th>Mã học phần</th>
                                         <th>Tên học phần</th>
                                         <th>TC</th>
-                                        <th>#</th>
+                                        <th class="no-sort">#</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 </tbody>
                             </table>
-                        </div>
-                        <div class="card-footer">
-                            <div class="float-right">
-                                <button class="btn btn-primary" id="addButton">Thêm môn</button>
+                            <div class="row w-100 m-0 mt-3">
+                                <div class="col-sm-12 col-md-5">
+                                    <p id="subTable_info"></p>
+                                </div>
+                                <div class="col-sm-12 col-md-7 d-flex justify-content-end p-0">
+                                    <div class="dataTables_paginate paging_simple_numbers" id="subTable_paginate">
+                                        <ul class="pagination m-0">
+                                            <li class="paginate_button page-item previous disabled" id="subTable_previous">
+                                                <a class="page-link">
+                                                    <i class="fas fa-angle-double-left clickable"></i>
+                                                </a>
+                                            </li>
+                                            <div id="page_but">
+                                                <li class="paginate_button page-item active">
+                                                    <a class="page-link" id="1">1</a>
+                                                </li>
+                                            </div>
+                                            <li class="paginate_button page-item next disabled" id="subTable_next">
+                                                <a class="page-link">
+                                                    <i class="fas fa-angle-double-right clickable"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="float-right">
+                            <button class="btn btn-primary" id="addButton">Thêm môn</button>
+                        </div>
+                    </div>
                     </div>
                 </div>
 
