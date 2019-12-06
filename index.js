@@ -2,7 +2,7 @@ if (typeof(Storage) !== "undefined") {
     if (localStorage.token==null) {
         window.location = "account/login.html";
     }
-    else if(localStorage.isAdmin=='true'){
+    else if(localStorage.isAdmin=='isadmin'){
         window.location="admin/admin.html";
     }
 } else {
@@ -10,4 +10,5 @@ if (typeof(Storage) !== "undefined") {
 }
 function removeToken() {
     window.localStorage.removeItem('token');
+    window.location="account/login.html";
 }

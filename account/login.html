@@ -41,8 +41,8 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox small">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck">
-                                            <label class="custom-control-label" for="customCheck">Remember Me</label>
+                                            <input type="checkbox" class="custom-control-input" id="rememberMe">
+                                            <label class="custom-control-label" for="rememberMe">Remember Me</label>
                                         </div>
                                     </div>
                                     <a class="btn btn-primary btn-user btn-block" id="login" onclick="postRequest()" href="#">
@@ -73,7 +73,7 @@
             <div class="modal-body">You are the admin account, select "direction" below </div>
             <div class="modal-footer">
                 <a class="btn btn-primary" href="../index.html">Student</a>
-                <a class="btn btn-primary" href="../admin/admin.html">Admin</a>
+                <button class="btn btn-primary" onclick="isAdmin()">Admin</button>
             </div>
         </div>
     </div>
