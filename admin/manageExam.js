@@ -7,6 +7,8 @@ if (typeof(Storage) !== "undefined") {
 }
 function removeToken() {
     window.localStorage.removeItem('token');
+    window.localStorage.removeItem('isAdmin');
+    window.location="../account/login.html";
 }
 var editField;
 $(document).ready(function(){

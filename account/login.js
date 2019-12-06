@@ -1,4 +1,5 @@
 async function postRequest(){
+    console.log(window.localStorage);
     let urlLogin="http://er-backend.sidz.tools/api/v1/accounts/login";
     let data={
         "user_name":document.getElementById("inputUserName").value,
@@ -22,7 +23,6 @@ async function postRequest(){
         if(res["data"]["isAdmin"]) {
             $('#loginmodal').modal('show');
             document.getElementById("loi_user").style.display="none";
-            window.localStorage.setItem('isAdmin','true');
         }
         else{
             document.getElementById("login").href="../index.html";
@@ -32,4 +32,8 @@ async function postRequest(){
         document.getElementById("loi_user").innerHTML = "user name hoặc password không đúng";
     }
     window.localStorage.setItem('token', res["data"]["token"]);
+}
+function isAdmin() {
+    window.localStorage.setItem('isAdmin','isadmin');
+    window.location="../admin/admin.html";
 }
