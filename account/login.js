@@ -1,4 +1,5 @@
-localStorage.clear();
+window.localStorage.removeItem('token');
+window.localStorage.removeItem('isAdmin');
 async function postRequest(){
     let urlLogin="http://er-backend.sidz.tools/api/v1/accounts/login";
     let data={

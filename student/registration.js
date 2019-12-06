@@ -8,4 +8,5 @@ if (typeof(Storage) !== "undefined") {
 }
 function removeToken() {
     window.localStorage.removeItem('token');
+    window.location="../account/login.html";
 }
