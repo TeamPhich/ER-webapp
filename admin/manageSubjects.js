@@ -12,9 +12,11 @@ function removeToken() {
 }
 var page=1;
 var pageSize=10;
+var length;
 $(document).ready(async function() {
     //js load data subject
-    getSubject();
+    await getSubject();
+    getPageNumber();
     //js show add modal
     $("#addButton").on("click",function () {
         $("#addModal").modal("show");
@@ -39,7 +41,6 @@ $(document).ready(async function() {
             body:JSON.stringify(dataCreate)
         });
         let res=await resCreate.json();
-        console.log(res);
         //location.reload();
         if(res["status"]==20){
             let addSubject="<tr><td></td><td>" + $("#inputMaMon").val()
@@ -154,12 +155,12 @@ $(document).ready(async function() {
             editField[3].innerText=subjectOld[3].innerText;
         }
     });
-    $('select[name="subTable_length"]').on("change",async function () {
+    $('select[name="subTable_length"]').on("change",function () {
         pageSize=$(this)[0].value;
+        console.log(pageSize);
         getSubject();
-
+        getPageNumber();
     });
-
 });
 async function getSubject() {
     let url=("http://er-backend.sidz.tools/api/v1/subjects/?page="+page+"&pageSize="+pageSize);
@@ -174,50 +175,63 @@ async function getSubject() {
         }
     });
     let res = await response.json();
+    length=res['data']['subjectsInformation']["count"];
     var datatbody;
     if(res["status"]==20) {
         $("#subTable tbody tr").remove();
-        for (var i = 0; i < res["data"]["subjectsInformation"].length; i++) {
-            datatbody += "<tr><td></td><td>" + res['data']['subjectsInformation'][i]['subject_id']
-                + "</td><td>" + res['data']['subjectsInformation'][i]['name']
-                + "</td><td>" + res['data']['subjectsInformation'][i]['credit']
+        for (var i = 0; i < res['data']['subjectsInformation']["rows"].length; i++) {
+            let stt=(page-1)*pageSize+i+1;
+            datatbody += "<tr><td>"+stt+"</td><td>" + res['data']['subjectsInformation']["rows"][i]['subject_id']
+                + "</td><td>" + res['data']['subjectsInformation']["rows"][i]['name']
+                + "</td><td>" + res['data']['subjectsInformation']["rows"][i]['credit']
                 + "</td><td><i class=\"far fa-edit\" ></i><i class=\"far fa-trash-alt ml-2\"></i></td></tr>";
         }
         $("#subTable>tbody").append(datatbody)
     }
-    //js get page
-    let length=await getLength();
+
+}
+async function getPageNumber(){
     let pageNumber=length/pageSize;
-    let num=1;
+    let num;
     let syntaxPage="";
-    if(pageNumber>1){
-        $("[name='new']").remove();
-        for (let i = 1; i < Math.ceil(pageNumber); i++) {
-            num += i;
-            syntaxPage += "<li class=\"paginate_button page-item\">"
-                + "<a class=\"page-link\"id='"+num+"' name='new'>" + num + "</a>"
+    $("[name='new']").remove();
+    for (let i = 0; i < Math.ceil(pageNumber); i++) {
+        num = 1+i;
+        if(num==1){
+            syntaxPage += "</div><li class=\"paginate_button page-item active\">"
+                + "<a class=\"page-link\"id='"+num+"' name='new' onclick='activePage(this)'>" + num + "</a>"
+                + "</li>"
+            }
+        else{
+            syntaxPage += "</div><li class=\"paginate_button page-item\">"
+                + "<a class=\"page-link\"id='"+num+"' name='new' onclick='activePage(this)'>" + num + "</a>"
                 + "</li>"
         }
-        $("#page_but").after(syntaxPage);
-    }
-    else {
-        $("[name='new']").remove();
-    }
-    //end get page
-}
-async function getLength() {
-    let url="http://er-backend.sidz.tools/api/v1/subjects";
-    const response = await fetch(url,{
-        method: 'GET',
-        mode: 'cors',
-        cache: 'no-cache',
-        credentials: 'same-origin',
-        headers: {
-            'Content-Type': 'application/json',
-            'token': window.localStorage.token
-        }
-    });
-    let res= await response.json();
-    return res["data"]["subjectsInformation"].length;
 
+    }
+    $(".previous").after(syntaxPage);
+
+}
+async function activePage(e) {
+    $(".active").removeClass('active');
+    e.parentNode.className+=' active';
+    page=e.firstChild.nodeValue;
+   getSubject();
+}
+async function previousPage() {
+   let elementPrev= $(".active").prev();
+    $(".active").removeClass('active');
+    elementPrev[0].className+=" active";
+    page= elementPrev[0].childNodes[0].firstChild.nodeValue;
+    getSubject();
+
+}
+async function nexPage() {
+    let elementNext;
+    elementNext= $(".active").next();
+   console.log(elementNext);
+    $(".active").removeClass('active');
+    elementNext[0].className+=" active";
+    page= elementNext[0].childNodes[0].firstChild.nodeValue;
+    getSubject();
 }
