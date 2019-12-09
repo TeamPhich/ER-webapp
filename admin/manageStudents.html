@@ -144,7 +144,7 @@
                                 <div class="col-md-6 p-0">
                                     <div id="subTable_filter" class="dataTables_filter d-flex justify-content-end">
                                         <div class="mt-1"><label>Tìm kiếm:</label></div>
-                                        <div class="ml-2"><input type="search" class="form-control form-control-sm" placeholder="" aria-controls="subTable"></div>
+                                        <div class="ml-2"><input type="search" class="form-control form-control-sm" placeholder="Nhập MSSV" id="input_search"></div>
                                     </div>
                                 </div>
                             </div>
@@ -172,17 +172,15 @@
                                 </div>
                                 <div class="col-sm-12 col-md-7 d-flex justify-content-end p-0">
                                     <div class="dataTables_paginate paging_simple_numbers" id="subTable_paginate">
-                                        <ul class="pagination m-0">
+                                        <ul class="pagination m-0" id="paging">
                                             <li class="paginate_button page-item previous disabled" id="subTable_previous">
                                                 <a class="page-link">
                                                     <i class="fas fa-angle-double-left clickable"></i>
                                                 </a>
                                             </li>
-                                            <div id="page_but">
                                                 <li class="paginate_button page-item active">
-                                                    <a class="page-link" id="1">1</a>
+                                                    <a class="page-link" id="page_1">1</a>
                                                 </li>
-                                            </div>
 
                                             <li class="paginate_button page-item next disabled" id="subTable_next">
                                                 <a class="page-link">
@@ -231,6 +229,25 @@
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                 <button class="btn btn-primary"  onclick="removeToken()">Logout</button>
 
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Modal-->
+<div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Xác nhận xóa!</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Bạn có chắc chắn muốn xóa sinh viên <span id="del_info"></span> ra khỏi danh sách sinh viên.</div>
+            <div class="modal-footer">
+                <button class="btn btn-primary"  onclick="deleteStd()" data-dismiss="modal">Xác nhận</button>
+                <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>
