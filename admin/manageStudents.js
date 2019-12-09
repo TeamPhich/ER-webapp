@@ -15,7 +15,10 @@ function removeToken() {
 var editField;
 var page=1;
 var pageSize=10;
+var keywords="";
 getRequest();
+var del_std_id;
+var data_upd_std;
 $(document).ready(async function(){
 
     //customize table
@@ -43,11 +46,11 @@ $(document).ready(async function(){
 
     //bat su kien nut xoa
     $('#subTable tbody').on( 'click', '.fa-trash-alt', function () {
-    console.log($(this).parents('tr'));
-        table
-            .row( $(this).parents('tr') )
-            .remove()
-            .draw();
+        $("#delModal").modal("show");
+        curRow = $(this).parents('tr');
+        std_info = table.row(curRow).data();
+        del_std_id = std_info[1];
+        $("#del_info")[0].innerText = std_info[3] +"-"+ std_info[2];
     } );
 
     //bat su kien nut edit
@@ -87,12 +90,14 @@ $(document).ready(async function(){
 
     //js confirm and close modal
     $("#confirmEditButton").on("click",function () {
-        editField[1].innerText=$("#inputMSSV")[0].value;
-        editField[2].innerText=$("#inputHoten")[0].value;
-        editField[3].innerText=$("#inputNgaysinh")[0].value;
-        editField[4].innerText=$("#inputEmail")[0].value;
-
-        //update to server here
+        data_upd_std={
+            "new_mssv":$("#inputMSSV")[0].value,
+            "birthday":$("#inputNgaysinh")[0].value,
+            "fullname":$("#inputHoten")[0].value,
+            "email": $("#inputEmail")[0].value
+        };
+        updateStd();
+        $("#editModal").modal("hide");
     });
 
     //js import and comfirm
@@ -107,6 +112,12 @@ $(document).ready(async function(){
     $("#confirmImportModal").on("click",function () {
         postReq_import(document.getElementById("customFile").files[0]);
     });
+
+    //searching
+    $("#input_search").on('input', function () {
+        keywords=$(this)[0].value;
+        getRequest();
+    })
 
     //paging
     $(".page-link").on("click",function () {
@@ -136,28 +147,28 @@ async function postReq_import(file){
     let url="http://er-backend.sidz.tools/api/v1/students/";
     let data=new FormData();
     data.append("students",file);
-    const response= await fetch(url,{
+    const postResponse= await fetch(url,{
         method: 'POST',
         headers: {
             'token': window.localStorage.token,
         },
         body: data
     });
-    let res=await response.json();
-    if (res["status"]==20){
+    let postRes=await postResponse.json();
+    if (postRes["status"]==20){
         $("#importModal").modal("hide");
         getRequest();
     }
     else{
         $("#importModal").modal("hide");
-        window.alert(res["reason"]);
+        window.alert(postRes["reason"]);
     }
 
 }
 
 
 async function getRequest(){
-    let url=("http://er-backend.sidz.tools/api/v1/students/?page="+page+"&pageSize="+pageSize);
+    let url=("http://er-backend.sidz.tools/api/v1/students/?page="+page+"&pageSize="+pageSize+"&keywords="+keywords);
     const getResponse= await fetch(url,{
         method: 'GET',
         mode: 'cors',
@@ -167,23 +178,66 @@ async function getRequest(){
             'token': window.localStorage.token
         }
     });
-    let res=await getResponse.json();
-    if(res["status"]==20) {
+    let getRes=await getResponse.json();
+    if(getRes["status"]==20) {
         table.clear().draw();
-        let data = res.data.students.rows;
-        for (var i = 0; i < data.length; i++) {
+        let data = getRes.data.students;
+        for (var i = 0; i < data.rows.length; i++) {
             table.row.add([
                 (page-1)*pageSize+i+1,
-                data[i].id,
-                data[i].user_name,
-                data[i].fullname,
-                convertTime(data[i].birthday),
-                data[i].email
+                data.rows[i].id,
+                data.rows[i].user_name,
+                data.rows[i].fullname,
+                convertTime(data.rows[i].birthday),
+                data.rows[i].email
             ]).draw(false);
         }
-        $("#subTable_info")[0].innerText="Hiển thị từ "+(1+(page-1)*pageSize)+" đến "+page*pageSize+" của "+res.data.students.count+" sinh viên.";
+
+        //paging
+        $("#subTable_info")[0].innerText="Hiển thị từ "+(1+(page-1)*pageSize)+" đến "+((page-1)*pageSize+data.rows.length)+" của "+data.count+" sinh viên.";
+    }
+    else {
+        window.alert(getRes['reason']);
     }
 
+}
+
+async function deleteStd() {
+    let url="http://er-backend.sidz.tools/api/v1/students/"+del_std_id;
+    const delResponse= await fetch(url,{
+        method: 'DELETE',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'token': window.localStorage.token
+        }
+    });
+    let delRes = await delResponse.json();
+    if (delRes['status'!=20]){
+        window.alert(delRes['reason']);
+    }
+    getRequest();
+}
+
+async function updateStd() {
+    let url="http://er-backend.sidz.tools/api/v1/students/";
+    const updResponse= await fetch(url,{
+        method: 'PUT',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'token': window.localStorage.token,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data_upd_std)
+    });
+    let updRes = updResponse.json();
+    if (updRes['status'!=20]){
+        window.alert(updRes['reason']);
+    }
+    getRequest();
 }
 
 function convertTime(unixtimestamp){
@@ -200,6 +254,9 @@ function convertTime(unixtimestamp){
     return convdataTime;
 
 }
+ function paging(page_id) {
+
+ }
 
 
 
