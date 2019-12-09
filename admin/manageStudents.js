@@ -261,11 +261,17 @@ function convertTime(unixtimestamp){
 //paging
  function paging() {
      if (total_page==1){
+         $("#page_a").parent().removeClass('d-none');
+         $("#page_b").parent().removeClass('d-none');
+         $("#page_c").parent().removeClass('d-none');
          $("#page_a")[0].innerText = 1;
          $("#page_b").parent().addClass('d-none');
          $("#page_c").parent().addClass('d-none');
      }
      if (total_page==2){
+         $("#page_a").parent().removeClass('d-none');
+         $("#page_b").parent().removeClass('d-none');
+         $("#page_c").parent().removeClass('d-none');
          $("#page_a")[0].innerText = 1;
          $("#page_b")[0].innerText = 2;
          $("#page_c").parent().addClass('d-none');
