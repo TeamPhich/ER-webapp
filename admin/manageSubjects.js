@@ -49,7 +49,8 @@ $(document).ready(async function() {
                 + "</td><td><i class=\"far fa-edit\"></i><i class=\"far fa-trash-alt ml-2\"></i></td></tr>";
             $("#subTable>tbody").append(addSubject);
             $("#addModal").modal("hide");
-            location.reload();
+            getSubject();
+            getPageNumber()
         }
         else {
             $("#addModal").modal("hide");
@@ -61,7 +62,6 @@ $(document).ready(async function() {
     $('#subTable tbody').on( 'click', '.fa-trash-alt',function () {
         let subject_id=$(this).parent().parent().children();
         let subject=$(this).parent().parent();
-        console.log(subject);
         $("#deleteModal").modal("show");
         $("#confirmDelete").on('click',async function() {
             $("#deleteModal").modal("hide");
@@ -78,6 +78,8 @@ $(document).ready(async function() {
             let res = await resDelete.json();
             if(res["status"]==20){
                 subject.remove();
+                getSubject()
+                getPageNumber();
             }
             else{
                 window.alert("can not delete subject");
@@ -85,33 +87,9 @@ $(document).ready(async function() {
         })
 
     } );
-
-    //customize table
-    // table = $("#subTable").DataTable( {
-    //     retrieve: true,
-    //     "paging": false,
-    //     "lengthChange": false,
-    //     "searching": false,
-    //     "ordering": false,
-    //     "info": false,
-    //     "columnDefs": [
-    //         { "orderable": false, "targets": 'no-sort' }
-    //     ],
-    //
-    //     "columnDefs": [ {
-    //         "targets": -1,
-    //         "data": null,
-    //         "defaultContent": "<i class='fa fa-edit'></i><i class='fa fa-trash-alt ml-2'></i>"
-    //     },
-    //         {
-    //             "targets": 1,
-    //             "visible": false
-    //         }],
-    // } );
-
     var editField;
     var subjectIdOld;
-    $(".fa-edit").on('click',function () {
+    $("#subTable tbody").on('click','.fa-edit',function () {
         $("#editModal").modal("show");
         editField=$(this).parent().parent().children();
         $("#editMaMon").val(editField[1].innerText);
@@ -122,7 +100,6 @@ $(document).ready(async function() {
     //js confirm and close edit modal
     $("#confirmEditButton").on("click",async function () {
         let subjectOld=editField;
-        console.log(subjectOld)
         editField[1].innerText=$("#editMaMon")[0].value;
         editField[2].innerText=$("#editTenMon")[0].value;
         editField[3].innerText=$("#editTc")[0].value;
@@ -147,12 +124,14 @@ $(document).ready(async function() {
             body:JSON.stringify(dataUpdate)
         });
         let res=await resUpdate.json();
-        console.log(res);
         if(res["reason"]=="Subject_id isn't change"){
             window.alert("Subject_id không thay đổi");
             editField[1].innerText=subjectOld[1].innerText;
             editField[2].innerText=subjectOld[2].innerText;
             editField[3].innerText=subjectOld[3].innerText;
+        }
+        else {
+            getSubject();
         }
     });
     $('select[name="subTable_length"]').on("change",function () {
