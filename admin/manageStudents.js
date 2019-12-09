@@ -9,13 +9,14 @@ if (typeof(Storage) !== "undefined") {
 function removeToken() {
     window.localStorage.removeItem('token');
     window.localStorage.removeItem('isAdmin');
-   window.location="../account/login.html";
+    window.location="../account/login.html";
 }
 //
 var editField;
 var page=1;
 var pageSize=10;
 var keywords="";
+var total_page;
 getRequest();
 var del_std_id;
 var data_upd_std;
@@ -119,24 +120,22 @@ $(document).ready(async function(){
         getRequest();
     })
 
-    //paging
-    $(".page-link").on("click",function () {
-        page=$(this)[0].innerText;
-        getRequest();
-        $(".paginate_button").removeClass("active");
-        $(this).parent().addClass("active");
-    });
-    $(".fa-angle-double-left").on("click",function () {
-        if(page>1){
-            let page_id = "page_"+page;
-            $("#")
+
+    $("#subTable_previous").on("click",function () {
+        if (page>1){
+            page--;
+            getRequest()
         }
     });
-    $(".fa-angle-double-right").on("click",function () {
-
+    $("#subTable_next").on("click",function () {
+        if (page<total_page){
+            page++;
+            getRequest()
+        }
     });
     $('select[name="subTable_length"]').on("change",function () {
         pageSize=$(this)[0].value;
+        page=1;
         getRequest();
     });
 
@@ -192,8 +191,12 @@ async function getRequest(){
                 data.rows[i].email
             ]).draw(false);
         }
-
-        //paging
+        total_page = data.count/pageSize;
+        total_page = Math.ceil(+total_page);
+        paging();
+        if (data.rows.length<1){
+            $("#subTable_paginate").addClass('d-none');
+        }
         $("#subTable_info")[0].innerText="Hiển thị từ "+(1+(page-1)*pageSize)+" đến "+((page-1)*pageSize+data.rows.length)+" của "+data.count+" sinh viên.";
     }
     else {
@@ -214,9 +217,9 @@ async function deleteStd() {
         }
     });
     let delRes = await delResponse.json();
-    if (delRes['status'!=20]){
+    // if (delRes['status'!=20]){
         window.alert(delRes['reason']);
-    }
+    // }
     getRequest();
 }
 
@@ -234,9 +237,9 @@ async function updateStd() {
         body: JSON.stringify(data_upd_std)
     });
     let updRes = updResponse.json();
-    if (updRes['status'!=20]){
+    // if (updRes['status'!=20]){
         window.alert(updRes['reason']);
-    }
+    // }
     getRequest();
 }
 
@@ -254,8 +257,63 @@ function convertTime(unixtimestamp){
     return convdataTime;
 
 }
- function paging(page_id) {
 
+//paging
+ function paging() {
+     if (total_page==1){
+         $("#page_a")[0].innerText = 1;
+         $("#page_b").parent().addClass('d-none');
+         $("#page_c").parent().addClass('d-none');
+     }
+     if (total_page==2){
+         $("#page_a")[0].innerText = 1;
+         $("#page_b")[0].innerText = 2;
+         $("#page_c").parent().addClass('d-none');
+     }
+     if (page==1){
+         $("#page_a").parent().removeClass('active');
+         $("#page_b").parent().removeClass('active');
+         $("#page_c").parent().removeClass('active');
+         $("#page_a").parent().addClass('active');
+         $("#page_a")[0].innerText = 1;
+         $("#page_b")[0].innerText = 2;
+         $("#page_c")[0].innerText = 3;
+     }
+     else {
+         if (page == total_page && total_page!=2) {
+             $("#page_a").parent().removeClass('active');
+             $("#page_b").parent().removeClass('active');
+             $("#page_c").parent().removeClass('active');
+             $("#page_c").parent().addClass('active');
+             $("#page_a")[0].innerText = +page-2;
+             $("#page_b")[0].innerText = +page-1;
+             $("#page_c")[0].innerText = +page;
+         }
+         else {
+             if (page == total_page &&total_page==2){
+                 $("#page_a").parent().removeClass('active');
+                 $("#page_b").parent().removeClass('active');
+                 $("#page_c").parent().removeClass('active');
+                 $("#page_b").parent().addClass('active');
+                 $("#page_a")[0].innerText = +page-1;
+                 $("#page_b")[0].innerText = +page;
+                 $("#page_c")[0].innerText = +page;
+             }
+             else {
+                 $("#page_a").parent().removeClass('active');
+                 $("#page_b").parent().removeClass('active');
+                 $("#page_c").parent().removeClass('active');
+                 $("#page_b").parent().addClass('active');
+                 $("#page_a")[0].innerText = +page - 1;
+                 $("#page_b")[0].innerText = +page;
+                 $("#page_c")[0].innerText = +page+1;
+             }
+         }
+     }
+ }
+ function paging_click(page_id) {
+     page=page_id;
+     getRequest();
  }
 
 
