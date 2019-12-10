@@ -57,11 +57,11 @@ $(document).ready(async function(){
     //bat su kien nut edit
     $('#subTable tbody').on( 'click', '.fa-edit', function () {
         $("#editModal").modal("show");
-        editField=$(this).parent().parent().children();
-        $("#inputMSSV").val(editField[1].innerText);
-        $("#inputHoten").val(editField[2].innerText);
-        $("#inputNgaysinh").val(editField[3].innerText);
-        $("#inputEmail").val(editField[4].innerText);
+        curRow = $(this).parents('tr');
+        editField = table.row(curRow).data();
+        $("#inputMSSV").val(editField[2]);
+        $("#inputHoten").val(editField[3]);
+        $("#inputNgaysinh").val(editField[4]);
     } );
 
     //js print
@@ -91,11 +91,14 @@ $(document).ready(async function(){
 
     //js confirm and close modal
     $("#confirmEditButton").on("click",function () {
+        let birthday = $("#inputNgaysinh")[0].value;
+        birthday = (birthday.toString()).split("/");
+        birthday = new Date(birthday[2],birthday[1]-1, birthday[0]).getTime()/1000;
         data_upd_std={
+            "id": editField[1],
             "new_mssv":$("#inputMSSV")[0].value,
-            "birthday":$("#inputNgaysinh")[0].value,
+            "birthday": birthday,
             "fullname":$("#inputHoten")[0].value,
-            "email": $("#inputEmail")[0].value
         };
         updateStd();
         $("#editModal").modal("hide");
@@ -117,6 +120,7 @@ $(document).ready(async function(){
     //searching
     $("#input_search").on('input', function () {
         keywords=$(this)[0].value;
+        page=1;
         getRequest();
     })
 
@@ -160,7 +164,7 @@ async function postReq_import(file){
     }
     else{
         $("#importModal").modal("hide");
-        window.alert(postRes["reason"]);
+        console.log(postRes["reason"]);
     }
 
 }
@@ -181,6 +185,7 @@ async function getRequest(){
     if(getRes["status"]==20) {
         table.clear().draw();
         let data = getRes.data.students;
+
         for (var i = 0; i < data.rows.length; i++) {
             table.row.add([
                 (page-1)*pageSize+i+1,
@@ -194,13 +199,17 @@ async function getRequest(){
         total_page = data.count/pageSize;
         total_page = Math.ceil(+total_page);
         paging();
-        if (data.rows.length<1){
+        if (data.rows.length!=0) {
+            $("#subTable_info")[0].innerText = "Hiển thị từ " + (1 + (page - 1) * pageSize) + " đến " + ((page - 1) * pageSize + data.rows.length) + " của " + data.count + " sinh viên.";
+            $("#subTable_paginate").removeClass('d-none');
+        }
+        else {
+            $("#subTable_info")[0].innerText = "";
             $("#subTable_paginate").addClass('d-none');
         }
-        $("#subTable_info")[0].innerText="Hiển thị từ "+(1+(page-1)*pageSize)+" đến "+((page-1)*pageSize+data.rows.length)+" của "+data.count+" sinh viên.";
     }
     else {
-        window.alert(getRes['reason']);
+        console.log(getRes['reason']);
     }
 
 }
@@ -217,9 +226,9 @@ async function deleteStd() {
         }
     });
     let delRes = await delResponse.json();
-    // if (delRes['status'!=20]){
-        window.alert(delRes['reason']);
-    // }
+    if (delRes['status'!=20]){
+    console.log(delRes['reason']);
+    }
     getRequest();
 }
 
@@ -236,10 +245,10 @@ async function updateStd() {
         },
         body: JSON.stringify(data_upd_std)
     });
-    let updRes = updResponse.json();
-    // if (updRes['status'!=20]){
-        window.alert(updRes['reason']);
-    // }
+    let updRes = await updResponse.json();
+    if (updRes['status'!=20]){
+        console.log(updRes['reason']);
+    }
     getRequest();
 }
 
@@ -251,11 +260,10 @@ function convertTime(unixtimestamp){
     // Day
     let day = date.getDate();
     // Month
-    let month =date.getMonth();
+    let month =date.getMonth()+1;
 
     let convdataTime = day+'/'+month+'/'+year;
     return convdataTime;
-
 }
 
 //paging
@@ -274,6 +282,16 @@ function convertTime(unixtimestamp){
          $("#page_c").parent().removeClass('d-none');
          $("#page_a")[0].innerText = 1;
          $("#page_b")[0].innerText = 2;
+         $("#page_c").parent().addClass('d-none');
+     }
+     if (total_page>2){
+         $("#page_a").parent().removeClass('d-none');
+         $("#page_b").parent().removeClass('d-none');
+         $("#page_c").parent().removeClass('d-none');
+     }
+     if (total_page<1){
+         $("#page_a").parent().addClass('d-none');
+         $("#page_b").parent().addClass('d-none');
          $("#page_c").parent().addClass('d-none');
      }
      if (page==1){
