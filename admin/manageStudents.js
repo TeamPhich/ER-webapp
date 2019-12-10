@@ -57,11 +57,11 @@ $(document).ready(async function(){
     //bat su kien nut edit
     $('#subTable tbody').on( 'click', '.fa-edit', function () {
         $("#editModal").modal("show");
-        editField=$(this).parent().parent().children();
-        $("#inputMSSV").val(editField[1].innerText);
-        $("#inputHoten").val(editField[2].innerText);
-        $("#inputNgaysinh").val(editField[3].innerText);
-        $("#inputEmail").val(editField[4].innerText);
+        curRow = $(this).parents('tr');
+        editField = table.row(curRow).data();
+        $("#inputMSSV").val(editField[2]);
+        $("#inputHoten").val(editField[3]);
+        $("#inputNgaysinh").val(editField[4]);
     } );
 
     //js print
@@ -91,11 +91,14 @@ $(document).ready(async function(){
 
     //js confirm and close modal
     $("#confirmEditButton").on("click",function () {
+        let birthday = $("#inputNgaysinh")[0].value;
+        birthday = (birthday.toString()).split("/");
+        birthday = new Date(birthday[2],birthday[1]-1, birthday[0]).getTime()/1000;
         data_upd_std={
+            "id": editField[1],
             "new_mssv":$("#inputMSSV")[0].value,
-            "birthday":$("#inputNgaysinh")[0].value,
+            "birthday": birthday,
             "fullname":$("#inputHoten")[0].value,
-            "email": $("#inputEmail")[0].value
         };
         updateStd();
         $("#editModal").modal("hide");
@@ -160,7 +163,7 @@ async function postReq_import(file){
     }
     else{
         $("#importModal").modal("hide");
-        window.alert(postRes["reason"]);
+        console.log(postRes["reason"]);
     }
 
 }
@@ -200,7 +203,7 @@ async function getRequest(){
         $("#subTable_info")[0].innerText="Hiển thị từ "+(1+(page-1)*pageSize)+" đến "+((page-1)*pageSize+data.rows.length)+" của "+data.count+" sinh viên.";
     }
     else {
-        window.alert(getRes['reason']);
+        console.log(getRes['reason']);
     }
 
 }
@@ -217,9 +220,9 @@ async function deleteStd() {
         }
     });
     let delRes = await delResponse.json();
-    // if (delRes['status'!=20]){
-        window.alert(delRes['reason']);
-    // }
+    if (delRes['status'!=20]){
+    console.log(delRes['reason']);
+    }
     getRequest();
 }
 
@@ -236,10 +239,10 @@ async function updateStd() {
         },
         body: JSON.stringify(data_upd_std)
     });
-    let updRes = updResponse.json();
-    // if (updRes['status'!=20]){
-        window.alert(updRes['reason']);
-    // }
+    let updRes = await updResponse.json();
+    if (updRes['status'!=20]){
+        console.log(updRes['reason']);
+    }
     getRequest();
 }
 
@@ -251,11 +254,10 @@ function convertTime(unixtimestamp){
     // Day
     let day = date.getDate();
     // Month
-    let month =date.getMonth();
+    let month =date.getMonth()+1;
 
     let convdataTime = day+'/'+month+'/'+year;
     return convdataTime;
-
 }
 
 //paging
