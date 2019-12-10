@@ -13,6 +13,8 @@ function removeToken() {
 var page=1;
 var pageSize=10;
 var length;
+var pageNumber;
+var keywords="";
 $(document).ready(async function() {
     //js load data subject
     await getSubject();
@@ -41,6 +43,7 @@ $(document).ready(async function() {
             body:JSON.stringify(dataCreate)
         });
         let res=await resCreate.json();
+        console.log(res)
         //location.reload();
         if(res["status"]==20){
             let addSubject="<tr><td></td><td>" + $("#inputMaMon").val()
@@ -49,7 +52,7 @@ $(document).ready(async function() {
                 + "</td><td><i class=\"far fa-edit\"></i><i class=\"far fa-trash-alt ml-2\"></i></td></tr>";
             $("#subTable>tbody").append(addSubject);
             $("#addModal").modal("hide");
-            getSubject();
+            await getSubject();
             getPageNumber()
         }
         else {
@@ -78,7 +81,7 @@ $(document).ready(async function() {
             let res = await resDelete.json();
             if(res["status"]==20){
                 subject.remove();
-                getSubject()
+                await getSubject()
                 getPageNumber();
             }
             else{
@@ -89,9 +92,11 @@ $(document).ready(async function() {
     } );
     var editField;
     var subjectIdOld;
+    var subjectOld
     $("#subTable tbody").on('click','.fa-edit',function () {
         $("#editModal").modal("show");
         editField=$(this).parent().parent().children();
+        subjectOld=$(this).parent().parent().children();
         $("#editMaMon").val(editField[1].innerText);
         subjectIdOld=editField[1].innerText;
         $("#editTenMon").val(editField[2].innerText);
@@ -99,18 +104,14 @@ $(document).ready(async function() {
     })
     //js confirm and close edit modal
     $("#confirmEditButton").on("click",async function () {
-        let subjectOld=editField;
-        editField[1].innerText=$("#editMaMon")[0].value;
-        editField[2].innerText=$("#editTenMon")[0].value;
-        editField[3].innerText=$("#editTc")[0].value;
         $("#editModal").modal("hide");
         //update to server here
         let urlUpdate="http://er-backend.sidz.tools/api/v1/subjects/";
         let dataUpdate={
             "subject_id":subjectIdOld,
-            "new_subject_id":editField[1].innerText,
-            "name":editField[2].innerText,
-            "credit":editField[3].innerText
+            "new_subject_id":$("#editMaMon")[0].value,
+            "name":$("#editTenMon")[0].value,
+            "credit":$("#editTc")[0].value
         }
         const resUpdate= await fetch(urlUpdate,{
             method: 'PUT',
@@ -124,25 +125,31 @@ $(document).ready(async function() {
             body:JSON.stringify(dataUpdate)
         });
         let res=await resUpdate.json();
-        if(res["reason"]=="Subject_id isn't change"){
-            window.alert("Subject_id không thay đổi");
-            editField[1].innerText=subjectOld[1].innerText;
-            editField[2].innerText=subjectOld[2].innerText;
-            editField[3].innerText=subjectOld[3].innerText;
+        console.log(res)
+        if(res["status"]==21){
+            window.alert("Mã môn học hoặc tên bị trùng với các môn khác");
         }
         else {
-            getSubject();
+            editField[1].innerText=$("#editMaMon")[0].value;
+            editField[2].innerText=$("#editTenMon")[0].value;
+            editField[3].innerText=$("#editTc")[0].value;
         }
     });
-    $('select[name="subTable_length"]').on("change",function () {
+    $('select[name="subTable_length"]').on("change",async function () {
         pageSize=$(this)[0].value;
         console.log(pageSize);
-        getSubject();
+        await getSubject();
         getPageNumber();
     });
+    $("#input_search").on('input', async function () {
+        keywords=$(this)[0].value;
+        page=1;
+        await getSubject();
+        getPageNumber();
+    })
 });
 async function getSubject() {
-    let url=("http://er-backend.sidz.tools/api/v1/subjects/?page="+page+"&pageSize="+pageSize);
+    let url=("http://er-backend.sidz.tools/api/v1/subjects/?page="+page+"&pageSize="+pageSize+"&keywords="+keywords);
     const response = await fetch(url,{
         method: 'GET',
         mode: 'cors',
@@ -170,7 +177,7 @@ async function getSubject() {
 
 }
 async function getPageNumber(){
-    let pageNumber=length/pageSize;
+    pageNumber=length/pageSize;
     let num;
     let syntaxPage="";
     $("[name='new']").remove();
@@ -199,18 +206,21 @@ async function activePage(e) {
 }
 async function previousPage() {
    let elementPrev= $(".active").prev();
-    $(".active").removeClass('active');
-    elementPrev[0].className+=" active";
-    page= elementPrev[0].childNodes[0].firstChild.nodeValue;
-    getSubject();
-
+   if($(".active")[0].childNodes[0].firstChild.nodeValue>1){
+       $(".active").removeClass('active');
+       elementPrev[0].className+=" active";
+       page= elementPrev[0].childNodes[0].firstChild.nodeValue;
+       getSubject();
+   }
 }
 async function nexPage() {
     let elementNext;
     elementNext= $(".active").next();
-   console.log(elementNext);
-    $(".active").removeClass('active');
-    elementNext[0].className+=" active";
-    page= elementNext[0].childNodes[0].firstChild.nodeValue;
-    getSubject();
+    if($(".active")[0].childNodes[0].firstChild.nodeValue <pageNumber){
+        $(".active").removeClass('active');
+        elementNext[0].className+=" active";
+        page= elementNext[0].childNodes[0].firstChild.nodeValue;
+        getSubject();
+    }
+
 }
