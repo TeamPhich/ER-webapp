@@ -120,6 +120,7 @@ $(document).ready(async function(){
     //searching
     $("#input_search").on('input', function () {
         keywords=$(this)[0].value;
+        page=1;
         getRequest();
     })
 
@@ -184,6 +185,7 @@ async function getRequest(){
     if(getRes["status"]==20) {
         table.clear().draw();
         let data = getRes.data.students;
+
         for (var i = 0; i < data.rows.length; i++) {
             table.row.add([
                 (page-1)*pageSize+i+1,
@@ -197,10 +199,14 @@ async function getRequest(){
         total_page = data.count/pageSize;
         total_page = Math.ceil(+total_page);
         paging();
-        if (data.rows.length<1){
+        if (data.rows.length!=0) {
+            $("#subTable_info")[0].innerText = "Hiển thị từ " + (1 + (page - 1) * pageSize) + " đến " + ((page - 1) * pageSize + data.rows.length) + " của " + data.count + " sinh viên.";
+            $("#subTable_paginate").removeClass('d-none');
+        }
+        else {
+            $("#subTable_info")[0].innerText = "";
             $("#subTable_paginate").addClass('d-none');
         }
-        $("#subTable_info")[0].innerText="Hiển thị từ "+(1+(page-1)*pageSize)+" đến "+((page-1)*pageSize+data.rows.length)+" của "+data.count+" sinh viên.";
     }
     else {
         console.log(getRes['reason']);
@@ -276,6 +282,16 @@ function convertTime(unixtimestamp){
          $("#page_c").parent().removeClass('d-none');
          $("#page_a")[0].innerText = 1;
          $("#page_b")[0].innerText = 2;
+         $("#page_c").parent().addClass('d-none');
+     }
+     if (total_page>2){
+         $("#page_a").parent().removeClass('d-none');
+         $("#page_b").parent().removeClass('d-none');
+         $("#page_c").parent().removeClass('d-none');
+     }
+     if (total_page<1){
+         $("#page_a").parent().addClass('d-none');
+         $("#page_b").parent().addClass('d-none');
          $("#page_c").parent().addClass('d-none');
      }
      if (page==1){
