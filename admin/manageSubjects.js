@@ -92,11 +92,9 @@ $(document).ready(async function() {
     } );
     var editField;
     var subjectIdOld;
-    var subjectOld
     $("#subTable tbody").on('click','.fa-edit',function () {
         $("#editModal").modal("show");
         editField=$(this).parent().parent().children();
-        subjectOld=$(this).parent().parent().children();
         $("#editMaMon").val(editField[1].innerText);
         subjectIdOld=editField[1].innerText;
         $("#editTenMon").val(editField[2].innerText);
