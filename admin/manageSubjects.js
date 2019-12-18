@@ -171,6 +171,8 @@ async function getSubject() {
                 + "</td><td><i class=\"far fa-edit\" ></i><i class=\"far fa-trash-alt ml-2\"></i></td></tr>";
         }
         $("#subTable>tbody").append(datatbody)
+        $("#subTable_info")[0].innerText = "Hiển thị từ " + (1 + (page - 1) * pageSize) + " đến " + ((page - 1) * pageSize + res['data']['subjectsInformation']["rows"].length) + " của " + length + " môn.";
+
     }
 
 }
