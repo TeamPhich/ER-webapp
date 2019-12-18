@@ -92,11 +92,9 @@ $(document).ready(async function() {
     } );
     var editField;
     var subjectIdOld;
-    var subjectOld
     $("#subTable tbody").on('click','.fa-edit',function () {
         $("#editModal").modal("show");
         editField=$(this).parent().parent().children();
-        subjectOld=$(this).parent().parent().children();
         $("#editMaMon").val(editField[1].innerText);
         subjectIdOld=editField[1].innerText;
         $("#editTenMon").val(editField[2].innerText);
@@ -173,6 +171,8 @@ async function getSubject() {
                 + "</td><td><i class=\"far fa-edit\" ></i><i class=\"far fa-trash-alt ml-2\"></i></td></tr>";
         }
         $("#subTable>tbody").append(datatbody)
+        $("#subTable_info")[0].innerText = "Hiển thị từ " + (1 + (page - 1) * pageSize) + " đến " + ((page - 1) * pageSize + res['data']['subjectsInformation']["rows"].length) + " của " + length + " môn.";
+
     }
 
 }

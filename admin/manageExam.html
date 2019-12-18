@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
     <meta charset="utf-8">
@@ -12,17 +13,15 @@
 
     <!-- Custom styles for this template-->
     <link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="../vendor/datatables/datatables.min.css">
-    <link rel="stylesheet" type="text/css" href="../vendor/datatables/Buttons-1.6.1/css/buttons.bootstrap4.min.css">
     <link rel="stylesheet" href="manageExam.css">
-
+    <!--    <link rel="stylesheet" href="../vendor/datatables/datatables.css">-->
 
 </head>
 
 <body id="page-top">
 
 <!-- Page Wrapper -->
-<div id="wrapper" >
+<div id="wrapper">
 
     <!-- Sidebar -->
     <div>
@@ -84,7 +83,12 @@
         <div id="content">
 
             <!-- Topbar -->
-            <nav class="navbar navbar-expand navbar-light bg-white topbar flex-grow-1 mb-4 shadow">
+            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                <!-- Sidebar Toggle (Topbar) -->
+                <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                    <i class="fa fa-bars"></i>
+                </button>
 
                 <!-- Topbar Navbar -->
                 <ul class="navbar-nav ml-auto">
@@ -117,66 +121,89 @@
             </nav>
             <!-- End of Topbar -->
             <!-- Begin Page Content -->
-            <div class="container-fluid" id="container">
+            <div class="container-fluid">
                 <div class="d-sm-flex align-items-center justify-content-between mb-4"style="font-size: 200%">
-                    <p>Quản lý kỳ thi</p>
+                    <p>Quản lý môn học</p>
                 </div>
-                <div class="d-flex justify-content-end mb-2">
-                    <div>
-                    <p style="display: inline!important;">Kỳ thi :</p>
-                    <select class="custom-select custom-select-sm" style="display: inline!important;width: auto!important;">
-                        <option selected>Mã HK 191 - Học kì 1 năm 2019-2020</option>
-                        <option value="2">Mã HK 182 - Học kì 2 năm 2018-2029</option>
-                        <option value="3">Mã HK 181 - Học kì 1 năm 2019-2020</option>
-                    </select>
-                    </div>
-                </div>
-                <div class="card shadow mb-3" >
-                    <div class="card-body" >
+                <div class="card shadow mb-3">
+                    <div class="card-body">
                         <div class="container-fluid p-0 table-responsive">
-
+                            <div class="row w-100 m-0">
+                                <div class="col-md-6">
+                                    <div class="d-flex" id="subTable_length">
+                                        <div class="mt-1">
+                                            <label>Hiển thị:</label>
+                                        </div>
+                                        <div class="ml-2 mr-2">
+                                            <select name="subTable_length" aria-controls="subTable" class="custom-select custom-select-sm form-control form-control-sm">
+                                                <option name="optionPageSize" value="10">10</option>
+                                                <option name="optionPageSize" value="25">25</option>
+                                                <option name="optionPageSize" value="50">50</option>
+                                            </select>
+                                        </div>
+                                        <div class="mt-1">
+                                            <label>hàng</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 p-0">
+                                    <div id="subTable_filter" class="dataTables_filter d-flex justify-content-end">
+                                        <div class="mt-1"><label>Tìm kiếm:</label></div>
+                                        <div class="ml-2"><input type="search" class="form-control form-control-sm"  placeholder="Nhập mã kỳ thi" id="input_search" aria-controls="subTable"></div>
+                                    </div>
+                                </div>
+                            </div>
                             <table id="subTable" class="table table-bordered p-0 table-striped my-table"style="color: black; text-align:center;">
-
                                 <thead class="thead-dark">
                                 <tr>
-                                    <th class="no-sort">Stt</th>
-                                    <th>Mã kỳ thi</th>
-                                    <th>Kỳ thi</th>
-                                    <th>Ngày thi</th>
-                                    <th>Ca thi</th>
-                                    <th>Phòng</th>
+                                    <th>Stt</th>
+                                    <th>Mã kì thi</th>
+                                    <th>Tên Kỳ thi</th>
+                                    <th>#</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-
                                 </tbody>
-
                             </table>
-
+                            <div class="row w-100 m-0 mt-3">
+                                <div class="col-sm-12 col-md-5">
+                                    <p id="subTable_info"></p>
+                                </div>
+                                <div class="col-sm-12 col-md-7 d-flex justify-content-end p-0">
+                                    <div class="dataTables_paginate paging_simple_numbers" id="subTable_paginate">
+                                        <ul class="pagination m-0">
+                                            <li class="paginate_button page-item previous disabled" id="subTable_previous"onclick="previousPage()">
+                                                <a class="page-link">
+                                                    <i class="fas fa-angle-double-left clickable"></i>
+                                                </a>
+                                            </li>
+                                            <li class="paginate_button page-item next disabled" id="subTable_next"onclick="nexPage()">
+                                                <a class="page-link" >
+                                                    <i class="fas fa-angle-double-right clickable"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-
                     </div>
                     <div class="card-footer">
                         <div class="float-right">
-                            <button class="btn btn-primary" id="confirmButton">Ghi nhận</button>
-
-                        </div>
-                        <div class="btn-group">
-                            <button class="btn btn-outline-primary" id="addButton">Thêm</button>
-                            <button class="btn btn-outline-primary" id="printButton">In</button>
+                            <button class="btn btn-primary" id="addButton">Thêm kỳ</button>
                         </div>
                     </div>
                 </div>
-
             </div>
-            <!-- End of Page Content -->
+
         </div>
-        <!-- End of Main Content -->
     </div>
-    <!-- End of Content Wrapper -->
+</div>
+<!-- /.container-fluid -->
+<!-- End of Main Content -->
+<!-- End of Content Wrapper -->
 </div>
 <!-- End of Page Wrapper -->
-
 
 <!-- Logout Modal-->
 <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -192,62 +219,16 @@
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                 <button class="btn btn-primary" onclick="removeToken()">Logout</button>
-
             </div>
         </div>
     </div>
 </div>
-
-<!-- Add Modal-->
-<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Thêm kỳ thi mới</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="">
-                    <div class="form-group">
-                        <label class="" for="inputKythi">Chọn kỳ thi</label>
-                        <select id="inputKythi" class="form-control">
-                            <
-                        </select>
-                    </div>
-                    <button class="btn btn-primary float-right" id="confirmAddModal" type="submit" style="margin-top: 1rem">Ghi nhận</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Add Ky Thi Modal-->
-<div class="modal fade" id="addKythiModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Thêm kỳ thi mới</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="">
-
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!--Edit Modal-->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="headerModal" aria-hidden="true">
+<!--add subject modal-->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="headerAddModal" aria-hidden="true">
     <div class="modal-dialog " role="document">
         <div class="modal-content"style="width: 700px;margin-left: -100px!important;">
             <div class="modal-header">
-                <h5 class="modal-title" id="headerModal" style="color:black">Chỉnh sửa thông tin sinh viên</h5>
+                <h5 class="modal-title" id="headerAddModal" style="color:black">Thêm kỳ thi</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -255,33 +236,62 @@
             <div class="modal-body">
                 <form class="form-horizontal">
                     <div class="form-group">
-                        <label for="inputMSSV">Mã số sinh viên</label>
-                        <input type="text"class="form-control" id="inputMSSV">
+                        <label for="inputMaKy">Mã kỳ thi</label>
+                        <input type="text"class="form-control" id="inputMaKy">
                     </div>
                     <div class="form-group">
-                        <label for="inputHoten">Họ tên</label>
-                        <input type="text"class="form-control" id="inputHoten">
+                        <label for="inputTenKy">Tên kỳ thi</label>
+                        <input type="text"class="form-control" id="inputTenKy">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="button" id="confirmAddButton">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--edit subject modal-->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="headerModal" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content"style="width: 700px;margin-left: -100px!important;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="headerModal" style="color:black">Chỉnh sửa thông tin kỳ thi</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="editMaKy">Mã Kỳ thi</label>
+                        <input type="text"class="form-control" id="editMaKy">
                     </div>
                     <div class="form-group">
-                        <label for="inputLop">Lớp</label>
-                        <input type="text"class="form-control" id="inputLop">
-                    </div>
-                    <div class="form-group">
-                        <label for="inputNgaysinh">Ngày sinh</label>
-                        <input type="text"class="form-control" id="inputNgaysinh">
-                    </div>
-                    <div class="form-group">
-                        <label for="inputTentaikhoan">Tên tài khoản</label>
-                        <input type="text"class="form-control" id="inputTentaikhoan">
-                    </div>
-                    <div class="form-group">
-                        <label for="inputMatkhau">Mật khẩu</label>
-                        <input type="text"class="form-control" id="inputMatkhau">
+                        <label for="editTenKy">Tên Kỳ thi</label>
+                        <input type="text"class="form-control" id="editTenKy">
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary" type="button" id="confirmEditButton">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--check delete modal-->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Ready to delete?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary" type="button" id="confirmDelete">Delete</button>
             </div>
         </div>
     </div>
@@ -293,13 +303,6 @@
 <!-- Core plugin JavaScript-->
 <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
 <script src="manageExam.js"></script>
-<!-- Data tabes script-->
-<script src="../vendor/datatables/datatables.min.js" type="text/javascript"></script>
-<script src="../vendor/datatables/Buttons-1.6.1/js/dataTables.buttons.min.js" type="text/javascript"></script>
-<script src="../vendor/datatables/Buttons-1.6.1/js/buttons.bootstrap4.min.js" type="text/javascript"></script>
-<script src="../vendor/datatables/Buttons-1.6.1/js/buttons.html5.min.js" type="text/javascript"></script>
-<script src="../vendor/datatables/Buttons-1.6.1/js/buttons.print.min.js" type="text/javascript"></script>
-
 
 </body>
 
