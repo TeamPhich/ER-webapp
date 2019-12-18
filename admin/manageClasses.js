@@ -37,7 +37,7 @@ $(document).ready(async function(){
         "columnDefs": [ {
             "targets": -1,
             "data": null,
-            "defaultContent": "<i class='far fa-edit clickable'></i><i class='far fa-trash-alt ml-2 clickable'></i>"
+            "defaultContent": "<i class='fa fa-edit'></i><i class='fa fa-trash-alt ml-2'></i>"
         },
             {
                 "targets": 1,
@@ -227,7 +227,7 @@ async function deleteStd() {
     });
     let delRes = await delResponse.json();
     if (delRes['status'!=20]){
-    console.log(delRes['reason']);
+        console.log(delRes['reason']);
     }
     getRequest();
 }
@@ -267,78 +267,78 @@ function convertTime(unixtimestamp){
 }
 
 //paging
- function paging() {
-     if (total_page==1){
-         $("#page_a").parent().removeClass('d-none');
-         $("#page_b").parent().removeClass('d-none');
-         $("#page_c").parent().removeClass('d-none');
-         $("#page_a")[0].innerText = 1;
-         $("#page_b").parent().addClass('d-none');
-         $("#page_c").parent().addClass('d-none');
-     }
-     if (total_page==2){
-         $("#page_a").parent().removeClass('d-none');
-         $("#page_b").parent().removeClass('d-none');
-         $("#page_c").parent().removeClass('d-none');
-         $("#page_a")[0].innerText = 1;
-         $("#page_b")[0].innerText = 2;
-         $("#page_c").parent().addClass('d-none');
-     }
-     if (total_page>2){
-         $("#page_a").parent().removeClass('d-none');
-         $("#page_b").parent().removeClass('d-none');
-         $("#page_c").parent().removeClass('d-none');
-     }
-     if (total_page<1){
-         $("#page_a").parent().addClass('d-none');
-         $("#page_b").parent().addClass('d-none');
-         $("#page_c").parent().addClass('d-none');
-     }
-     if (page==1){
-         $("#page_a").parent().removeClass('active');
-         $("#page_b").parent().removeClass('active');
-         $("#page_c").parent().removeClass('active');
-         $("#page_a").parent().addClass('active');
-         $("#page_a")[0].innerText = 1;
-         $("#page_b")[0].innerText = 2;
-         $("#page_c")[0].innerText = 3;
-     }
-     else {
-         if (page == total_page && total_page!=2) {
-             $("#page_a").parent().removeClass('active');
-             $("#page_b").parent().removeClass('active');
-             $("#page_c").parent().removeClass('active');
-             $("#page_c").parent().addClass('active');
-             $("#page_a")[0].innerText = +page-2;
-             $("#page_b")[0].innerText = +page-1;
-             $("#page_c")[0].innerText = +page;
-         }
-         else {
-             if (page == total_page &&total_page==2){
-                 $("#page_a").parent().removeClass('active');
-                 $("#page_b").parent().removeClass('active');
-                 $("#page_c").parent().removeClass('active');
-                 $("#page_b").parent().addClass('active');
-                 $("#page_a")[0].innerText = +page-1;
-                 $("#page_b")[0].innerText = +page;
-                 $("#page_c")[0].innerText = +page;
-             }
-             else {
-                 $("#page_a").parent().removeClass('active');
-                 $("#page_b").parent().removeClass('active');
-                 $("#page_c").parent().removeClass('active');
-                 $("#page_b").parent().addClass('active');
-                 $("#page_a")[0].innerText = +page - 1;
-                 $("#page_b")[0].innerText = +page;
-                 $("#page_c")[0].innerText = +page+1;
-             }
-         }
-     }
- }
- function paging_click(page_id) {
-     page=page_id;
-     getRequest();
- }
+function paging() {
+    if (total_page==1){
+        $("#page_a").parent().removeClass('d-none');
+        $("#page_b").parent().removeClass('d-none');
+        $("#page_c").parent().removeClass('d-none');
+        $("#page_a")[0].innerText = 1;
+        $("#page_b").parent().addClass('d-none');
+        $("#page_c").parent().addClass('d-none');
+    }
+    if (total_page==2){
+        $("#page_a").parent().removeClass('d-none');
+        $("#page_b").parent().removeClass('d-none');
+        $("#page_c").parent().removeClass('d-none');
+        $("#page_a")[0].innerText = 1;
+        $("#page_b")[0].innerText = 2;
+        $("#page_c").parent().addClass('d-none');
+    }
+    if (total_page>2){
+        $("#page_a").parent().removeClass('d-none');
+        $("#page_b").parent().removeClass('d-none');
+        $("#page_c").parent().removeClass('d-none');
+    }
+    if (total_page<1){
+        $("#page_a").parent().addClass('d-none');
+        $("#page_b").parent().addClass('d-none');
+        $("#page_c").parent().addClass('d-none');
+    }
+    if (page==1){
+        $("#page_a").parent().removeClass('active');
+        $("#page_b").parent().removeClass('active');
+        $("#page_c").parent().removeClass('active');
+        $("#page_a").parent().addClass('active');
+        $("#page_a")[0].innerText = 1;
+        $("#page_b")[0].innerText = 2;
+        $("#page_c")[0].innerText = 3;
+    }
+    else {
+        if (page == total_page && total_page!=2) {
+            $("#page_a").parent().removeClass('active');
+            $("#page_b").parent().removeClass('active');
+            $("#page_c").parent().removeClass('active');
+            $("#page_c").parent().addClass('active');
+            $("#page_a")[0].innerText = +page-2;
+            $("#page_b")[0].innerText = +page-1;
+            $("#page_c")[0].innerText = +page;
+        }
+        else {
+            if (page == total_page &&total_page==2){
+                $("#page_a").parent().removeClass('active');
+                $("#page_b").parent().removeClass('active');
+                $("#page_c").parent().removeClass('active');
+                $("#page_b").parent().addClass('active');
+                $("#page_a")[0].innerText = +page-1;
+                $("#page_b")[0].innerText = +page;
+                $("#page_c")[0].innerText = +page;
+            }
+            else {
+                $("#page_a").parent().removeClass('active');
+                $("#page_b").parent().removeClass('active');
+                $("#page_c").parent().removeClass('active');
+                $("#page_b").parent().addClass('active');
+                $("#page_a")[0].innerText = +page - 1;
+                $("#page_b")[0].innerText = +page;
+                $("#page_c")[0].innerText = +page+1;
+            }
+        }
+    }
+}
+function paging_click(page_id) {
+    page=page_id;
+    getRequest();
+}
 
 
 
