@@ -168,7 +168,7 @@ async function getSubject() {
             datatbody += "<tr><td>"+stt+"</td><td>" + res['data']['subjectsInformation']["rows"][i]['subject_id']
                 + "</td><td>" + res['data']['subjectsInformation']["rows"][i]['name']
                 + "</td><td>" + res['data']['subjectsInformation']["rows"][i]['credit']
-                + "</td><td><i class=\"far fa-edit\" ></i><i class=\"far fa-trash-alt ml-2\"></i></td></tr>";
+                + "</td><td><button class=\"btn btn-info\"><i class=\"far fa-edit\" ></i></button><button class=\"btn btn-info\"><i class=\"far fa-trash-alt\"></i></button></td></tr>";
         }
         $("#subTable>tbody").append(datatbody)
         $("#subTable_info")[0].innerText = "Hiển thị từ " + (1 + (page - 1) * pageSize) + " đến " + ((page - 1) * pageSize + res['data']['subjectsInformation']["rows"].length) + " của " + length + " môn.";
@@ -203,6 +203,10 @@ async function activePage(e) {
     e.parentNode.className+=' active';
     page=e.firstChild.nodeValue;
    getSubject();
+}
+function activeNav(e){
+    $(".nav-item").removeClass('active');
+    e.parentNode.className+=' active';
 }
 async function previousPage() {
    let elementPrev= $(".active").prev();
