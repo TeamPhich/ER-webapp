@@ -16,10 +16,11 @@ var editField;
 var page=1;
 var pageSize=10;
 var keywords="";
+var exam=202;
 var total_page;
 getRequest();
-var del_std_id;
-var data_upd_std;
+var del_subjectClass_id;
+var data_upd_subjectClass;
 $(document).ready(async function(){
 
     //customize table
@@ -30,14 +31,11 @@ $(document).ready(async function(){
         "searching": false,
         "ordering": false,
         "info": false,
-        "columnDefs": [
-            { "orderable": false, "targets": 'no-sort' }
-        ],
 
         "columnDefs": [ {
             "targets": -1,
             "data": null,
-            "defaultContent": "<i class='fa fa-edit'></i><i class='fa fa-trash-alt ml-2'></i>"
+            "defaultContent": "<i class='far fa-edit'></i><i class='far fa-trash-alt ml-2'></i>"
         },
             {
                 "targets": 1,
@@ -50,7 +48,7 @@ $(document).ready(async function(){
         $("#delModal").modal("show");
         curRow = $(this).parents('tr');
         std_info = table.row(curRow).data();
-        del_std_id = std_info[1];
+        del_subjectClass_id = std_info[1];
         $("#del_info")[0].innerText = std_info[3] +"-"+ std_info[2];
     } );
 
@@ -59,9 +57,9 @@ $(document).ready(async function(){
         $("#editModal").modal("show");
         curRow = $(this).parents('tr');
         editField = table.row(curRow).data();
-        $("#inputMSSV").val(editField[2]);
-        $("#inputHoten").val(editField[3]);
-        $("#inputNgaysinh").val(editField[4]);
+        $("#inputMLHP").val(editField[2]);
+        $("#inputLHP").val(editField[3]);
+        $("#inputSTC").val(editField[4]);
     } );
 
     //js print
@@ -91,10 +89,7 @@ $(document).ready(async function(){
 
     //js confirm and close modal
     $("#confirmEditButton").on("click",function () {
-        let birthday = $("#inputNgaysinh")[0].value;
-        birthday = (birthday.toString()).split("/");
-        birthday = new Date(birthday[2],birthday[1]-1, birthday[0]).getTime()/1000;
-        data_upd_std={
+        data_upd_subjectClass={
             "id": editField[1],
             "new_mssv":$("#inputMSSV")[0].value,
             "birthday": birthday,
@@ -171,7 +166,7 @@ async function postReq_import(file){
 
 
 async function getRequest(){
-    let url=("http://er-backend.sidz.tools/api/v1/students/?page="+page+"&pageSize="+pageSize+"&keywords="+keywords);
+    let url=("http://er-backend.sidz.tools/api/v1/subject-classes/exam/"+exam +"/?page="+ page+"&pageSize="+ pageSize+"&keywords="+keywords);
     const getResponse= await fetch(url,{
         method: 'GET',
         mode: 'cors',
@@ -184,23 +179,23 @@ async function getRequest(){
     let getRes=await getResponse.json();
     if(getRes["status"]==20) {
         table.clear().draw();
-        let data = getRes.data.students;
+        let data = getRes.data.subject_classes;
 
         for (var i = 0; i < data.rows.length; i++) {
             table.row.add([
                 (page-1)*pageSize+i+1,
                 data.rows[i].id,
-                data.rows[i].user_name,
-                data.rows[i].fullname,
-                convertTime(data.rows[i].birthday),
-                data.rows[i].email
+                data.rows[i].subject_id+" "+data.rows[i].class_number,
+                data.rows[i].subject.name,
+                data.rows[i].subject.credit
             ]).draw(false);
         }
         total_page = data.count/pageSize;
         total_page = Math.ceil(+total_page);
         paging();
+
         if (data.rows.length!=0) {
-            $("#subTable_info")[0].innerText = "Hiển thị từ " + (1 + (page - 1) * pageSize) + " đến " + ((page - 1) * pageSize + data.rows.length) + " của " + data.count + " sinh viên.";
+            $("#subTable_info")[0].innerText = "Hiển thị từ " + (1 + (page - 1) * pageSize) + " đến " + ((page - 1) * pageSize + data.rows.length) + " của " + data.count + " lớp học phần.";
             $("#subTable_paginate").removeClass('d-none');
         }
         else {
@@ -214,8 +209,8 @@ async function getRequest(){
 
 }
 
-async function deleteStd() {
-    let url="http://er-backend.sidz.tools/api/v1/students/"+del_std_id;
+async function delete_subjectClass() {
+    let url="http://er-backend.sidz.tools/api/v1/subject-classes/"+del_subjectClass_id;
     const delResponse= await fetch(url,{
         method: 'DELETE',
         mode: 'cors',
