@@ -62,9 +62,9 @@ $(document).ready(async function() {
     });
 
     //js delete row
-    $('#subTable tbody').on( 'click', '.fa-trash-alt',function () {
-        let subject_id=$(this).parent().parent().children();
-        let subject=$(this).parent().parent();
+    $('#subTable tbody').on( 'click', '.btn-danger',function () {
+        let subject_id=$(this).parent().parent().parent().children();
+        let subject=$(this).parent().parent().parent();
         $("#deleteModal").modal("show");
         $("#confirmDelete").on('click',async function() {
             $("#deleteModal").modal("hide");
@@ -84,18 +84,14 @@ $(document).ready(async function() {
                 await getSubject()
                 getPageNumber();
             }
-            else{
-                window.alert("can not delete subject");
-            }
         })
 
     } );
     var editField;
     var subjectIdOld;
-    $("#subTable tbody").on('click','.fa-edit',function () {
+    $("#subTable tbody").on('click','.btn-info',function () {
         $("#editModal").modal("show");
-        editField=$(this).parent().parent().parent().parent().children();
-        console.log(editField);
+        editField=$(this).parent().parent().parent().children();
         $("#editMaMon").val(editField[1].innerText);
         subjectIdOld=editField[1].innerText;
         $("#editTenMon").val(editField[2].innerText);
@@ -124,7 +120,6 @@ $(document).ready(async function() {
             body:JSON.stringify(dataUpdate)
         });
         let res=await resUpdate.json();
-        console.log(res)
         if(res["status"]==21){
             window.alert("Mã môn học hoặc tên bị trùng với các môn khác");
         }
