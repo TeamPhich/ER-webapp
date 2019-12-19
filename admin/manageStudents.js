@@ -36,14 +36,20 @@ $(document).ready(async function(){
 
         "columnDefs": [ {
             "targets": -1,
-            'width':"1%", //auto fill
+            'width':"1%", //auto fit
             "data": null,
             "defaultContent": "<div class='d-flex'><button class=\"btn btn-info\" id='editBtn'><i class=\"far fa-edit\" ></i></button><button class=\"btn btn-danger ml-2\" id='deleteBtn'><i class=\"far fa-trash-alt\"></i></button></div>"
         },
             {
                 "targets": 1,
                 "visible": false
-            },{
+            },
+
+            {
+                "targets": 0,
+                "width": "1%" //auto fit
+            },
+            {
                 "targets": "_all",
                 className: 'align-middle'
             }],
