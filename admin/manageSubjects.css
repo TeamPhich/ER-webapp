@@ -17,6 +17,10 @@ table tr td:first-child::before
     min-width: 1em;
     margin-right: 0.5em;
 }
-table tr td i{
+.btn-info{
+    border: none;
     cursor: pointer;
+    padding: 3px 6px!important;
+    margin-left: 2px;
+    color: #2d2e33;
 }
