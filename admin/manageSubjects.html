@@ -161,7 +161,7 @@
                                         <th>Mã học phần</th>
                                         <th>Tên học phần</th>
                                         <th>TC</th>
-                                        <th>#</th>
+                                        <th style="width: 8%">#</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -174,12 +174,12 @@
                                 <div class="col-sm-12 col-md-7 d-flex justify-content-end p-0">
                                     <div class="dataTables_paginate paging_simple_numbers" id="subTable_paginate">
                                         <ul class="pagination m-0">
-                                            <li class="paginate_button page-item previous disabled" id="subTable_previous"onclick="previousPage()">
+                                            <li class="paginate_button page-item previous disabled" id="subTable_previous"onclick="previousPage()" style="cursor: pointer">
                                                 <a class="page-link">
                                                     <i class="fas fa-angle-double-left clickable"></i>
                                                 </a>
                                             </li>
-                                            <li class="paginate_button page-item next disabled" id="subTable_next"onclick="nexPage()">
+                                            <li class="paginate_button page-item next disabled" id="subTable_next"onclick="nexPage()" style="cursor: pointer">
                                                 <a class="page-link" >
                                                     <i class="fas fa-angle-double-right clickable"></i>
                                                 </a>
@@ -270,15 +270,15 @@
             <div class="modal-body">
                 <form class="form-horizontal">
                     <div class="form-group">
-                        <label for="inputMaMon">Mã môn</label>
+                        <label for="editMaMon">Mã môn</label>
                         <input type="text"class="form-control" id="editMaMon">
                     </div>
                     <div class="form-group">
-                        <label for="inputTenMon">Tên học phần</label>
+                        <label for="editTenMon">Tên học phần</label>
                         <input type="text"class="form-control" id="editTenMon">
                     </div>
                     <div class="form-group">
-                        <label for="inputTc">TC</label>
+                        <label for="editTc">TC</label>
                         <input type="text"class="form-control" id="editTc">
                     </div>
                 </form>

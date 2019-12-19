@@ -94,7 +94,8 @@ $(document).ready(async function() {
     var subjectIdOld;
     $("#subTable tbody").on('click','.fa-edit',function () {
         $("#editModal").modal("show");
-        editField=$(this).parent().parent().children();
+        editField=$(this).parent().parent().parent().parent().children();
+        console.log(editField);
         $("#editMaMon").val(editField[1].innerText);
         subjectIdOld=editField[1].innerText;
         $("#editTenMon").val(editField[2].innerText);
@@ -168,7 +169,7 @@ async function getSubject() {
             datatbody += "<tr><td>"+stt+"</td><td>" + res['data']['subjectsInformation']["rows"][i]['subject_id']
                 + "</td><td>" + res['data']['subjectsInformation']["rows"][i]['name']
                 + "</td><td>" + res['data']['subjectsInformation']["rows"][i]['credit']
-                + "</td><td><button class=\"btn btn-info\"><i class=\"far fa-edit\" ></i></button><button class=\"btn btn-info\"><i class=\"far fa-trash-alt\"></i></button></td></tr>";
+                + "</td><td class='no-sort'><div class='d-flex'><button class=\"btn btn-info\"><i class=\"far fa-edit\" ></i></button><button class=\"btn btn-danger\"><i class=\"far fa-trash-alt\"></i></button></div></td></tr>";
         }
         $("#subTable>tbody").append(datatbody)
         $("#subTable_info")[0].innerText = "Hiển thị từ " + (1 + (page - 1) * pageSize) + " đến " + ((page - 1) * pageSize + res['data']['subjectsInformation']["rows"].length) + " của " + length + " môn.";
@@ -184,7 +185,7 @@ async function getPageNumber(){
     for (let i = 0; i < Math.ceil(pageNumber); i++) {
         num = 1+i;
         if(num==1){
-            syntaxPage += "</div><li class=\"paginate_button page-item active\">"
+            syntaxPage += "</div><li class=\"paginate_button page-item active page_active\">"
                 + "<a class=\"page-link\"id='"+num+"' name='new' onclick='activePage(this)'>" + num + "</a>"
                 + "</li>"
             }
@@ -199,8 +200,9 @@ async function getPageNumber(){
 
 }
 async function activePage(e) {
-    $(".active").removeClass('active');
-    e.parentNode.className+=' active';
+    $(".page_active").removeClass('active');
+    $(".page_active").removeClass('page_active');
+    e.parentNode.className+=' active page_active';
     page=e.firstChild.nodeValue;
    getSubject();
 }
@@ -209,20 +211,22 @@ function activeNav(e){
     e.parentNode.className+=' active';
 }
 async function previousPage() {
-   let elementPrev= $(".active").prev();
-   if($(".active")[0].childNodes[0].firstChild.nodeValue>1){
-       $(".active").removeClass('active');
-       elementPrev[0].className+=" active";
+   let elementPrev= $(".page_active").prev();
+   if($(".page_active")[0].childNodes[0].firstChild.nodeValue>1){
+       $(".page_active").removeClass('active');
+       $(".page_active").removeClass('page_active');
+       elementPrev[0].className+=" active page_active";
        page= elementPrev[0].childNodes[0].firstChild.nodeValue;
        getSubject();
    }
 }
 async function nexPage() {
     let elementNext;
-    elementNext= $(".active").next();
-    if($(".active")[0].childNodes[0].firstChild.nodeValue <pageNumber){
-        $(".active").removeClass('active');
-        elementNext[0].className+=" active";
+    elementNext= $(".page_active").next();
+    if($(".page_active")[0].childNodes[0].firstChild.nodeValue <pageNumber){
+        $(".page_active").removeClass('active');
+        $(".page_active").removeClass('page_active');
+        elementNext[0].className+=" active page_active";
         page= elementNext[0].childNodes[0].firstChild.nodeValue;
         getSubject();
     }
