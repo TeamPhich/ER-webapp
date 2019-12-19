@@ -37,7 +37,7 @@ $(document).ready(async function(){
         "columnDefs": [ {
             "targets": -1,
             "data": null,
-            "defaultContent": "<i class='far fa-edit clickable'></i><i class='far fa-trash-alt ml-2 clickable'></i>"
+            "defaultContent": "<div class='d-flex'><button class=\"btn btn-info\" id='editBtn'><i class=\"far fa-edit\" ></i></button><button class=\"btn btn-danger ml-2\" id='deleteBtn'><i class=\"far fa-trash-alt\"></i></button></div>"
         },
             {
                 "targets": 1,
@@ -46,7 +46,7 @@ $(document).ready(async function(){
     } );
 
     //bat su kien nut xoa
-    $('#subTable tbody').on( 'click', '.fa-trash-alt', function () {
+    $('#subTable tbody').on( 'click', '#deleteBtn', function () {
         $("#delModal").modal("show");
         curRow = $(this).parents('tr');
         std_info = table.row(curRow).data();
@@ -55,7 +55,7 @@ $(document).ready(async function(){
     } );
 
     //bat su kien nut edit
-    $('#subTable tbody').on( 'click', '.fa-edit', function () {
+    $('#subTable tbody').on( 'click', '#editBtn', function () {
         $("#editModal").modal("show");
         curRow = $(this).parents('tr');
         editField = table.row(curRow).data();
