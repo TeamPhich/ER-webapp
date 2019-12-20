@@ -76,9 +76,13 @@ $(document).ready(async function(){
 
         "columnDefs": [ {
             "targets": -1,
-            'width':"1%", //auto fit
+            'width':"10%", //auto fit
             "data": null,
-            "defaultContent": "<div class='d-flex'></div>"
+            "defaultContent": "<div class=\"custom-control custom-checkbox\">\n" +
+                "    \n" +
+                "      <input type=\"checkbox\" class=\"custom-control-input\" id=\"customCheck\" name=\"example1\">\n" +
+                "      <label class=\"custom-control-label\" for=\"customCheck\"></label>\n" +
+                "    </div>"
         },
             {
                 "targets": 0,
