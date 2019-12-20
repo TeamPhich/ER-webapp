@@ -18,7 +18,7 @@ var pageSize=10;
 var keywords="";
 var exam=202;
 var total_page;
-getRequest();
+getExam();
 var del_subjectClass_id;
 var data_upd_subjectClass;
 $(document).ready(async function(){
@@ -162,6 +162,21 @@ async function postReq_import(file){
         console.log(postRes["reason"]);
     }
 
+}
+
+async function getExam(){
+    let url =("http://er-backend.sidz.tools/api/v1/exams/?page=-1");
+    const getExamRes = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'token': window.localStorage.token
+        }
+    });
+    let res=await getExamRes.json();
+    let data = res.data.exams;
+    for (let i=data.count-1;i>=0;i--){
+        $('#inputHK').append('<option>'+data.rows[i].name+'</option>');
+    }
 }
 
 
