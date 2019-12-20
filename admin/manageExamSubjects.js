@@ -16,8 +16,12 @@ var editField;
 var page=1;
 var pageSize=10;
 var keywords="";
-var exam=202;
+var ESpage=1;
+var ESpageSize=10;
+var ESkeywords="";
+var exam;
 var total_page;
+var EStotal_page;
 getExam();
 var del_subjectClass_id;
 var data_upd_subjectClass;
@@ -31,20 +35,67 @@ $(document).ready(async function(){
         "searching": false,
         "ordering": false,
         "info": false,
+        "columnDefs": [
+            { "orderable": false, "targets": 'no-sort' }
+        ],
 
         "columnDefs": [ {
             "targets": -1,
+            'width':"1%", //auto fit
             "data": null,
-            "defaultContent": "<i class='far fa-edit'></i><i class='far fa-trash-alt ml-2'></i>"
+            "defaultContent": "<div class='d-flex'><button class=\"btn btn-info\" id='editBtn'><i class=\"far fa-edit\" ></i></button><button class=\"btn btn-danger ml-2\" id='deleteBtn'><i class=\"far fa-trash-alt\"></i></button></div>"
         },
             {
                 "targets": 1,
                 "visible": false
+            },
+
+            {
+                "targets": 0,
+                "width": "1%" //auto fit
+            },
+            {
+                "targets": 4,
+                "width": "9%" //auto fit
+            },
+            {
+                "targets": "_all",
+                className: 'align-middle'
+            }],
+    } );
+    EStable = $("#ExamSubjectAddingTable").DataTable( {
+        retrieve: true,
+        "paging": false,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": false,
+        "info": false,
+        "columnDefs": [
+            { "orderable": false, "targets": 'no-sort' }
+        ],
+
+        "columnDefs": [ {
+            "targets": -1,
+            'width':"1%", //auto fit
+            "data": null,
+            "defaultContent": "<div class='d-flex'></div>"
+        },
+            {
+                "targets": 0,
+                "width": "1%" //auto fit
+            },
+            {
+                "targets": 4,
+                "width": "9%" //auto fit
+            },
+            {
+                "targets": "_all",
+                className: 'align-middle'
             }],
     } );
 
     //bat su kien nut xoa
-    $('#subTable tbody').on( 'click', '.fa-trash-alt', function () {
+    $('#subTable tbody').on( 'click', '#deleteBtn', function () {
         $("#delModal").modal("show");
         curRow = $(this).parents('tr');
         std_info = table.row(curRow).data();
@@ -53,7 +104,7 @@ $(document).ready(async function(){
     } );
 
     //bat su kien nut edit
-    $('#subTable tbody').on( 'click', '.fa-edit', function () {
+    $('#subTable tbody').on( 'click', '#editBtn', function () {
         $("#editModal").modal("show");
         curRow = $(this).parents('tr');
         editField = table.row(curRow).data();
@@ -117,7 +168,12 @@ $(document).ready(async function(){
         keywords=$(this)[0].value;
         page=1;
         getRequest();
-    })
+    });
+    $("#input_ExamSubject").on('input', function () {
+        ESkeywords=$(this)[0].value;
+        ESpage=1;
+        getESRequest();
+    });
 
 
     $("#subTable_previous").on("click",function () {
@@ -137,28 +193,55 @@ $(document).ready(async function(){
         page=1;
         getRequest();
     });
+    $("#ExamSubjectAddingTable_previous").on("click",function () {
+        if (ESpage>1){
+            ESpage--;
+            getESRequest()
+        }
+    });
+    $("#ExamSubjectAddingTable_next").on("click",function () {
+        if (ESpage<EStotal_page){
+            ESpage++;
+            getESRequest()
+        }
+    });
+    $('select[name="ExamSubjectAddingTable_length"]').on("change",function () {
+        ESpageSize=$(this)[0].value;
+        ESpage=1;
+        getESRequest();
+    });
+    $("#inputHK").on("change",function () {
+        exam =$("#inputHK")[0].value;
+        getRequest();
+    });
+    $("#add_btn").on("click", function () {
+        $("#addModal").modal("show");
+        getESRequest();
+    });
+    $("#input_add").on('change', function () {
 
+    })
 });
 
 
-async function postReq_import(file){
-    let url="http://er-backend.sidz.tools/api/v1/students/";
-    let data=new FormData();
-    data.append("students",file);
+async function postReq_addExamSub(sub_id){
+    let url="http://er-backend.sidz.tools/api/v1/exam-subjects/exam/"+exam;
+    let data={
+        "subject_id": sub_id
+    };
     const postResponse= await fetch(url,{
         method: 'POST',
         headers: {
+            "Content-Type": "application/json",
             'token': window.localStorage.token,
         },
-        body: data
+        body: JSON.stringify(data)
     });
     let postRes=await postResponse.json();
     if (postRes["status"]==20){
-        $("#importModal").modal("hide");
         getRequest();
     }
     else{
-        $("#importModal").modal("hide");
         console.log(postRes["reason"]);
     }
 
@@ -173,15 +256,19 @@ async function getExam(){
         }
     });
     let res=await getExamRes.json();
-    let data = res.data.exams;
-    for (let i=data.count-1;i>=0;i--){
-        $('#inputHK').append('<option>'+data.rows[i].name+'</option>');
+    let Examdata = res.data.exams;
+    exam = +Examdata.rows[Examdata.count-1].id;
+    for (let i=Examdata.count-1;i>=0;i--){
+        let opt = "<option value='"+Examdata.rows[i].id+"'>"+Examdata.rows[i].name+"</option>";
+        $('#inputHK').append(opt);
     }
+    getRequest();
 }
 
 
+
 async function getRequest(){
-    let url=("http://er-backend.sidz.tools/api/v1/subject-classes/exam/"+exam +"/?page="+ page+"&pageSize="+ pageSize+"&keywords="+keywords);
+    let url=("http://er-backend.sidz.tools/api/v1/exam-subjects/exam/"+ exam +"/?page="+ page+"&pageSize="+ pageSize+"&keywords="+keywords);
     const getResponse= await fetch(url,{
         method: 'GET',
         mode: 'cors',
@@ -194,13 +281,13 @@ async function getRequest(){
     let getRes=await getResponse.json();
     if(getRes["status"]==20) {
         table.clear().draw();
-        let data = getRes.data.subject_classes;
+        let data = getRes.data.exam_subjects;
 
         for (var i = 0; i < data.rows.length; i++) {
             table.row.add([
                 (page-1)*pageSize+i+1,
                 data.rows[i].id,
-                data.rows[i].subject_id+" "+data.rows[i].class_number,
+                data.rows[i].subject_id,
                 data.rows[i].subject.name,
                 data.rows[i].subject.credit
             ]).draw(false);
@@ -210,7 +297,7 @@ async function getRequest(){
         paging();
 
         if (data.rows.length!=0) {
-            $("#subTable_info")[0].innerText = "Hiển thị từ " + (1 + (page - 1) * pageSize) + " đến " + ((page - 1) * pageSize + data.rows.length) + " của " + data.count + " lớp học phần.";
+            $("#subTable_info")[0].innerText = "Hiển thị từ " + (1 + (page - 1) * pageSize) + " đến " + ((page - 1) * pageSize + data.rows.length) + " của " + data.count + " môn thi.";
             $("#subTable_paginate").removeClass('d-none');
         }
         else {
@@ -223,7 +310,48 @@ async function getRequest(){
     }
 
 }
+async function getESRequest(){
+    let url=("http://er-backend.sidz.tools/api/v1/subjects?page="+ ESpage+"&pageSize="+ ESpageSize+"&keywords="+ESkeywords);
+    const getESResponse= await fetch(url,{
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'token': window.localStorage.token
+        }
+    });
+    let getESRes=await getESResponse.json();
+    if(getESRes["status"]==20) {
+        EStable.clear().draw();
+        let data = getESRes.data.subjectsInformation;
 
+        for (var i = 0; i < data.rows.length; i++) {
+            EStable.row.add([
+                (ESpage-1)*ESpageSize+i+1,
+                data.rows[i].subject_id,
+                data.rows[i].name,
+                data.rows[i].credit
+            ]).draw(false);
+        }
+        EStotal_page = data.count/ESpageSize;
+        EStotal_page = Math.ceil(+EStotal_page);
+        ESpaging();
+
+        if (data.rows.length!=0) {
+            $("#ExamSubjectAddingTable_info")[0].innerText = "Hiển thị từ " + (1 + (ESpage - 1) * ESpageSize) + " đến " + ((ESpage - 1) * ESpageSize + data.rows.length) + " của " + data.count + " môn thi.";
+            $("#ExamSubjectAddingTable_paginate").removeClass('d-none');
+        }
+        else {
+            $("#ExamSubjectAddingTable_info")[0].innerText = "";
+            $("#ExamSubjectAddingTable_paginate").addClass('d-none');
+        }
+    }
+    else {
+        console.log(getESRes['reason']);
+    }
+
+}
 async function delete_subjectClass() {
     let url="http://er-backend.sidz.tools/api/v1/subject-classes/"+del_subjectClass_id;
     const delResponse= await fetch(url,{
@@ -348,6 +476,78 @@ function paging() {
 function paging_click(page_id) {
     page=page_id;
     getRequest();
+}
+function ESpaging() {
+    if (EStotal_page==1){
+        $("#page_1").parent().removeClass('d-none');
+        $("#page_2").parent().removeClass('d-none');
+        $("#page_3").parent().removeClass('d-none');
+        $("#page_1")[0].innerText = 1;
+        $("#page_2").parent().addClass('d-none');
+        $("#page_3").parent().addClass('d-none');
+    }
+    if (EStotal_page==2){
+        $("#page_1").parent().removeClass('d-none');
+        $("#page_2").parent().removeClass('d-none');
+        $("#page_3").parent().removeClass('d-none');
+        $("#page_1")[0].innerText = 1;
+        $("#page_2")[0].innerText = 2;
+        $("#page_3").parent().addClass('d-none');
+    }
+    if (EStotal_page>2){
+        $("#page_1").parent().removeClass('d-none');
+        $("#page_2").parent().removeClass('d-none');
+        $("#page_3").parent().removeClass('d-none');
+    }
+    if (EStotal_page<1){
+        $("#page_1").parent().addClass('d-none');
+        $("#page_2").parent().addClass('d-none');
+        $("#page_3").parent().addClass('d-none');
+    }
+    if (ESpage==1){
+        $("#page_1").parent().removeClass('active');
+        $("#page_2").parent().removeClass('active');
+        $("#page_3").parent().removeClass('active');
+        $("#page_1").parent().addClass('active');
+        $("#page_1")[0].innerText = 1;
+        $("#page_2")[0].innerText = 2;
+        $("#page_3")[0].innerText = 3;
+    }
+    else {
+        if (ESpage == EStotal_page && EStotal_page!=2) {
+            $("#page_1").parent().removeClass('active');
+            $("#page_2").parent().removeClass('active');
+            $("#page_3").parent().removeClass('active');
+            $("#page_3").parent().addClass('active');
+            $("#page_1")[0].innerText = +ESpage-2;
+            $("#page_2")[0].innerText = +ESpage-1;
+            $("#page_3")[0].innerText = +ESpage;
+        }
+        else {
+            if (ESpage == EStotal_page && EStotal_page==2){
+                $("#page_1").parent().removeClass('active');
+                $("#page_2").parent().removeClass('active');
+                $("#page_3").parent().removeClass('active');
+                $("#page_2").parent().addClass('active');
+                $("#page_1")[0].innerText = + ESpage-1;
+                $("#page_2")[0].innerText = + ESpage;
+                $("#page_3")[0].innerText = + ESpage;
+            }
+            else {
+                $("#page_1").parent().removeClass('active');
+                $("#page_2").parent().removeClass('active');
+                $("#page_3").parent().removeClass('active');
+                $("#page_2").parent().addClass('active');
+                $("#page_1")[0].innerText = + ESpage - 1;
+                $("#page_2")[0].innerText = + ESpage;
+                $("#page_3")[0].innerText = + ESpage+1;
+            }
+        }
+    }
+}
+function ESpaging_click(page_id) {
+    ESpage=page_id;
+    getESRequest();
 }
 
 
