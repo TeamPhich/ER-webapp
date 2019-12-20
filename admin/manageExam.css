@@ -20,3 +20,6 @@ table tr td:first-child::before
 table tr td i{
     cursor: pointer;
 }
+.collapse-item{
+    padding-left: 45px!important;
+}

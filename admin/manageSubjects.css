@@ -26,3 +26,6 @@ table tr td:first-child::before
 .page-link{
     cursor: pointer;
 }
+.collapse-item{
+    padding-left: 45px!important;
+}
