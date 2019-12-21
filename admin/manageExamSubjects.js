@@ -16,15 +16,28 @@ var editField;
 var page=1;
 var pageSize=10;
 var keywords="";
-var ESpage=1;
-var ESpageSize=10;
-var ESkeywords="";
-var exam;
 var total_page;
+var exam_subject_id;
+var exam_subject;
+
+var ESpage=1;
+var ESpageSize=5;
+var ESkeywords="";
 var EStotal_page;
+var sub_id;
+
+var Vpage=1;
+var VpageSize=10;
+var Vkeywords="";
+var Vtotal_page;
+
+var exam;
+
+
 getExam();
+
 var del_subjectClass_id;
-var data_upd_subjectClass;
+var addedSub =[];
 $(document).ready(async function(){
 
     //customize table
@@ -35,6 +48,7 @@ $(document).ready(async function(){
         "searching": false,
         "ordering": false,
         "info": false,
+        "autoWidth": false,
         "columnDefs": [
             { "orderable": false, "targets": 'no-sort' }
         ],
@@ -43,8 +57,14 @@ $(document).ready(async function(){
             "targets": -1,
             'width':"1%", //auto fit
             "data": null,
-            "defaultContent": "<div class='d-flex'><button class=\"btn btn-info\" id='editBtn'><i class=\"far fa-edit\" ></i></button><button class=\"btn btn-danger ml-2\" id='deleteBtn'><i class=\"far fa-trash-alt\"></i></button></div>"
+            "defaultContent": "<div class='d-flex'><button style='width: 40px' class=\"btn btn-info\" id='importStdBtn'><i class=\"fas fa-clipboard-list\"></i></button><button style='width: 40px' class=\"btn btn-danger ml-2\" id='deleteBtn'><i class=\"far fa-trash-alt\"></i></button></div>"
         },
+            {
+                "targets": 5,
+                'width':"1%", //auto fit
+                "data": null,
+                "defaultContent": "<div class='d-flex'><button style='width: 45px' class=\"btn\" id='viewStdBtn'><i class=\"far fa-eye\"></i></button></div>"
+},
             {
                 "targets": 1,
                 "visible": false
@@ -55,8 +75,8 @@ $(document).ready(async function(){
                 "width": "1%" //auto fit
             },
             {
-                "targets": 4,
-                "width": "9%" //auto fit
+                "targets": -1,
+                "width": "15%" //auto fit
             },
             {
                 "targets": "_all",
@@ -69,6 +89,7 @@ $(document).ready(async function(){
         "lengthChange": false,
         "searching": false,
         "ordering": false,
+        "autoWidth": false,
         "info": false,
         "columnDefs": [
             { "orderable": false, "targets": 'no-sort' }
@@ -78,11 +99,7 @@ $(document).ready(async function(){
             "targets": -1,
             'width':"10%", //auto fit
             "data": null,
-            "defaultContent": "<div class=\"custom-control custom-checkbox\">\n" +
-                "    \n" +
-                "      <input type=\"checkbox\" class=\"custom-control-input\" id=\"customCheck\" name=\"example1\">\n" +
-                "      <label class=\"custom-control-label\" for=\"customCheck\"></label>\n" +
-                "    </div>"
+            "defaultContent": "<input type='checkbox'>"
         },
             {
                 "targets": 0,
@@ -97,6 +114,24 @@ $(document).ready(async function(){
                 className: 'align-middle'
             }],
     } );
+    Vtable = $("#viewTable").DataTable( {
+        retrieve: true,
+        "paging": false,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": false,
+        "info": false,
+        "autoWidth": false,
+        "columnDefs": [
+            {
+                "targets": "_all",
+                className: 'align-middle'
+            },{
+                "targets": 4,
+                'width':"20%", //auto fit
+            }],
+    } );
+
 
     //bat su kien nut xoa
     $('#subTable tbody').on( 'click', '#deleteBtn', function () {
@@ -106,66 +141,31 @@ $(document).ready(async function(){
         del_subjectClass_id = std_info[1];
         $("#del_info")[0].innerText = std_info[3] +"-"+ std_info[2];
     } );
-
-    //bat su kien nut edit
-    $('#subTable tbody').on( 'click', '#editBtn', function () {
-        $("#editModal").modal("show");
-        curRow = $(this).parents('tr');
-        editField = table.row(curRow).data();
-        $("#inputMLHP").val(editField[2]);
-        $("#inputLHP").val(editField[3]);
-        $("#inputSTC").val(editField[4]);
-    } );
-
-    //js print
-    // $("#printButton").on("click",function(){
-    //     newWin= window.open("");
-    //     newWin.document.write($('#subTable')[0].outerHTML);
-    //     $(newWin.document.getElementsByTagName("head")).append("<style>\n" +
-    //         "table {\n" +
-    //         "  font-family: arial, sans-serif;\n" +
-    //         "  border-collapse: collapse;\n" +
-    //         "  width: 100%;\n" +
-    //         "}\n" +
-    //         "\n" +
-    //         "td, th {\n" +
-    //         "  border: 1px solid #dddddd;\n" +
-    //         "  text-align: left;\n" +
-    //         "  padding: 8px;\n" +
-    //         "}\n" +
-    //         "\n" +
-    //         "tr:nth-child(even) {\n" +
-    //         "  background-color: #dddddd;\n" +
-    //         "}\n" +
-    //         "</style>");
-    //     newWin.print();
-    //     newWin.close();
-    // })
-
-    //js confirm and close modal
-    $("#confirmEditButton").on("click",function () {
-        data_upd_subjectClass={
-            "id": editField[1],
-            "new_mssv":$("#inputMSSV")[0].value,
-            "birthday": birthday,
-            "fullname":$("#inputHoten")[0].value,
-        };
-        updateStd();
-        $("#editModal").modal("hide");
-    });
-
-    //js import and comfirm
-    $("#importButton").on("click", function () {
-        $("#importModal").modal("show");
-    });
     $(".custom-file-input").on("change", function() {
         var fileName = $(this).val().split("\\").pop();
         $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
     });
 
+    //bat su kien nut import sinh vien
+    $('#subTable tbody').on( 'click', '#importStdBtn', function () {
+        $("#importStdModal").modal("show");
+        curRow = $(this).parents('tr');
+        exam_subject_id = table.row(curRow).data()[1];
+    } );
+    $('#subTable tbody').on( 'click', '#viewStdBtn', function () {
+        curRow = $(this).parent().parent();
+        exam_subject_id = table.row(curRow).data()[1];
+        exam_subject = table.row(curRow).data()[2]+"-"+table.row(curRow).data()[3];
+        $('#header_name')[0].innerText="Quản lý sinh viên môn "+exam_subject;
+        $("#viewModal").modal("show");
+        getStd();
+    } );
+
     $("#confirmImportModal").on("click",function () {
         postReq_import(document.getElementById("customFile").files[0]);
+        $("#importStdModal").modal("hide");
     });
+
 
     //searching
     $("#input_search").on('input', function () {
@@ -178,8 +178,14 @@ $(document).ready(async function(){
         ESpage=1;
         getESRequest();
     });
+    $("#input_viewTable_keywords").on('input', function () {
+        Vkeywords=$(this)[0].value;
+        Vpage=1;
+        getStd();
+    });
 
-
+    //paging
+    //subTable
     $("#subTable_previous").on("click",function () {
         if (page>1){
             page--;
@@ -197,6 +203,8 @@ $(document).ready(async function(){
         page=1;
         getRequest();
     });
+
+    //exam subject table
     $("#ExamSubjectAddingTable_previous").on("click",function () {
         if (ESpage>1){
             ESpage--;
@@ -214,24 +222,52 @@ $(document).ready(async function(){
         ESpage=1;
         getESRequest();
     });
+
+    //view table
+    $("#viewTable_previous").on("click",function () {
+        if (Vpage>1){
+            Vpage--;
+            getStd()
+        }
+    });
+    $("#viewTable_next").on("click",function () {
+        if (Vpage<Vtotal_page){
+            Vpage++;
+            getStd()
+        }
+    });
+    $('select[name="viewTable_length"]').on("change",function () {
+        VpageSize=$(this)[0].value;
+        Vpage=1;
+        getStd();
+    });
+
+    //xu ly học kỳ
     $("#inputHK").on("change",function () {
         exam =$("#inputHK")[0].value;
         getRequest();
     });
+
+    //thêm môn vào kỳ thi
     $("#add_btn").on("click", function () {
         $("#addModal").modal("show");
+        subQueue=[];
         getESRequest();
     });
-    $("#input_add").on('change', function () {
+    $('#ExamSubjectAddingTable tbody').on( 'click', ':checkbox', function () {
+       curRow = $(this).parent().parent();
+       sub_id = EStable.row(curRow).data()[1];
+       addOrRemoveSub(sub_id);
+    } );
 
-    })
+
 });
 
 
-async function postReq_addExamSub(sub_id){
+async function postReq_addExamSub(){
     let url="http://er-backend.sidz.tools/api/v1/exam-subjects/exam/"+exam;
     let data={
-        "subject_id": sub_id
+        "subjects": subQueue
     };
     const postResponse= await fetch(url,{
         method: 'POST',
@@ -242,11 +278,36 @@ async function postReq_addExamSub(sub_id){
         body: JSON.stringify(data)
     });
     let postRes=await postResponse.json();
+
     if (postRes["status"]==20){
+        window.alert("Thành công");
+        getRequest();
+    }
+    else
+        window.alert(postRes["reason"]);
+
+}
+
+async function postReq_import(file){
+    let url="http://er-backend.sidz.tools/api/v1/exam-subjects/"+exam_subject_id+"/students";
+    let data=new FormData();
+    data.append("students",file);
+    const postResponse= await fetch(url,{
+        method: 'POST',
+        headers: {
+            'token': window.localStorage.token,
+        },
+        body: data
+    });
+    let postRes=await postResponse.json();
+    if (postRes["status"]==20){
+        $("#importModal").modal("hide");
+        window.alert("Thành công");
         getRequest();
     }
     else{
-        console.log(postRes["reason"]);
+        $("#importModal").modal("hide");
+        window.alert(postRes['reason']);
     }
 
 }
@@ -288,6 +349,7 @@ async function getRequest(){
         let data = getRes.data.exam_subjects;
 
         for (var i = 0; i < data.rows.length; i++) {
+            addedSub.push(data.rows[i].subject_id);
             table.row.add([
                 (page-1)*pageSize+i+1,
                 data.rows[i].id,
@@ -315,7 +377,7 @@ async function getRequest(){
 
 }
 async function getESRequest(){
-    let url=("http://er-backend.sidz.tools/api/v1/subjects?page="+ ESpage+"&pageSize="+ ESpageSize+"&keywords="+ESkeywords);
+    let url=("http://er-backend.sidz.tools/api/v1/exam-subjects/exam/"+exam+"/subjects?page="+ ESpage+"&pageSize="+ ESpageSize+"&keywords="+ESkeywords);
     const getESResponse= await fetch(url,{
         method: 'GET',
         mode: 'cors',
@@ -329,21 +391,22 @@ async function getESRequest(){
     if(getESRes["status"]==20) {
         EStable.clear().draw();
         let data = getESRes.data.subjectsInformation;
-
         for (var i = 0; i < data.rows.length; i++) {
-            EStable.row.add([
-                (ESpage-1)*ESpageSize+i+1,
-                data.rows[i].subject_id,
-                data.rows[i].name,
-                data.rows[i].credit
-            ]).draw(false);
+            {
+                EStable.row.add([
+                    (ESpage-1)*ESpageSize+i+1,
+                    data.rows[i].subject_id,
+                    data.rows[i].name,
+                    data.rows[i].credit
+                ]).draw(false);
+                console.log(EStable.row.addClass())
+            }
         }
         EStotal_page = data.count/ESpageSize;
         EStotal_page = Math.ceil(+EStotal_page);
         ESpaging();
-
         if (data.rows.length!=0) {
-            $("#ExamSubjectAddingTable_info")[0].innerText = "Hiển thị từ " + (1 + (ESpage - 1) * ESpageSize) + " đến " + ((ESpage - 1) * ESpageSize + data.rows.length) + " của " + data.count + " môn thi.";
+            $("#ExamSubjectAddingTable_info")[0].innerText = "Hiển thị từ " + (1 + (ESpage - 1) * ESpageSize) + " đến " + ((ESpage - 1) * ESpageSize + data.rows.length) + " của " + (data.count) + " môn thi.";
             $("#ExamSubjectAddingTable_paginate").removeClass('d-none');
         }
         else {
@@ -356,6 +419,54 @@ async function getESRequest(){
     }
 
 }
+
+async function getStd(){
+    let url=("http://er-backend.sidz.tools/api/v1/exam-subjects/"+exam_subject_id+"/students?page="+Vpage+"&pageSize="+VpageSize+"&keywords="+Vkeywords);
+    const getResponse= await fetch(url,{
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'token': window.localStorage.token
+        }
+    });
+    let getRes=await getResponse.json();
+    if(getRes["status"]==20) {
+        Vtable.clear().draw();
+        let data = getRes.data.studentsExamSubject;
+
+        for (var i = 0; i < data.rows.length; i++) {
+            if (data.rows[i].enoughCondition)
+                cond = "Đủ điều kiện dự thi"
+            else
+                cond = "Không đủ điều kiện dự thi"
+            Vtable.row.add([
+                (Vpage-1)*VpageSize+i+1,
+                data.rows[i].account.user_name,
+                data.rows[i].account.fullname,
+                convertTime(data.rows[i].account.birthday),
+                cond,
+            ]).draw(false);
+        }
+        Vtotal_page = data.count/VpageSize;
+        Vtotal_page = Math.ceil(+Vtotal_page);
+        Vpaging();
+        if (data.rows.length!=0) {
+            $("#viewTable_info")[0].innerText = "Hiển thị từ " + (1 + (Vpage - 1) * VpageSize) + " đến " + ((Vpage - 1) * VpageSize + data.rows.length) + " của " + data.count + " sinh viên.";
+            $("#viewTable_paginate").removeClass('d-none');
+        }
+        else {
+            $("#viewTable_info")[0].innerText = "";
+            $("#viewTable_paginate").addClass('d-none');
+        }
+    }
+    else {
+        console.log(getRes['reason']);
+    }
+
+}
+
 async function delete_subjectClass() {
     let url="http://er-backend.sidz.tools/api/v1/subject-classes/"+del_subjectClass_id;
     const delResponse= await fetch(url,{
@@ -374,25 +485,6 @@ async function delete_subjectClass() {
     getRequest();
 }
 
-async function updateStd() {
-    let url="http://er-backend.sidz.tools/api/v1/students/";
-    const updResponse= await fetch(url,{
-        method: 'PUT',
-        mode: 'cors',
-        cache: 'no-cache',
-        credentials: 'same-origin',
-        headers: {
-            'token': window.localStorage.token,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data_upd_std)
-    });
-    let updRes = await updResponse.json();
-    if (updRes['status'!=20]){
-        console.log(updRes['reason']);
-    }
-    getRequest();
-}
 
 function convertTime(unixtimestamp){
     // Convert timestamp to milliseconds
@@ -543,16 +635,106 @@ function ESpaging() {
                 $("#page_3").parent().removeClass('active');
                 $("#page_2").parent().addClass('active');
                 $("#page_1")[0].innerText = + ESpage - 1;
-                $("#page_2")[0].innerText = + ESpage;
+                $("#page_y")[0].innerText = + ESpage;
                 $("#page_3")[0].innerText = + ESpage+1;
             }
         }
     }
 }
+
 function ESpaging_click(page_id) {
     ESpage=page_id;
     getESRequest();
 }
+function Vpaging() {
+    if (Vtotal_page==1){
+        $("#page_x").parent().removeClass('d-none');
+        $("#page_y").parent().removeClass('d-none');
+        $("#page_z").parent().removeClass('d-none');
+        $("#page_x")[0].innerText = 1;
+        $("#page_y").parent().addClass('d-none');
+        $("#page_z").parent().addClass('d-none');
+    }
+    if (Vtotal_page==2){
+        $("#page_x").parent().removeClass('d-none');
+        $("#page_y").parent().removeClass('d-none');
+        $("#page_z").parent().removeClass('d-none');
+        $("#page_x")[0].innerText = 1;
+        $("#page_y")[0].innerText = 2;
+        $("#page_z").parent().addClass('d-none');
+    }
+    if (Vtotal_page>2){
+        $("#page_x").parent().removeClass('d-none');
+        $("#page_y").parent().removeClass('d-none');
+        $("#page_z").parent().removeClass('d-none');
+    }
+    if (Vtotal_page<1){
+        $("#page_x").parent().addClass('d-none');
+        $("#page_y").parent().addClass('d-none');
+        $("#page_z").parent().addClass('d-none');
+    }
+    if (Vpage==1){
+        $("#page_x").parent().removeClass('active');
+        $("#page_y").parent().removeClass('active');
+        $("#page_z").parent().removeClass('active');
+        $("#page_x").parent().addClass('active');
+        $("#page_x")[0].innerText = 1;
+        $("#page_y")[0].innerText = 2;
+        $("#page_z")[0].innerText = 3;
+    }
+    else {
+        if (Vpage == Vtotal_page && Vtotal_page!=2) {
+            $("#page_x").parent().removeClass('active');
+            $("#page_y").parent().removeClass('active');
+            $("#page_z").parent().removeClass('active');
+            $("#page_z").parent().addClass('active');
+            $("#page_x")[0].innerText = +ESpage-2;
+            $("#page_y")[0].innerText = +ESpage-1;
+            $("#page_z")[0].innerText = +ESpage;
+        }
+        else {
+            if (Vpage == Vtotal_page && Vtotal_page==2){
+                $("#page_x").parent().removeClass('active');
+                $("#page_y").parent().removeClass('active');
+                $("#page_z").parent().removeClass('active');
+                $("#page_y").parent().addClass('active');
+                $("#page_x")[0].innerText = + Vpage-1;
+                $("#page_y")[0].innerText = + Vpage;
+                $("#page_z")[0].innerText = + Vpage;
+            }
+            else {
+                $("#page_x").parent().removeClass('active');
+                $("#page_y").parent().removeClass('active');
+                $("#page_z").parent().removeClass('active');
+                $("#page_y").parent().addClass('active');
+                $("#page_x")[0].innerText = + Vpage - 1;
+                $("#page_y")[0].innerText = + Vpage;
+                $("#page_z")[0].innerText = + Vpage+1;
+            }
+        }
+    }
+}
+function Vpaging_click(page_id) {
+    Vpage=page_id;
+    getSTd();
+}
+var subQueue=[];
+function addOrRemoveSub(sub_id) {
+    console.log(sub_id);
+    if (jQuery.inArray(sub_id,subQueue)==-1){
+        subQueue.push(sub_id);
+    }
+    else {
+        for (var i=0;i<subQueue.length;i++){
+            if(subQueue[i]==sub_id){
+                subQueue.splice(i,1);
+                break;
+            }
+        }
+    }
+    console.log(subQueue);
+}
+
 
 
 

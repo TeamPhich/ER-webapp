@@ -168,6 +168,7 @@
                                     <th>Mã môn</th>
                                     <th>Môn</th>
                                     <th>Số tín chỉ</th>
+                                    <th>DSSV</th>
                                     <th>#</th>
                                 </tr>
                                 </thead>
@@ -176,7 +177,6 @@
 
                                 </tbody>
                             </table>
-                            <button class="mt-0 table-bordered border w-100" style="background-color: white" id="add_btn"><i class="far fa-plus-square"></i></button>
                             <div class="row w-100 m-0 mt-3">
                                 <div class="col-sm-18 col-md-7">
                                     <p id="subTable_info"></p>
@@ -211,10 +211,11 @@
 
                     </div>
                     <div class="card-footer">
-                        <div class="float-right">
-                            <button class="btn btn-primary" id="confirmButton" onclick="getRequest()">Ghi nhận</button>
-
+                        <div class="d-flex text-white">
+                            <button class="btn-primary btn  d-flex justify-content-start" id="add_btn"><i class="fas fa-plus mt-1"></i><p class="mb-0 ml-2">Thêm môn thi mới</p></button>
+                            <button class="btn btn-primary ml-auto d-flex justify-content-end" id="confirmButton" onclick="getRequest()">Ghi nhận</button>
                         </div>
+
                     </div>
                 </div>
 
@@ -265,6 +266,94 @@
     </div>
 </div>
 
+<!-- view std Modal-->
+<div class="modal fade bd-example-modal-lg" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="table" style="width: 75%!important;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="header_name"></h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row w-100 m-0">
+                        <div class="col-md-6">
+                            <div class="d-flex" id="viewTable_length">
+                                <div class="mt-1">
+                                    <label>Hiển thị:</label>
+                                </div>
+                                <div class="ml-2 mr-2">
+                                    <select name="viewTable_length" class="custom-select custom-select-sm form-control form-control-sm">
+                                        <option name="optionPageSize" value="10">10</option>
+                                        <option name="optionPageSize" value="20">20</option>
+                                        <option name="optionPageSize" value="40">10</option>
+                                    </select>
+                                </div>
+                                <div class="mt-1">
+                                    <label>hàng</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 p-0">
+                            <div id="viewTable_filter" class="dataTables_filter d-flex justify-content-end">
+                                <div class="mt-1"><label>Tìm kiếm:</label></div>
+                                <div class="ml-2"><input type="search" class="form-control form-control-sm" placeholder="Nhập MSSV" id="input_viewTable_keywords"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <table id="viewTable" class="table table-bordered p-0 table-striped my-table w-100"style="color: black; text-align:center;">
+
+                        <thead class="thead-dark">
+                        <tr>
+                            <th class="no-sort">Stt</th>
+                            <th>MSSV</th>
+                            <th>Họ tên</th>
+                            <th>Ngày sinh</th>
+                            <th>Điều kiện dự thi</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                    <div class="row w-100 m-0 mt-3">
+                        <div class="col-sm-18 col-md-7">
+                            <p id="viewTable_info"></p>
+                        </div>
+                        <div class="col-sm-6 col-md-5 d-flex justify-content-end p-0 clickable">
+                            <div class="dataTables_paginate paging_simple_numbers" id="viewTable_paginate">
+                                <ul class="pagination m-0" id="viewTable_paging">
+                                    <li class="paginate_button page-item previous" id="viewTable_previous">
+                                        <a class="page-link">
+                                            <i class="fas fa-angle-double-left clickable"></i>
+                                        </a>
+                                    </li>
+                                    <li class="paginate_button page-item d-none">
+                                        <a class="page-link" id="page_x" onclick="Vpaging_click(this.innerText)"></a>
+                                    </li>
+                                    <li class="paginate_button page-item d-none">
+                                        <a class="page-link" id="page_y" onclick="Vpaging_click(this.innerText)"></a>
+                                    </li>
+                                    <li class="paginate_button page-item d-none">
+                                        <a class="page-link" id="page_z" onclick="Vpaging_click(this.innerText)"></a>
+                                    </li>
+                                    <li class="paginate_button page-item next" id="viewTable_next">
+                                        <a class="page-link">
+                                            <i class="fas fa-angle-double-right clickable"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- add Modal-->
 <div class="modal fade bd-example-modal-lg" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="table" style="width: 75%!important;">
@@ -285,9 +374,9 @@
                                 </div>
                                 <div class="ml-2 mr-2">
                                     <select name="ExamSubjectAddingTable_length" aria-controls="subTable" class="custom-select custom-select-sm form-control form-control-sm">
+                                        <option name="optionPageSize" value="5">5</option>
                                         <option name="optionPageSize" value="10">10</option>
-                                        <option name="optionPageSize" value="25">25</option>
-                                        <option name="optionPageSize" value="50">50</option>
+                                        <option name="optionPageSize" value="15">15</option>
                                     </select>
                                 </div>
                                 <div class="mt-1">
@@ -348,7 +437,7 @@
                             </div>
                         </div>
                     </div>
-                    <button class="btn btn-primary float-right mt-3" type="button" data-dismiss="modal">Ghi nhận</button>
+                    <button class="btn btn-primary float-right mt-3" type="button" data-dismiss="modal" onclick="postReq_addExamSub()">Ghi nhận</button>
                 </form>
             </div>
         </div>
@@ -356,34 +445,25 @@
 </div>
 
 
-<!--edit modal-->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="headerModal" aria-hidden="true">
+
+<!--import add modal-->
+<div class="modal fade" id="importStdModal" tabindex="-1" role="dialog" aria-labelledby="headerModal" aria-hidden="true">
     <div class="modal-dialog " role="document">
         <div class="modal-content"style="width: 700px;margin-left: -100px!important;">
             <div class="modal-header">
-                <h5 class="modal-title" id="headerModal" style="color:black">Chỉnh sửa thông tin môn thi</h5>
+                <h5 class="modal-title" id="headerModal" style="color:black">Thêm danh sách sinh viên cho môn thi</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal">
-                    <div class="form-group">
-                        <label for="inputMLHP">Mã môn</label>
-                        <input type="text"class="form-control" id="inputMLHP">
+                <form>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="customFile">
+                        <label class="custom-file-label" for="customFile">Choose file</label>
                     </div>
-                    <div class="form-group">
-                        <label for="inputLHP">Môn</label>
-                        <input type="text"class="form-control" id="inputLHP">
-                    </div>
-                    <div class="form-group">
-                        <label for="inputSTC">Số tín chỉ</label>
-                        <input type="text"class="form-control" id="inputSTC">
-                    </div>
+                    <button class="btn btn-primary float-right" id="confirmImportModal" type="button" style="margin-top: 1rem">Ghi nhận</button>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary" data-dismiss="modal" id="confirmEditButton">Xác nhận</button>
             </div>
         </div>
     </div>
