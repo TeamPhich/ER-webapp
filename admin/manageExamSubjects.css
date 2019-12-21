@@ -2,5 +2,9 @@
     cursor: pointer;
 }
 .unavailable{
-    background: #ffbec1;
+    background: #ffbec1!important;
+
+}
+.collapse-item{
+    padding-left: 45px!important;
 }

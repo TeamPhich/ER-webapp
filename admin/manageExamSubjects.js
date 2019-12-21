@@ -36,7 +36,7 @@ var exam;
 
 getExam();
 
-var del_subjectClass_id;
+var del_examSubject_id;
 var addedSub =[];
 $(document).ready(async function(){
 
@@ -73,6 +73,10 @@ $(document).ready(async function(){
             {
                 "targets": 0,
                 "width": "1%" //auto fit
+            },
+            {
+                "targets": 4,
+                "width": "10%" //auto fit
             },
             {
                 "targets": -1,
@@ -137,10 +141,12 @@ $(document).ready(async function(){
     $('#subTable tbody').on( 'click', '#deleteBtn', function () {
         $("#delModal").modal("show");
         curRow = $(this).parents('tr');
-        std_info = table.row(curRow).data();
-        del_subjectClass_id = std_info[1];
-        $("#del_info")[0].innerText = std_info[3] +"-"+ std_info[2];
+        examSubject_info = table.row(curRow).data();
+        del_examSubject_id = examSubject_info[1];
+        $("#del_info")[0].innerText = examSubject_info[3] +"-"+ examSubject_info[2];
     } );
+
+
     $(".custom-file-input").on("change", function() {
         var fileName = $(this).val().split("\\").pop();
         $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
@@ -253,14 +259,16 @@ $(document).ready(async function(){
         $("#addModal").modal("show");
         subQueue=[];
         getESRequest();
+
     });
-    $('#ExamSubjectAddingTable tbody').on( 'click', ':checkbox', function () {
+    $('#ExamSubjectAddingTable tbody').on( 'change', ':checkbox', function () {
        curRow = $(this).parent().parent();
        sub_id = EStable.row(curRow).data()[1];
        addOrRemoveSub(sub_id);
     } );
-
-
+    $('#ExamSubjectAddingTable input[type="checkbox"]').click(function() {
+        console.log('suggested-in-comment', 'click');
+    });
 });
 
 
@@ -393,15 +401,26 @@ async function getESRequest(){
         let data = getESRes.data.subjectsInformation;
         for (var i = 0; i < data.rows.length; i++) {
             {
-                EStable.row.add([
+                currentRow = EStable.row;
+                currentRow.add([
                     (ESpage-1)*ESpageSize+i+1,
                     data.rows[i].subject_id,
                     data.rows[i].name,
                     data.rows[i].credit
                 ]).draw(false);
-                console.log(EStable.row.addClass())
+                if (data.rows[i].exam_subjects.length!=0){
+                    EStable.rows( i )
+                        .nodes()
+                        .to$()
+                        .addClass( 'unavailable' );
+                    EStable.rows( i)
+                        .nodes()
+                        .to$()
+                        .children().children().prop({"checked":true,'disabled':true});
+                }
             }
         }
+
         EStotal_page = data.count/ESpageSize;
         EStotal_page = Math.ceil(+EStotal_page);
         ESpaging();
@@ -467,8 +486,8 @@ async function getStd(){
 
 }
 
-async function delete_subjectClass() {
-    let url="http://er-backend.sidz.tools/api/v1/subject-classes/"+del_subjectClass_id;
+async function delete_examSubject() {
+    let url="http://er-backend.sidz.tools/api/v1/exam-subjects/"+del_examSubject_id;
     const delResponse= await fetch(url,{
         method: 'DELETE',
         mode: 'cors',
@@ -479,9 +498,11 @@ async function delete_subjectClass() {
         }
     });
     let delRes = await delResponse.json();
-    if (delRes['status'!=20]){
-        console.log(delRes['reason']);
+    if (delRes['status']==20){
+        window.alert("Thành công");
     }
+    else
+        window.alert(delRes['reason']);
     getRequest();
 }
 
@@ -720,7 +741,6 @@ function Vpaging_click(page_id) {
 }
 var subQueue=[];
 function addOrRemoveSub(sub_id) {
-    console.log(sub_id);
     if (jQuery.inArray(sub_id,subQueue)==-1){
         subQueue.push(sub_id);
     }
@@ -732,7 +752,7 @@ function addOrRemoveSub(sub_id) {
             }
         }
     }
-    console.log(subQueue);
+
 }
 
 
