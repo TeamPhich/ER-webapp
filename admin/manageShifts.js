@@ -14,10 +14,13 @@ var page=1;
 var pageSize=10;
 var length;
 var pageNumber;
+var pageNumberSub;
 var keywords="";
+var pageSub;
+var pageSizeSub=10;
 $(document).ready(async function() {
     //js load data subject
-    await getRooms();
+    await getShifts();
     getPageNumber();
     //js show add modal
     $("#addButton").on("click",function () {
@@ -47,10 +50,12 @@ $(document).ready(async function() {
         if(res["status"]==20){
             let addRom="<tr><td></td><td>" + $("#inputPhong").val()
                 + "</td><td>" + $("#inputSoMay").val()
+                + "</td><td>"
+                + "</td><td>"
                 + "</td><td class='no-sort'><div class='d-flex'><button class=\"btn btn-info\"><i class=\"far fa-edit\" ></i></button><button class=\"btn btn-danger\"><i class=\"far fa-trash-alt\"></i></button></div></td></tr>";
             $("#subTable>tbody").append(addRom);
             $("#addModal").modal("hide");
-            await getRooms();
+            await getShifts();
             getPageNumber()
         }
         else {
@@ -79,7 +84,7 @@ $(document).ready(async function() {
             let res = await resDelete.json();
             if(res["status"]==20){
                 subject.remove();
-                await getRooms()
+                await getShifts()
                 getPageNumber();
             }
         })
@@ -127,17 +132,20 @@ $(document).ready(async function() {
     $('select[name="subTable_length"]').on("change",async function () {
         pageSize=$(this)[0].value;
         console.log(pageSize);
-        await getRooms();
+        await getShifts();
         getPageNumber();
     });
     $("#input_search").on('input', async function () {
         keywords=$(this)[0].value;
         page=1;
-        await getRooms();
+        await getShifts();
         getPageNumber();
     })
+    $('#subTable tbody').on( 'click','.btn-secondary',function () {
+        $("#addSubjectModal").modal("show");
+    })
 });
-async function getRooms() {
+async function getShifts() {
     let url=("http://er-backend.sidz.tools/api/v1/exams/?page="+page+"&pageSize="+pageSize+"&keywords="+keywords);
     const response = await fetch(url,{
         method: 'GET',
@@ -151,14 +159,16 @@ async function getRooms() {
     });
     let res = await response.json();
     length=res['data']['exams']["count"];
-    var datatbody;
+    let datatbody;
     if(res["status"]==20) {
         $("#subTable tbody tr").remove();
         for (var i = 0; i < res['data']['exams']["rows"].length; i++) {
             let stt=(page-1)*pageSize+i+1;
             datatbody += "<tr><td>"+stt+"</td><td>" + res['data']['exams']["rows"][i]['id']
-                + "</td><td>" + res['data']['exams']["rows"][i]['name']
-                + "</td><td class='no-sort'><div class='d-flex'><button class=\"btn btn-info\"><i class=\"far fa-edit\" ></i></button><button class=\"btn btn-danger\"><i class=\"far fa-trash-alt\"></i></button></div></td></tr>";
+                + "</td><td>"
+                + "</td><td>"
+                + "</td><td class='no-sort-1'> <div class='d-flex justify-content-center'><button class='btn btn-secondary showSubject'><i class='far fa-eye'></i> </button></div>"
+                + "</td><td class='no-sort'><div class='d-flex '><button class=\"btn btn-info\"><i class=\"far fa-edit\" ></i></button><button class=\"btn btn-danger\"><i class=\"far fa-trash-alt\"></i></button></div></td></tr>";
         }
         $("#subTable>tbody").append(datatbody)
         $("#subTable_info")[0].innerText = "Hiển thị từ " + (1 + (page - 1) * pageSize) + " đến " + ((page - 1) * pageSize + res['data']['exams']["rows"].length) + " của " + length + " kỳ thi.";
@@ -172,7 +182,7 @@ async function getPageNumber(){
     for (let i = 0; i < Math.ceil(pageNumber); i++) {
         num = 1+i;
         if(num==1){
-            syntaxPage += "</div><li class=\"paginate_button page-item active\">"
+            syntaxPage += "</div><li class=\"paginate_button page-item active page_active\">"
                 + "<a class=\"page-link\"id='"+num+"' name='new' onclick='activePage(this)'>" + num + "</a>"
                 + "</li>"
         }
@@ -187,28 +197,84 @@ async function getPageNumber(){
 
 }
 async function activePage(e) {
-    $(".active").removeClass('active');
-    e.parentNode.className+=' active';
+    $(".page_active").removeClass('active');
+    $(".page_active").removeClass('page_active');
+    e.parentNode.className+=' active page_active';
     page=e.firstChild.nodeValue;
-    getRooms();
+    getShifts();
 }
 async function previousPage() {
-    let elementPrev= $(".active").prev();
-    if($(".active")[0].childNodes[0].firstChild.nodeValue>1){
-        $(".active").removeClass('active');
-        elementPrev[0].className+=" active";
+    let elementPrev= $(".page_active").prev();
+    if($(".page_active")[0].childNodes[0].firstChild.nodeValue>1){
+        $(".page_active").removeClass('active');
+        $(".page_active").removeClass('page_active');
+        elementPrev[0].className+=" active page_active";
         page= elementPrev[0].childNodes[0].firstChild.nodeValue;
-        getRooms();
+        getShifts();
     }
 }
 async function nexPage() {
     let elementNext;
-    elementNext= $(".active").next();
-    if($(".active")[0].childNodes[0].firstChild.nodeValue <pageNumber){
-        $(".active").removeClass('active');
-        elementNext[0].className+=" active";
+    elementNext= $(".page_active").next();
+    if($(".page_active")[0].childNodes[0].firstChild.nodeValue <pageNumber){
+        $(".page_active").removeClass('active');
+        $(".page_active").removeClass('page_active');
+        elementNext[0].className+=" active page_active";
         page= elementNext[0].childNodes[0].firstChild.nodeValue;
-        getRooms();
+        getShifts();
     }
+
+}
+<!--modal add subject-->
+
+async function getSubject() {
+    let url=("http://er-backend.sidz.tools/api/v1/subjects?page="+ ESpage+"&pageSize="+ ESpageSize+"&keywords="+ESkeywords);
+    const getESResponse= await fetch(url,{
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'token': window.localStorage.token
+        }
+    });
+    let res=await getESResponse.json();
+    lengthSub=res['data']['exam_subjects']["count"];
+    var datatbody;
+    if(res["status"]==20) {
+        $("#addSubjectTable tbody tr").remove();
+        for (var i = 0; i < res['data']['exam_subjects']["rows"].length; i++) {
+            let stt=(pageSub-1)*pageSizeSub+i+1;
+            datatbody += "<tr><td>"+stt+"</td><td>" + res['data']['exam_subjects']["rows"][i]['subject_id']
+                + "</td><td>" + res['data']['exam_subjects']["rows"][i]['name']
+                + "</td><td>" + res['data']['exam_subjects']["rows"][i]['credit']
+                + "</td><td class='no-sort'><div class='d-flex'><button class=\"btn btn-info\"><i class=\"far fa-edit\" ></i></button><button class=\"btn btn-danger\"><i class=\"far fa-trash-alt\"></i></button></div></td></tr>";
+        }
+        $("#addSubjectTable>tbody").append(datatbody)
+        $("#addSubjectModal_info")[0].innerText = "Hiển thị từ " + (1 + (pageSub - 1) * pageSizeSub) + " đến " + ((pageSub - 1) * pageSizeSub+ res['data']['exam_subjects']["rows"].length) + " của " + lengthSub + " môn.";
+
+    }
+
+}
+async function getPageNumberSubject(){
+    pageNumberSub=lengthSub/pageSizeSub;
+    let num;
+    let syntaxPage="";
+    $("[name='new']").remove();
+    for (let i = 0; i < Math.ceil(pageNumber); i++) {
+        num = 1+i;
+        if(num==1){
+            syntaxPage += "</div><li class=\"paginate_button page-item active page_active\">"
+                + "<a class=\"page-link\"id='"+num+"' name='new' onclick='activePage(this)'>" + num + "</a>"
+                + "</li>"
+        }
+        else{
+            syntaxPage += "</div><li class=\"paginate_button page-item\">"
+                + "<a class=\"page-link\"id='"+num+"' name='new' onclick='activePage(this)'>" + num + "</a>"
+                + "</li>"
+        }
+
+    }
+    $(".previous").after(syntaxPage);
 
 }

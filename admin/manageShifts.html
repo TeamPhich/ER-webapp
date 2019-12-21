@@ -14,9 +14,7 @@
 
     <!-- Custom styles for this template-->
     <link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap.css">
-    <link rel="stylesheet" href="manageStudents.css">
-    <link rel="stylesheet" href="manageSubjects.css">
-    <link rel="stylesheet" href="manageRooms.css">
+    <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="manageShifts.css">
     <!--    <link rel="stylesheet" href="../vendor/datatables/datatables.css">-->
 
@@ -163,9 +161,10 @@
                                 <thead class="thead-dark">
                                 <tr>
                                     <th>Stt</th>
-                                    <th>Ca</th>
+                                    <th>Ngày Thi</th>
                                     <th>Bắt đầu</th>
                                     <th>Kết thúc</th>
+                                    <th>Môn & phòng</th>
                                     <th style="width: 8%">#</th>
                                 </tr>
                                 </thead>
@@ -230,12 +229,12 @@
         </div>
     </div>
 </div>
-<!--add rom modal-->
+<!--add shifts modal-->
 <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="headerAddModal" aria-hidden="true">
     <div class="modal-dialog " role="document">
         <div class="modal-content"style="width: 700px;margin-left: -100px!important;">
             <div class="modal-header">
-                <h5 class="modal-title" id="headerAddModal" style="color:black">Thêm môn học</h5>
+                <h5 class="modal-title" id="headerAddModal" style="color:black">Thêm khung giờ</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -243,12 +242,16 @@
             <div class="modal-body">
                 <form class="form-horizontal">
                     <div class="form-group">
-                        <label for="inputPhong">Phòng</label>
-                        <input type="text"class="form-control" id="inputPhong">
+                        <label for="inputNgay">Ngay thi</label>
+                        <input dataformatas="dd/mm/yyyy" type="date"class="form-control" id="inputNgay">
                     </div>
                     <div class="form-group">
-                        <label for="inputSoMay">Số máy</label>
-                        <input type="text"class="form-control" id="inputSoMay">
+                        <label for="inputBatDau">Bắt đầu</label>
+                        <input dataformatas="hh:mm"type="time"class="form-control" id="inputBatDau">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputKetThuc">Kết Thúc</label>
+                        <input dataformatas="hh:mm" type="time"class="form-control" id="inputKetThuc">
                     </div>
                 </form>
             </div>
@@ -258,7 +261,7 @@
         </div>
     </div>
 </div>
-<!--edit subject modal-->
+<!--edit shifts modal-->
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="headerModal" aria-hidden="true">
     <div class="modal-dialog " role="document">
         <div class="modal-content"style="width: 700px;margin-left: -100px!important;">
@@ -282,6 +285,57 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary" type="button" id="confirmEditButton">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- add subject and room modal-->
+<div class="modal fade" id="addSubjectModal" tabindex="-1" role="dialog" aria-labelledby="headerModal" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content"style="width: 700px;margin-left: -100px!important;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="headerModalShow" style="color:black">Chỉnh sửa thông tin Môn thi</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table id="addSubjectTable" class="table table-bordered p-0 table-striped my-table"style="color: black; text-align:center;">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>Stt</th>
+                        <th>Môn thi</th>
+                        <th>Phòng thi</th>
+                        <th style="width: 8%">#</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                <div class="row w-100 m-0 mt-3">
+                    <div class="col-sm-12 col-md-5">
+                        <p id="addSubjectTable_info"></p>
+                    </div>
+                    <div class="col-sm-12 col-md-7 d-flex justify-content-end p-0">
+                        <div class="dataTables_paginate paging_simple_numbers" id="addSubjectTable_paginate">
+                            <ul class="pagination m-0">
+                                <li class="paginate_button page-item previous disabled" id="addSubjectTable_previous"onclick="previousPage()" style="cursor: pointer">
+                                    <a class="page-link">
+                                        <i class="fas fa-angle-double-left clickable"></i>
+                                    </a>
+                                </li>
+                                <li class="paginate_button page-item next disabled" id="addSubjectTable_next"onclick="nexPage()" style="cursor: pointer">
+                                    <a class="page-link" >
+                                        <i class="fas fa-angle-double-right clickable"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="button" id="confirmAddSubject">Confirm</button>
             </div>
         </div>
     </div>

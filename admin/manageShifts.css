@@ -23,6 +23,9 @@ table tr td:first-child::before
 .no-sort{
     width: 8%;
 }
+.no-sort-1{
+    width: 13%;
+}
 .page-link{
     cursor: pointer;
 }
