@@ -17,7 +17,7 @@ var pageNumber;
 var keywords="";
 $(document).ready(async function() {
     //js load data subject
-    await getExam();
+    await getRooms();
     getPageNumber();
     //js show add modal
     $("#addButton").on("click",function () {
@@ -25,10 +25,10 @@ $(document).ready(async function() {
     });
     //js confirm and close add modal
     $("#confirmAddButton").on("click",async function () {
-        let urlCreate="http://er-backend.sidz.tools/api/v1/exams//";
+        let urlCreate="http://er-backend.sidz.tools/api/v1/exams/";
         let dataCreate={
-            "id": $("#inputMaKy").val(),
-            "name":$("#inputTenKy").val()
+            "name": $("#inputPhong").val(),
+            "slot":$("#inputSoMay").val()
         }
         const resCreate= await fetch(urlCreate,{
             method: 'POST',
@@ -45,28 +45,28 @@ $(document).ready(async function() {
         console.log(res)
         //location.reload();
         if(res["status"]==20){
-            let addSubject="<tr><td></td><td>" + $("#inputMaKy").val()
-                + "</td><td>" + $("#inputTenKy").val()
+            let addRom="<tr><td></td><td>" + $("#inputPhong").val()
+                + "</td><td>" + $("#inputSoMay").val()
                 + "</td><td class='no-sort'><div class='d-flex'><button class=\"btn btn-info\"><i class=\"far fa-edit\" ></i></button><button class=\"btn btn-danger\"><i class=\"far fa-trash-alt\"></i></button></div></td></tr>";
-            $("#subTable>tbody").append(addSubject);
+            $("#subTable>tbody").append(addRom);
             $("#addModal").modal("hide");
-            await getExam();
+            await getRooms();
             getPageNumber()
         }
         else {
             $("#addModal").modal("hide");
-            window.alert("Mã học kỳ hoặc tên đã tồn tại");
+            window.alert("Phòng thi đã tồn tại");
         }
     });
 
     //js delete row
     $('#subTable tbody').on( 'click', '.btn-danger',function () {
-        let exam_id=$(this).parent().parent().parent().children();
-        let exam=$(this).parent().parent().parent();
+        let subject_id=$(this).parent().parent().parent().children();
+        let subject=$(this).parent().parent().parent();
         $("#deleteModal").modal("show");
         $("#confirmDelete").on('click',async function() {
             $("#deleteModal").modal("hide");
-            let urlDelete="http://er-backend.sidz.tools/api/v1/exams/"+exam_id[1].innerText;
+            let urlDelete="http://er-backend.sidz.tools/api/v1/exams/"+subject_id[1].innerText;
             const resDelete= await fetch(urlDelete,{
                 method: 'DELETE',
                 mode: 'cors',
@@ -78,24 +78,21 @@ $(document).ready(async function() {
             });
             let res = await resDelete.json();
             if(res["status"]==20){
-                exam.remove();
-                await getExam()
+                subject.remove();
+                await getRooms()
                 getPageNumber();
-            }
-            else{
-                window.alert("can not delete subject");
             }
         })
 
     } );
     var editField;
-    var examIdOld;
+    var subjectIdOld;
     $("#subTable tbody").on('click','.btn-info',function () {
         $("#editModal").modal("show");
         editField=$(this).parent().parent().parent().children();
-        $("#editMaKy").val(editField[1].innerText);
-        examIdOld=editField[1].innerText;
-        $("#editTenKy").val(editField[2].innerText);
+        $("#editPhong").val(editField[1].innerText);
+        subjectIdOld=editField[1].innerText;
+        $("#editSoMay").val(editField[2].innerText);
     })
     //js confirm and close edit modal
     $("#confirmEditButton").on("click",async function () {
@@ -103,9 +100,9 @@ $(document).ready(async function() {
         //update to server here
         let urlUpdate="http://er-backend.sidz.tools/api/v1/exams";
         let dataUpdate={
-            "id":examIdOld,
-            "new_id":$("#editMaKy")[0].value,
-            "new_name":$("#editTenKy")[0].value
+            "id":subjectIdOld,
+            "new_id":$("#editPhong")[0].value,
+            "new_name":$("#editSoMay")[0].value,
         }
         const resUpdate= await fetch(urlUpdate,{
             method: 'PUT',
@@ -119,29 +116,28 @@ $(document).ready(async function() {
             body:JSON.stringify(dataUpdate)
         });
         let res=await resUpdate.json();
-        console.log(res)
         if(res["status"]==21){
-            window.alert("Mã Kỳ học hoặc tên đã tồn tại");
+            window.alert("Mã môn học hoặc tên bị trùng với các môn khác");
         }
         else {
-            editField[1].innerText=$("#editMaKy")[0].value;
-            editField[2].innerText=$("#editTenKy")[0].value;
+            editField[1].innerText=$("#editPhong")[0].value;
+            editField[2].innerText=$("#editSoMay")[0].value;
         }
     });
     $('select[name="subTable_length"]').on("change",async function () {
         pageSize=$(this)[0].value;
         console.log(pageSize);
-        await getExam();
+        await getRooms();
         getPageNumber();
     });
     $("#input_search").on('input', async function () {
         keywords=$(this)[0].value;
         page=1;
-        await getExam();
+        await getRooms();
         getPageNumber();
     })
 });
-async function getExam() {
+async function getRooms() {
     let url=("http://er-backend.sidz.tools/api/v1/exams/?page="+page+"&pageSize="+pageSize+"&keywords="+keywords);
     const response = await fetch(url,{
         method: 'GET',
@@ -194,7 +190,7 @@ async function activePage(e) {
     $(".active").removeClass('active');
     e.parentNode.className+=' active';
     page=e.firstChild.nodeValue;
-    getExam();
+    getRooms();
 }
 async function previousPage() {
     let elementPrev= $(".active").prev();
@@ -202,7 +198,7 @@ async function previousPage() {
         $(".active").removeClass('active');
         elementPrev[0].className+=" active";
         page= elementPrev[0].childNodes[0].firstChild.nodeValue;
-        getExam();
+        getRooms();
     }
 }
 async function nexPage() {
@@ -212,7 +208,7 @@ async function nexPage() {
         $(".active").removeClass('active');
         elementNext[0].className+=" active";
         page= elementNext[0].childNodes[0].firstChild.nodeValue;
-        getExam();
+        getRooms();
     }
 
 }
