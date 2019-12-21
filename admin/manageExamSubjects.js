@@ -94,6 +94,7 @@ $(document).ready(async function(){
         "searching": false,
         "ordering": false,
         "autoWidth": false,
+
         "info": false,
         "columnDefs": [
             { "orderable": false, "targets": 'no-sort' }
@@ -111,7 +112,7 @@ $(document).ready(async function(){
             },
             {
                 "targets": 4,
-                "width": "9%" //auto fit
+                "width": "15%" //auto fit
             },
             {
                 "targets": "_all",
@@ -152,7 +153,7 @@ $(document).ready(async function(){
         $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
     });
 
-    //bat su kien nut import sinh vien
+    //bat su kien nut add moon
     $('#subTable tbody').on( 'click', '#importStdBtn', function () {
         $("#importStdModal").modal("show");
         curRow = $(this).parents('tr');
@@ -259,8 +260,8 @@ $(document).ready(async function(){
         $("#addModal").modal("show");
         subQueue=[];
         getESRequest();
-
     });
+
     $('#ExamSubjectAddingTable tbody').on( 'change', ':checkbox', function () {
        curRow = $(this).parent().parent();
        sub_id = EStable.row(curRow).data()[1];
@@ -269,6 +270,7 @@ $(document).ready(async function(){
     $('#ExamSubjectAddingTable input[type="checkbox"]').click(function() {
         console.log('suggested-in-comment', 'click');
     });
+
 });
 
 
@@ -408,7 +410,7 @@ async function getESRequest(){
                     data.rows[i].name,
                     data.rows[i].credit
                 ]).draw(false);
-                if (data.rows[i].exam_subjects.length!=0){
+                if (data.rows[i].exam_subjects==true){
                     EStable.rows( i )
                         .nodes()
                         .to$()
