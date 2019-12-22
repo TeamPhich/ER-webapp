@@ -49,9 +49,9 @@ $(document).ready(async function(){
         "ordering": false,
         "info": false,
         "autoWidth": false,
-        "columnDefs": [
-            { "orderable": false, "targets": 'no-sort' }
-        ],
+        "language": {
+            "emptyTable": "Không có môn thi."
+        },
 
         "columnDefs": [ {
             "targets": -1,
@@ -96,9 +96,10 @@ $(document).ready(async function(){
         "autoWidth": false,
 
         "info": false,
-        "columnDefs": [
-            { "orderable": false, "targets": 'no-sort' }
-        ],
+        "language": {
+            "emptyTable": "Không có môn học."
+        },
+
 
         "columnDefs": [ {
             "targets": -1,
@@ -127,6 +128,10 @@ $(document).ready(async function(){
         "ordering": false,
         "info": false,
         "autoWidth": false,
+        "language": {
+            "emptyTable": "Không có sinh viên."
+        },
+
         "columnDefs": [
             {
                 "targets": "_all",

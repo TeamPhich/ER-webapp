@@ -30,9 +30,9 @@ $(document).ready(async function(){
         "searching": false,
         "ordering": false,
         "info": false,
-        "columnDefs": [
-            { "orderable": false, "targets": 'no-sort' }
-        ],
+        "language": {
+            "emptyTable": "Không có sinh viên."
+        },
 
         "columnDefs": [ {
             "targets": -1,
