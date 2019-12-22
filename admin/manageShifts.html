@@ -129,6 +129,11 @@
                 <div class="d-sm-flex align-items-center justify-content-between mb-4"style="font-size: 200%">
                     <p>Quản lý ca thi</p>
                 </div>
+                <div class="form-group col-md-12 d-flex justify-content-end mb-0 p-0">
+                    <label class="mt-2" style="width: 65px">Học Kỳ:</label>
+                    <select class="form-control w-25" id="inputHK" >
+                    </select>
+                </div>
                 <div class="card shadow mb-3">
                     <div class="card-body">
                         <div class="container-fluid p-0 table-responsive">
@@ -148,12 +153,6 @@
                                         <div class="mt-1">
                                             <label>hàng</label>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 p-0">
-                                    <div id="subTable_filter" class="dataTables_filter d-flex justify-content-end">
-                                        <div class="mt-1"><label>Tìm kiếm:</label></div>
-                                        <div class="ml-2"><input type="search" class="form-control form-control-sm"  placeholder="Nhập tên môn học" id="input_search" aria-controls="subTable"></div>
                                     </div>
                                 </div>
                             </div>
@@ -266,7 +265,7 @@
     <div class="modal-dialog " role="document">
         <div class="modal-content"style="width: 700px;margin-left: -100px!important;">
             <div class="modal-header">
-                <h5 class="modal-title" id="headerModal" style="color:black">Chỉnh sửa thông tin phòng thi</h5>
+                <h5 class="modal-title" id="headerModal" style="color:black">Chỉnh sửa thông tin khung gio</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -274,12 +273,16 @@
             <div class="modal-body">
                 <form class="form-horizontal">
                     <div class="form-group">
-                        <label for="editPhong">Phòng</label>
-                        <input type="text"class="form-control" id="editPhong">
+                        <label for="editNgay">Ngay thi</label>
+                        <input type="text"class="form-control" id="editNgay">
                     </div>
                     <div class="form-group">
-                        <label for="editSoMay">Số máy</label>
-                        <input type="text"class="form-control" id="editSoMay">
+                        <label for="editBatDau">Bắt đầu</label>
+                        <input type="text"class="form-control" id="editBatDau">
+                    </div>
+                    <div class="form-group">
+                        <label for="editKetThuc">Ket thúc</label>
+                        <input type="text"class="form-control" id="editKetThuc">
                     </div>
                 </form>
             </div>
@@ -290,11 +293,11 @@
     </div>
 </div>
 <!-- add subject and room modal-->
-<div class="modal fade" id="addSubjectModal" tabindex="-1" role="dialog" aria-labelledby="headerModal" aria-hidden="true">
+<div class="modal fade" id="addSubjectAndRoom" tabindex="-1" role="dialog" aria-labelledby="headerModal" aria-hidden="true">
     <div class="modal-dialog " role="document">
         <div class="modal-content"style="width: 700px;margin-left: -100px!important;">
             <div class="modal-header">
-                <h5 class="modal-title" id="headerModalShow" style="color:black">Chỉnh sửa thông tin Môn thi</h5>
+                <h5 class="modal-title" id="headerModalShow" style="color:black">Môn thi và phòng thi</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -302,12 +305,12 @@
             <div class="modal-body">
                 <table id="addSubjectTable" class="table table-bordered p-0 table-striped my-table"style="color: black; text-align:center;">
                     <thead class="thead-dark">
-                    <tr>
-                        <th>Stt</th>
-                        <th>Môn thi</th>
-                        <th>Phòng thi</th>
-                        <th style="width: 8%">#</th>
-                    </tr>
+                        <tr>
+                            <th>Stt</th>
+                            <th>Môn thi</th>
+                            <th>Phòng thi</th>
+                            <th style="width: 8%">#</th>
+                        </tr>
                     </thead>
                     <tbody>
                     </tbody>
@@ -319,12 +322,12 @@
                     <div class="col-sm-12 col-md-7 d-flex justify-content-end p-0">
                         <div class="dataTables_paginate paging_simple_numbers" id="addSubjectTable_paginate">
                             <ul class="pagination m-0">
-                                <li class="paginate_button page-item previous disabled" id="addSubjectTable_previous"onclick="previousPage()" style="cursor: pointer">
+                                <li class="paginate_button page-item previous disabled preSub" id="addSubjectTable_previous"onclick="previousPageSub()" style="cursor: pointer">
                                     <a class="page-link">
                                         <i class="fas fa-angle-double-left clickable"></i>
                                     </a>
                                 </li>
-                                <li class="paginate_button page-item next disabled" id="addSubjectTable_next"onclick="nexPage()" style="cursor: pointer">
+                                <li class="paginate_button page-item next disabled nextSub" id="addSubjectTable_next"onclick="nextPageSub()" style="cursor: pointer">
                                     <a class="page-link" >
                                         <i class="fas fa-angle-double-right clickable"></i>
                                     </a>
@@ -334,8 +337,33 @@
                     </div>
                 </div>
             </div>
+            <div class="modal-footer d-flex text-white">
+                <button class="btn-primary btn  d-flex justify-content-start" id="addSubjectButton"><i class="fas fa-plus mt-1"></i><p class="mb-0 ml-2">Thêm môn thi mới</p></button>
+                <button class="btn btn-primary ml-auto d-flex justify-content-end" id="confirmSubjectRoomButton">Ghi nhận</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- add subject modal-->
+<div class="modal fade" id="addSubject" tabindex="-1" role="dialog" aria-labelledby="headerAddModal" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content"style="width: 700px;margin-left: -100px!important;">
+            <div class="modal-header">
+                <h5 class="modal-title" style="color:black">Thêm môn thi</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="inputMon">Tên môn thi</label>
+                        <input type="text"class="form-control" id="inputMon">
+                    </div>
+                </form>
+            </div>
             <div class="modal-footer">
-                <button class="btn btn-primary" type="button" id="confirmAddSubject">Confirm</button>
+                <button class="btn btn-primary" type="button" id="confirmAddSubjectButton">Confirm</button>
             </div>
         </div>
     </div>

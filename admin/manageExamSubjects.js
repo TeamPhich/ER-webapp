@@ -174,7 +174,7 @@ $(document).ready(async function(){
         getRequest();
     });
     $("#input_ExamSubject").on('input', function () {
-        ESkeywords=$(this)[0].value;
+        ESkeywords=$(this)[0].value;getESRequest
         ESpage=1;
         getESRequest();
     });

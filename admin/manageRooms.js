@@ -162,7 +162,9 @@ async function getRooms() {
                 + "</td><td class='no-sort'><div class='d-flex'><button class=\"btn btn-info\"><i class=\"far fa-edit\" ></i></button><button class=\"btn btn-danger\"><i class=\"far fa-trash-alt\"></i></button></div></td></tr>";
         }
         $("#subTable>tbody").append(datatbody)
-        $("#subTable_info")[0].innerText = "Hiển thị từ " + (1 + (page - 1) * pageSize) + " đến " + ((page - 1) * pageSize + res['data']['rooms']["rows"].length) + " của " + length + " kỳ thi.";
+        if(length>0){
+            $("#subTable_info")[0].innerText = "Hiển thị từ " + (1 + (page - 1) * pageSize) + " đến " + ((page - 1) * pageSize + res['data']['rooms']["rows"].length) + " của " + length + " kỳ thi.";
+        }
     }
 }
 async function getPageNumber(){
