@@ -14,10 +14,9 @@
 
     <!-- Custom styles for this template-->
     <link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap.css">
-    <link rel="stylesheet" href="manageStudents.css">
-    <link rel="stylesheet" href="manageSubjects.css">
-    <link rel="stylesheet" href="manageRooms.css">
+    <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="manageShifts.css">
+    <link rel="stylesheet" href="../vendor/select2/select2.min.css">
     <!--    <link rel="stylesheet" href="../vendor/datatables/datatables.css">-->
 
 </head>
@@ -59,7 +58,7 @@
                 </li>
 
                 <li class="nav-item active" >
-                    <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseExam" aria-expanded="true" >
+                    <a class="nav-link " href="#" data-toggle="collapse" data-target="#collapseExam" aria-expanded="true" >
                         <i class="fas fa-fw fa-calendar-times" style="font-size: 115%"></i>
                         <span style="font-size: 115%">Quản lý kỳ thi</span>
                     </a>
@@ -131,6 +130,11 @@
                 <div class="d-sm-flex align-items-center justify-content-between mb-4"style="font-size: 200%">
                     <p>Quản lý ca thi</p>
                 </div>
+                <div class="form-group col-md-12 d-flex justify-content-end mb-0 p-0">
+                    <label class="mt-2" style="width: 65px">Học Kỳ:</label>
+                    <select class="form-control w-25" id="inputHK" >
+                    </select>
+                </div>
                 <div class="card shadow mb-3">
                     <div class="card-body">
                         <div class="container-fluid p-0 table-responsive">
@@ -152,20 +156,15 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6 p-0">
-                                    <div id="subTable_filter" class="dataTables_filter d-flex justify-content-end">
-                                        <div class="mt-1"><label>Tìm kiếm:</label></div>
-                                        <div class="ml-2"><input type="search" class="form-control form-control-sm"  placeholder="Nhập tên môn học" id="input_search" aria-controls="subTable"></div>
-                                    </div>
-                                </div>
                             </div>
                             <table id="subTable" class="table table-bordered p-0 table-striped my-table"style="color: black; text-align:center;">
                                 <thead class="thead-dark">
                                 <tr>
                                     <th>Stt</th>
-                                    <th>Ca</th>
+                                    <th>Ngày Thi</th>
                                     <th>Bắt đầu</th>
                                     <th>Kết thúc</th>
+                                    <th>Môn & phòng</th>
                                     <th style="width: 8%">#</th>
                                 </tr>
                                 </thead>
@@ -230,12 +229,12 @@
         </div>
     </div>
 </div>
-<!--add rom modal-->
+<!--add shifts modal-->
 <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="headerAddModal" aria-hidden="true">
     <div class="modal-dialog " role="document">
         <div class="modal-content"style="width: 700px;margin-left: -100px!important;">
             <div class="modal-header">
-                <h5 class="modal-title" id="headerAddModal" style="color:black">Thêm môn học</h5>
+                <h5 class="modal-title" id="headerAddModal" style="color:black">Thêm khung giờ</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -243,12 +242,16 @@
             <div class="modal-body">
                 <form class="form-horizontal">
                     <div class="form-group">
-                        <label for="inputPhong">Phòng</label>
-                        <input type="text"class="form-control" id="inputPhong">
+                        <label for="inputNgay">Ngay thi</label>
+                        <input dataformatas="dd/mm/yyyy" type="date"class="form-control" id="inputNgay">
                     </div>
                     <div class="form-group">
-                        <label for="inputSoMay">Số máy</label>
-                        <input type="text"class="form-control" id="inputSoMay">
+                        <label for="inputBatDau">Bắt đầu</label>
+                        <input dataformatas="hh:mm"type="time"class="form-control" id="inputBatDau">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputKetThuc">Kết Thúc</label>
+                        <input dataformatas="hh:mm" type="time"class="form-control" id="inputKetThuc">
                     </div>
                 </form>
             </div>
@@ -258,12 +261,12 @@
         </div>
     </div>
 </div>
-<!--edit subject modal-->
+<!--edit shifts modal-->
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="headerModal" aria-hidden="true">
     <div class="modal-dialog " role="document">
         <div class="modal-content"style="width: 700px;margin-left: -100px!important;">
             <div class="modal-header">
-                <h5 class="modal-title" id="headerModal" style="color:black">Chỉnh sửa thông tin phòng thi</h5>
+                <h5 class="modal-title" id="headerModal" style="color:black">Chỉnh sửa thông tin khung gio</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -271,17 +274,154 @@
             <div class="modal-body">
                 <form class="form-horizontal">
                     <div class="form-group">
-                        <label for="editPhong">Phòng</label>
-                        <input type="text"class="form-control" id="editPhong">
+                        <label for="editNgay">Ngay thi</label>
+                        <input type="text"class="form-control" id="editNgay">
                     </div>
                     <div class="form-group">
-                        <label for="editSoMay">Số máy</label>
-                        <input type="text"class="form-control" id="editSoMay">
+                        <label for="editBatDau">Bắt đầu</label>
+                        <input type="text"class="form-control" id="editBatDau">
+                    </div>
+                    <div class="form-group">
+                        <label for="editKetThuc">Ket thúc</label>
+                        <input type="text"class="form-control" id="editKetThuc">
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary" type="button" id="confirmEditButton">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- edit room modal-->
+<div class="modal fade" id="editRoomModal" tabindex="-1" role="dialog" aria-labelledby="headerModal" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content"style="width: 700px;margin-left: -100px!important;">
+            <div class="modal-header">
+                <h5 class="modal-title" style="color:black">Chỉnh sửa phòng</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="d-flex" for="editPhong">Phòng</label>
+                    <select class="form-control Mon"style="width:100%" id="editPhong">
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="button" id="confirmEditRoomButton">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- add subject and room modal-->
+<div class="modal fade" id="addSubjectAndRoom" tabindex="-1" role="dialog" aria-labelledby="headerModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content"style="width: 700px;margin-left: -100px!important;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="headerModalShow" style="color:black">Môn thi và phòng thi</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row w-100 m-0">
+                    <div class="col-md-6">
+                        <div class="d-flex" id="subAndRoomTable_length">
+                            <div class="mt-1">
+                                <label>Hiển thị:</label>
+                            </div>
+                            <div class="ml-2 mr-2">
+                                <select name="subAndRoomTable_length" aria-controls="SubjectAndRoomTable" class="custom-select custom-select-sm form-control form-control-sm">
+                                    <option name="optionPageSize" value="5">5</option>
+                                    <option name="optionPageSize" value="10">10</option>
+                                    <option name="optionPageSize" value="25">25</option>
+                                    <option name="optionPageSize" value="50">50</option>
+                                </select>
+                            </div>
+                            <div class="mt-1">
+                                <label>hàng</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 p-0">
+                        <div id="SubjectAndRoomTable_filter" class="dataTables_filter d-flex justify-content-end">
+                            <div class="mt-1"><label>Tìm kiếm:</label></div>
+                            <div class="ml-2"><input type="search" class="form-control form-control-sm"  placeholder="Nhập tên môn học" id="input_search" aria-controls="SubjectAndRoomTable"></div>
+                        </div>
+                    </div>
+                </div>
+                <table id="subjectAndRoomTable" class="table table-bordered p-0 table-striped my-table"style="color: black; text-align:center;">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Stt</th>
+                            <th class="d-none">subject_id</th>
+                            <th class="d-none">room_id</th>
+                            <th>Môn thi</th>
+                            <th>Phòng thi</th>
+                            <th style="width: 8%">#</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                <div class="row w-100 m-0 mt-3">
+                    <div class="col-sm-12 col-md-5">
+                        <p id="addSubjectTable_info"></p>
+                    </div>
+                    <div class="col-sm-12 col-md-7 d-flex justify-content-end p-0">
+                        <div class="dataTables_paginate paging_simple_numbers" id="addSubjectTable_paginate">
+                            <ul class="pagination m-0">
+                                <li class="paginate_button page-item previous disabled preSub" id="addSubjectTable_previous"onclick="previousPageSub()" style="cursor: pointer">
+                                    <a class="page-link">
+                                        <i class="fas fa-angle-double-left clickable"></i>
+                                    </a>
+                                </li>
+                                <li class="paginate_button page-item next disabled nextSub" id="addSubjectTable_next"onclick="nextPageSub()" style="cursor: pointer">
+                                    <a class="page-link" >
+                                        <i class="fas fa-angle-double-right clickable"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer d-flex text-white">
+                <button class="btn-primary btn  d-flex justify-content-start" id="addSubjectButton"><i class="fas fa-plus mt-1"></i><p class="mb-0 ml-2">Thêm môn thi mới</p></button>
+                <button class="btn btn-primary ml-auto d-flex justify-content-end" id="confirmSubjectRoomButton">Ghi nhận</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- add subject modal-->
+<div class="modal fade" id="addSubject" tabindex="-1" role="dialog" aria-labelledby="headerAddModal" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content"style="width: 700px;margin-left: -100px!important;">
+            <div class="modal-header">
+                <h5 class="modal-title" style="color:black">Thêm môn thi</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="d-flex" for="inputMon">Môn thi</label>
+                    <select class="form-control Mon"style="width:100%" id="inputMon">
+
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="d-flex" for="inputPhong">Phòng</label>
+                    <select class="form-control Mon"style="width:100%" id="inputPhong">
+
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="button" id="confirmAddSubjectButton">Confirm</button>
             </div>
         </div>
     </div>
@@ -308,6 +448,7 @@
 <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
 <script src="manageShifts.js"></script>
+<script src="../vendor/select2/select2.min.js"></script>
 <!-- datatable-->
 <!--<script src="../vendor/datatables/datatables.min.js" type="text/javascript"></script>-->
 <!--<script src="../vendor/datatables/Buttons-1.6.1/js/dataTables.buttons.min.js" type="text/javascript"></script>-->
