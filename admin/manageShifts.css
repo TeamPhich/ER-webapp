@@ -32,6 +32,15 @@ table tr td:first-child::before
 .collapse-item{
     padding-left: 45px!important;
 }
-/*.nav-link[data-toggle="collapse"]::after{*/
-/*    content: '\f107' !important;*/
-/*}*/
+#select2-inputMon-container {
+    line-height: 25px !important;
+    margin-top: 3px!important;
+}
+
+.select2-selection__choice{
+    height:auto!important;
+    margin-top: 3px!important;
+}
+.select2-selection {
+    height: 34px !important;
+}

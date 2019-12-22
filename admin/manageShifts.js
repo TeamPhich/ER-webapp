@@ -15,10 +15,14 @@ var pageSize=10;
 var length;
 var pageNumber;
 var pageNumberSub;
-var keywords="";
-var pageSub;
-var pageSizeSub=10;
+var keywordsSub="";
+var pageSub=1;
+var lengthSub;
+var pageSizeSub=5;
 var exam;
+var shiftId;
+var subjectId;
+var roomId;
 $(document).ready(async function() {
     //js load data subject
     await getExam();
@@ -104,6 +108,7 @@ $(document).ready(async function() {
     } );
     var editField;
     var editShiftsId;
+    //js edit row
     $("#subTable tbody").on('click','.btn-info',function () {
         $("#editModal").modal("show");
         editField=$(this).parent().parent().parent().children();
@@ -150,30 +155,179 @@ $(document).ready(async function() {
             editField[4].innerText=$("#editKetThuc")[0].value;
         }
     });
+    //subTable_length
     $('select[name="subTable_length"]').on("change",async function () {
         pageSize=$(this)[0].value;
         console.log(pageSize);
         await getShifts();
         getPageNumber();
     });
-    $("#input_search").on('input', async function () {
-        keywords=$(this)[0].value;
-        page=1;
-        await getShifts();
-        getPageNumber();
-    })
     $('#subTable tbody').on( 'click','.btn-secondary',async function () {
-        $("#addSubjectAndRoom").modal("show");
-        getPageNumberSubject()
-    })
-    $("#addSubjectButton").on('click',function () {
-        $("#addSubject").modal("show");
-    })
+        $("#addSubjectAndRoom").modal({backdrop:"static"});
+        let shift_id=$(this).parent().parent().parent().children();
+        shiftId=shift_id[1].innerText;
+        await getSubjectAndRoom();
+        getPageNumberSubject();
+    });
     $("#inputHK").on("change",async function () {
         exam =$("#inputHK")[0].value;
         await getShifts();
         getPageNumber()
     });
+    //subject and room modal
+
+    //delete subject
+    $('#subjectAndRoomTable tbody').on( 'click', '.btn-danger',function () {
+        let shiftRoom_id=$(this).parent().parent().parent().children();
+        let shiftRoom=$(this).parent().parent().parent();
+        $("#deleteModal").modal("show");
+        $("#confirmDelete").on('click',async function() {
+            $("#deleteModal").modal("hide");
+            let urlDelete="http://er-backend.sidz.tools/api/v1/shifts-rooms/"+shiftRoom_id[1].innerText;
+            const resDelete= await fetch(urlDelete,{
+                method: 'DELETE',
+                mode: 'cors',
+                cache: 'no-cache',
+                credentials: 'same-origin',
+                headers: {
+                    'token': window.localStorage.token
+                }
+            });
+            let res = await resDelete.json();
+            if(res["status"]==20){
+                shiftRoom.remove();
+                await getSubjectAndRoom()
+                getPageNumberSubject();
+            }
+        })
+
+    } );
+    //edit room
+    let editFieldRoom;
+    let editRoomId;
+    $("#subjectAndRoomTable tbody").on('click','.edit_room',async function () {
+        $("#editRoomModal").modal({backdrop: 'static'});
+        $("#addSubjectAndRoom").fadeOut();
+        editFieldRoom=$(this).parent().parent().parent().children();
+        let url=("http://er-backend.sidz.tools/api/v1/rooms?page=-1");
+        const response = await fetch(url,{
+            method: 'GET',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+                'token': window.localStorage.token
+            }
+        });
+        let res = await response.json();
+        console.log(res)
+        let datatbody;
+        if(res["status"]==20) {
+            for (let i = 0; i < res['data']['rooms']["rows"].length; i++) {
+                if( res['data']['rooms']["rows"][i]['name'] !=editFieldRoom[5].innerText){
+                    datatbody += "<option value='" + res['data']['rooms']["rows"][i]['id'] + "'>" + res['data']['rooms']["rows"][i]['name'] + "</option>";
+                }
+            }
+        }
+        $("#editPhong").append(datatbody);
+        $("#editPhong").val("");
+    });
+    $("#editPhong").on('change',function () {
+        editRoomId=$("#editPhong")[0].value;
+    })
+    //js confirm and close edit modal
+    $("#editRoomModal").on('hidden.bs.modal',function () {
+        $("#addSubjectAndRoom").fadeIn();
+    });
+    $("#confirmEditRoomButton").on("click",async function () {
+        $("#editRoomModal").modal("hide");
+        //update to server here
+        let urlUpdate="http://er-backend.sidz.tools/api/v1/shifts-rooms/"+editFieldRoom[1].innerText+"/shift/"+shiftId;
+        console.log(editRoomId);
+        let dataUpdate={
+            "room_id":editRoomId,
+        }
+        const resUpdate= await fetch(urlUpdate,{
+            method: 'PUT',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+                'token': window.localStorage.token
+            },
+            body:JSON.stringify(dataUpdate)
+        });
+        let res=await resUpdate.json();
+        console.log(res);
+        if(res["status"]==21){
+            window.alert("Phòng đã tồn tại");
+        }
+        else {
+            await getSubjectAndRoom();
+            getPageNumberSubject();
+        }
+    });
+    //subAndRoomTable_length
+    $('select[name="subAndRoomTable_length"]').on("change",async function () {
+        pageSizeSub=$(this)[0].value;
+        console.log(pageSizeSub);
+        await getSubjectAndRoom();
+        getPageNumberSubject();
+    });
+    //seach subject
+    $("#input_search").on('input', async function () {
+        keywordsSub=$(this)[0].value;
+        pageSub=1;
+        await getSubjectAndRoom();
+        getPageNumberSubject();
+    })
+    // add subject and room
+    $("#addSubjectButton").on('click',async function () {
+        $("#addSubject").modal({backdrop: 'static'});
+        $("#addSubjectAndRoom").fadeOut();
+        await getSubject();
+        getRoms();
+    });
+    $("#inputMon").select2();
+    $('#inputPhong').select2();
+    $('#editPhong').select2();
+    $("#addSubject").on('hidden.bs.modal',function () {
+        $("#addSubjectAndRoom").fadeIn();
+    });
+    $("#confirmAddSubjectButton").on('click',async function () {
+        $("#addSubject").modal('hide');
+        console.log($("#inputMon"));
+        let url=("http://er-backend.sidz.tools/api/v1/shifts-rooms/shift/"+shiftId);
+        let dataCreate={
+            "exam_subject_id": subjectId,
+            "room_id":roomId
+        }
+        const resCreate= await fetch(url,{
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+                'token': window.localStorage.token
+            },
+            body:JSON.stringify(dataCreate)
+        });
+        let res=await resCreate.json();
+        if(res['status']==20){
+            await getSubjectAndRoom();
+            getPageNumberSubject();
+        }
+
+    })
+    $("#inputPhong").on("change", function () {
+        roomId=$("#inputPhong")[0].value;
+    })
+    $("#inputMon").on("change", function () {
+        subjectId=$("#inputMon")[0].value;
+    })
 });
 async function getShifts() {
     let url=("http://er-backend.sidz.tools/api/v1/shifts/exam/"+exam+"?page="+page+"&pageSize="+pageSize);
@@ -262,6 +416,8 @@ async function nexPage() {
     }
 
 }
+//get exam
+
 async function getExam(){
     let url =("http://er-backend.sidz.tools/api/v1/exams/?page=-1");
     const getExamRes = await fetch(url, {
@@ -278,6 +434,8 @@ async function getExam(){
         $('#inputHK').append(opt);
     }
 }
+//conver date
+
 function convertDate(unixtimestamp){
     // Convert timestamp to milliseconds
     let date = new Date(unixtimestamp*1000);
@@ -291,6 +449,8 @@ function convertDate(unixtimestamp){
     let convdataTime = day+'/'+month+'/'+year;
     return convdataTime;
 }
+// conver time
+
 function convertTime(unixtimestamp){
     // Convert timestamp to milliseconds
     let date = new Date(unixtimestamp*1000);
@@ -306,11 +466,43 @@ function convertTime(unixtimestamp){
     let dataTime=hours+':'+minutes;
     return dataTime
 }
-<!--modal add subject-->
+//get Subject and room
 
+async function getSubjectAndRoom(){
+    let url=("http://er-backend.sidz.tools/api/v1/shifts-rooms/shift/"+shiftId+"/exam/"+exam+"?page="+pageSub+"&pageSize="+pageSizeSub+"&keywords="+keywordsSub)
+    $("#subjectAndRoomTable tbody tr").remove();
+    const getSRResponse= await fetch(url,{
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'token': window.localStorage.token
+        }
+    });
+    let res=await getSRResponse.json();
+    console.log(res)
+    lengthSub=res['data']['shifts_rooms']['count'];
+    let dataTable;
+    if(res['status']==20){
+        console.log(res['data']['shifts_rooms']['rows'].length);
+        for(let i=0;i<res['data']['shifts_rooms']['rows'].length;i++){
+            let stt=(pageSub-1)*pageSizeSub+i+1;
+            dataTable+="<tr><td>"+stt
+                +"</td><td class='d-none'>"+res['data']['shifts_rooms']['rows'][i]['id']
+                +"</td><td class='d-none'>"+res['data']['shifts_rooms']['rows'][i]['exam_subject_id']
+                +"</td><td class='d-none'>"+res['data']['shifts_rooms']['rows'][i]['room']['id']
+                +"</td><td>"+res['data']['shifts_rooms']['rows'][i]['exam_subject']['subject']['name']
+                +"</td><td>"+res['data']['shifts_rooms']['rows'][i]['room']['name']
+                + "</td><td class='no-sort'><div class='d-flex '><button class=\"btn btn-info edit_room\"><i class=\"far fa-edit\" ></i></button><button class=\"btn btn-danger delete_subject\"><i class=\"far fa-trash-alt\"></i></button></div></td></tr>";
+        }
+        $("#subjectAndRoomTable>tbody").append(dataTable);
+    }
+
+}
 async function getSubject() {
-    let url=("http://er-backend.sidz.tools/api/v1/subjects?page="+pageSub+"&pageSize="+ pageSizeSub);
-    $("#addSubjectModal_info")[0].innerText="";
+    let url=("http://er-backend.sidz.tools/api/v1/exam-subjects/exam/"+exam+"/?page=-1");
+    console.log(url)
     const getESResponse= await fetch(url,{
         method: 'GET',
         mode: 'cors',
@@ -321,23 +513,36 @@ async function getSubject() {
         }
     });
     let res=await getESResponse.json();
-    lengthSub=res['data']['exam_subjects']["count"];
-    var datatbody;
+    let datatbody;
     if(res["status"]==20) {
-        $("#addSubjectTable tbody tr").remove();
-        for (var i = 0; i < res['data']['exam_subjects']["rows"].length; i++) {
-            let stt=(pageSub-1)*pageSizeSub+i+1;
-            datatbody += "<tr><td>"+stt+"</td><td>" + res['data']['exam_subjects']["rows"][i]['subject_id']
-                + "</td><td>" + res['data']['exam_subjects']["rows"][i]['name']
-                + "</td><td>" + res['data']['exam_subjects']["rows"][i]['credit']
-                + "</td><td class='no-sort'><div class='d-flex'><button class=\"btn btn-info\"><i class=\"far fa-edit\" ></i></button><button class=\"btn btn-danger\"><i class=\"far fa-trash-alt\"></i></button></div></td></tr>";
-        }
-        $("#addSubjectTable>tbody").append(datatbody)
-        if(res['data']['exam_subjects']["rows"].length>0){
-            $("#addSubjectModal_info")[0].innerText = "Hiển thị từ " + (1 + (pageSub - 1) * pageSizeSub) + " đến " + ((pageSub - 1) * pageSizeSub+ res['data']['exam_subjects']["rows"].length) + " của " + lengthSub + " môn.";
+        for (let i = 0; i < res['data']['exam_subjects']["rows"].length; i++) {
+            datatbody +="<option value="+res['data']['exam_subjects']['rows'][i]['id']+">"+res['data']['exam_subjects']['rows'][i]['subject']['name']+"</option>"
         }
     }
+    $("#inputMon").append(datatbody);
 
+}
+async function getRoms(){
+    let url=("http://er-backend.sidz.tools/api/v1/rooms?page=-1");
+    const response = await fetch(url,{
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json',
+            'token': window.localStorage.token
+        }
+    });
+    let res = await response.json();
+    console.log(res)
+    let datatbody;
+    if(res["status"]==20) {
+        for (let i = 0; i < res['data']['rooms']["rows"].length; i++) {
+            datatbody += "<option value='" + res['data']['rooms']["rows"][i]['id'] + "'>" +  res['data']['rooms']["rows"][i]['name']+ "</option>";
+        }
+        $("#inputPhong").append(datatbody);
+    }
 }
 async function getPageNumberSubject(){
     pageNumberSub=lengthSub/pageSizeSub;
@@ -348,12 +553,12 @@ async function getPageNumberSubject(){
         num = 1+i;
         if(num==1){
             syntaxPage += "</div><li class=\"paginate_button page-item active page_sub_active\">"
-                + "<a class=\"page-link\"id='"+num+"' name='new' onclick='activePage(this)'>" + num + "</a>"
+                + "<a class=\"page-link\"id='"+num+"' name='new' onclick='activePageSub(this)'>" + num + "</a>"
                 + "</li>"
         }
         else{
             syntaxPage += "</div><li class=\"paginate_button page-item\">"
-                + "<a class=\"page-link\"id='"+num+"' name='new' onclick='activePage(this)'>" + num + "</a>"
+                + "<a class=\"page-link\"id='"+num+"' name='new' onclick='activePageSub(this)'>" + num + "</a>"
                 + "</li>"
         }
 
@@ -364,8 +569,8 @@ async function activePageSub(e) {
     $(".page_sub_active").removeClass('active');
     $(".page_sub_active").removeClass('page_active');
     e.parentNode.className+=' active page_active';
-    page=e.firstChild.nodeValue;
-    getSubject();
+    pageSub=e.firstChild.nodeValue;
+    getSubjectAndRoom();
 }
 async function previousPageSub() {
     let elementPrev= $(".page_sub_active").prev();
@@ -373,8 +578,8 @@ async function previousPageSub() {
         $(".page_sub_active").removeClass('active');
         $(".page_sub_active").removeClass('page_active');
         elementPrev[0].className+=" active page_active";
-        page= elementPrev[0].childNodes[0].firstChild.nodeValue;
-        getSubject();
+        pageSub= elementPrev[0].childNodes[0].firstChild.nodeValue;
+        getSubjectAndRoom();
     }
 }
 async function nextPageSub() {
@@ -384,8 +589,8 @@ async function nextPageSub() {
         $(".page_sub_active").removeClass('active');
         $(".page_sub_active").removeClass('page_active');
         elementNext[0].className+=" active page_active";
-        page= elementNext[0].childNodes[0].firstChild.nodeValue;
-        getSubject();
+        pageSub= elementNext[0].childNodes[0].firstChild.nodeValue;
+        getSubjectAndRoom();
     }
 
 }
