@@ -22,448 +22,447 @@
 
 <body id="page-top">
 
-<!-- Page Wrapper -->
-<div id="wrapper" >
+<div id="coverDiv">
+    <!-- Page Wrapper -->
+    <div id="wrapper" >
 
-    <!-- Sidebar -->
-    <div>
-        <div class="position-fixed">
-            <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar" style="background-color: #2d4373">
+        <div>
+            <div class="position-fixed">
+                <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar" style="background-color: #2d4373">
 
-                <!-- Sidebar - Brand -->
-                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="admin.html">
-                    <div class="sidebar-brand-icon rotate-n-15">
-                        <i class="fas fa-laugh-wink"></i>
-                    </div>
-                    <div class="sidebar-brand-text mx-3">ExamReg</div>
-                </a>
-
-                <!-- Divider -->
-                <hr class="sidebar-divider my-0">
-                <!-- Nav Item subject -->
-                <li class="nav-item" >
-                    <a class="nav-link " href="manageSubjects.html"  aria-expanded="true" >
-                        <i class="fas fa-fw fa-clipboard-list" style="font-size: 115%"></i>
-                        <span style="font-size: 115%">Môn học</span>
-                    </a>
-                </li>
-
-                <!-- Nav Item - student -->
-                <li class="nav-item" >
-                    <a class="nav-link " href="manageStudents.html"  aria-expanded="true" >
-                        <i class="fas fa-fw fa-user-friends" style="font-size: 115%"></i>
-                        <span style="font-size: 115%">Sinh viên</span>
-                    </a>
-                </li>
-                <li class="nav-item active" >
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseExam" aria-expanded="true" >
-                        <i class="fas fa-fw fa-calendar-times" style="font-size: 115%"></i>
-                        <span style="font-size: 115%">Quản lý kỳ thi</span>
-                    </a>
-                    <div id="collapseExam" class="collapse m-0">
-                        <div class="bg-white collapse-inner m-0 " style="font-size: 15px">
-                            <a class="collapse-item m-0 " href="manageExam.html">Kỳ thi</a>
-                            <!--                            <hr class="divider m-0">-->
-                            <a class="collapse-item m-0" href="manageExamSubjects.html">Môn thi</a>
-                            <a class="collapse-item m-0" href="manageShifts.html">Ca thi</a>
-                            <!--                            <hr class="divider m-0">-->
-                            <a class="collapse-item m-0" href="manageRooms.html">Phòng thi</a>
-                            <!--                            <hr class="divider m-0">-->
+                    <!-- Sidebar - Brand -->
+                    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="admin.html">
+                        <div class="sidebar-brand-icon rotate-n-15">
+                            <i class="fas fa-laugh-wink"></i>
                         </div>
-                    </div>
+                        <div class="sidebar-brand-text mx-3">ExamReg</div>
+                    </a>
+
+                    <!-- Divider -->
+                    <hr class="sidebar-divider my-0">
+                    <!-- Nav Item subject -->
+                    <li class="nav-item" >
+                        <a class="nav-link " href="manageSubjects.html"  aria-expanded="true" >
+                            <i class="fas fa-fw fa-clipboard-list" style="font-size: 115%"></i>
+                            <span style="font-size: 115%">Môn học</span>
+                        </a>
+                    </li>
+
+                    <!-- Nav Item - student -->
+                    <li class="nav-item" >
+                        <a class="nav-link " href="manageStudents.html"  aria-expanded="true" >
+                            <i class="fas fa-fw fa-user-friends" style="font-size: 115%"></i>
+                            <span style="font-size: 115%">Sinh viên</span>
+                        </a>
+                    </li>
+                    <li class="nav-item active" >
+                        <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseExam" aria-expanded="true" >
+                            <i class="fas fa-fw fa-calendar-times" style="font-size: 115%"></i>
+                            <span style="font-size: 115%">Quản lý kỳ thi</span>
+                        </a>
+                        <div id="collapseExam" class="collapse m-0 show">
+                            <div class="bg-white collapse-inner m-0 " style="font-size: 15px">
+                                <a class="collapse-item m-0" href="manageExam.html">Kỳ thi</a>
+                                <a class="collapse-item m-0 active" href="manageExamSubjects.html">Môn thi</a>
+                                <a class="collapse-item m-0" href="manageShifts.html">Ca thi</a>
+                                <a class="collapse-item m-0" href="manageRooms.html">Phòng thi</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <ul class="navbar-nav sidebar">
+                <li class="nav-item" >
+                    <a class="nav-link "></a>
                 </li>
             </ul>
         </div>
-        <ul class="navbar-nav sidebar">
-            <li class="nav-item" >
-                <a class="nav-link "></a>
-            </li>
-        </ul>
-    </div>
-    <!-- End of Sidebar -->
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- End of Sidebar -->
 
-        <!-- Main Content -->
-        <div id="content">
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
 
-            <!-- Topbar -->
-            <nav class="navbar navbar-expand navbar-light bg-white topbar flex-grow-1 mb-4 shadow">
+            <!-- Main Content -->
+            <div id="content">
 
-                <!-- Topbar Navbar -->
-                <ul class="navbar-nav ml-auto">
-                    <!-- Nav Item - User Information -->
-                    <li class="nav-item dropdown no-arrow">
-                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Đỗ Văn Quang-[17020977]</span>
-                            <img class="img-profile rounded-circle" src="../image/user.png" >
-                        </a>
-                        <!-- Dropdown - User Information -->
-                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Profile
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar flex-grow-1 mb-4 shadow">
+
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Đỗ Văn Quang-[17020977]</span>
+                                <img class="img-profile rounded-circle" src="../image/user.png" >
                             </a>
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Settings
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Logout
-                            </a>
-                        </div>
-                    </li>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Profile
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Settings
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </li>
 
-                </ul>
+                    </ul>
 
-            </nav>
-            <!-- End of Topbar -->
-            <!-- Begin Page Content -->
-            <div class="container-fluid" id="container">
-                <div class="d-sm-flex align-items-center justify-content-between mb-4"style="font-size: 200%">
-                    <p>Quản lý môn thi</p>
-                </div>
-                <div class="form-group col-md-12 d-flex justify-content-end mb-0 p-0">
-                    <label class="mt-2" style="width: 65px">Học Kỳ:</label>
-                    <select class="form-control w-25" id="inputHK" >
-                    </select>
-                </div>
-                <div class="card shadow mb-3" >
-                    <div class="card-body" >
-                        <div class="container-fluid p-0 table-responsive">
-                            <div class="row w-100 m-0">
+                </nav>
+                <!-- End of Topbar -->
+                <!-- Begin Page Content -->
+                <div class="container-fluid" id="container">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4"style="font-size: 200%">
+                        <p>Quản lý môn thi</p>
+                    </div>
+                    <div class="form-group col-md-12 d-flex justify-content-end mb-0 p-0">
+                        <label class="mt-2" style="width: 65px">Học Kỳ:</label>
+                        <select class="form-control w-25" id="inputHK" >
+                        </select>
+                    </div>
+                    <div class="card shadow mb-3" >
+                        <div class="card-body" >
+                            <div class="container-fluid p-0 table-responsive">
+                                <div class="row w-100 m-0">
 
-                                <div class="col-md-6 p-0">
-                                    <div class="d-flex" id="subTable_length">
-                                        <div class="mt-1">
-                                            <label>Hiển thị:</label>
+                                    <div class="col-md-6 p-0">
+                                        <div class="d-flex" id="subTable_length">
+                                            <div class="mt-1">
+                                                <label>Hiển thị:</label>
+                                            </div>
+                                            <div class="ml-2 mr-2">
+                                                <select name="subTable_length" aria-controls="subTable" class="custom-select custom-select-sm form-control form-control-sm">
+                                                    <option name="optionPageSize" value="10">10</option>
+                                                    <option name="optionPageSize" value="25">25</option>
+                                                    <option name="optionPageSize" value="50">50</option>
+                                                </select>
+                                            </div>
+                                            <div class="mt-1">
+                                                <label>hàng</label>
+                                            </div>
                                         </div>
-                                        <div class="ml-2 mr-2">
-                                            <select name="subTable_length" aria-controls="subTable" class="custom-select custom-select-sm form-control form-control-sm">
-                                                <option name="optionPageSize" value="10">10</option>
-                                                <option name="optionPageSize" value="25">25</option>
-                                                <option name="optionPageSize" value="50">50</option>
-                                            </select>
-                                        </div>
-                                        <div class="mt-1">
-                                            <label>hàng</label>
+                                    </div>
+                                    <div class="col-md-6 p-0">
+                                        <div id="subTable_filter" class="dataTables_filter d-flex justify-content-end">
+                                            <div class="mt-1"><label>Tìm kiếm:</label></div>
+                                            <div class="ml-2"><input type="search" class="form-control form-control-sm" placeholder="Nhập tên môn" id="input_search"></div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6 p-0">
-                                    <div id="subTable_filter" class="dataTables_filter d-flex justify-content-end">
-                                        <div class="mt-1"><label>Tìm kiếm:</label></div>
-                                        <div class="ml-2"><input type="search" class="form-control form-control-sm" placeholder="Nhập tên môn" id="input_search"></div>
+                                <table id="subTable" class="table table-bordered p-0 table-striped my-table w-100"style="color: black; text-align:center;margin-bottom: 0px!important;" >
+
+                                    <thead class="thead-dark">
+                                    <tr>
+                                        <th class="no-sort">Stt</th>
+                                        <th>id</th>
+                                        <th>Mã môn</th>
+                                        <th>Môn</th>
+                                        <th>Số tín chỉ</th>
+                                        <th>DSSV</th>
+                                        <th>#</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                                <div class="row w-100 m-0 mt-3">
+                                    <div class="col-sm-18 col-md-7 mt-2">
+                                        <p id="subTable_info" class="m-0"></p>
+                                    </div>
+                                    <div class="col-sm-6 col-md-5 d-flex justify-content-end p-0">
+                                        <div class="dataTables_paginate paging_simple_numbers" id="subTable_paginate">
+                                            <ul class="pagination m-0" id="paging">
+                                                <li class="paginate_button page-item previous" id="subTable_previous">
+                                                    <a class="page-link">
+                                                        <i class="fas fa-angle-double-left clickable"></i>
+                                                    </a>
+                                                </li>
+                                                <li class="paginate_button page-item d-none">
+                                                    <a class="page-link" id="page_a" onclick="paging_click(this.innerText)"></a>
+                                                </li>
+                                                <li class="paginate_button page-item d-none">
+                                                    <a class="page-link" id="page_b" onclick="paging_click(this.innerText)"></a>
+                                                </li>
+                                                <li class="paginate_button page-item d-none">
+                                                    <a class="page-link" id="page_c" onclick="paging_click(this.innerText)"></a>
+                                                </li>
+                                                <li class="paginate_button page-item next" id="subTable_next">
+                                                    <a class="page-link">
+                                                        <i class="fas fa-angle-double-right clickable"></i>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <table id="subTable" class="table table-bordered p-0 table-striped my-table w-100"style="color: black; text-align:center;margin-bottom: 0px!important;" >
 
-                                <thead class="thead-dark">
-                                <tr>
-                                    <th class="no-sort">Stt</th>
-                                    <th>id</th>
-                                    <th>Mã môn</th>
-                                    <th>Môn</th>
-                                    <th>Số tín chỉ</th>
-                                    <th>DSSV</th>
-                                    <th>#</th>
-                                </tr>
-                                </thead>
+                        </div>
+                        <div class="card-footer">
+                            <div class="d-flex text-white">
+                                <button class="btn-primary btn  d-flex justify-content-start" id="add_btn"><i class="fas fa-plus mt-1"></i><p class="mb-0 ml-2">Thêm môn thi mới</p></button>
 
-                                <tbody>
-
-                                </tbody>
-                            </table>
-                            <div class="row w-100 m-0 mt-3">
-                                <div class="col-sm-18 col-md-7">
-                                    <p id="subTable_info"></p>
-                                </div>
-                                <div class="col-sm-6 col-md-5 d-flex justify-content-end p-0">
-                                    <div class="dataTables_paginate paging_simple_numbers" id="subTable_paginate">
-                                        <ul class="pagination m-0" id="paging">
-                                            <li class="paginate_button page-item previous" id="subTable_previous">
-                                                <a class="page-link">
-                                                    <i class="fas fa-angle-double-left clickable"></i>
-                                                </a>
-                                            </li>
-                                            <li class="paginate_button page-item d-none">
-                                                <a class="page-link" id="page_a" onclick="paging_click(this.innerText)"></a>
-                                            </li>
-                                            <li class="paginate_button page-item d-none">
-                                                <a class="page-link" id="page_b" onclick="paging_click(this.innerText)"></a>
-                                            </li>
-                                            <li class="paginate_button page-item d-none">
-                                                <a class="page-link" id="page_c" onclick="paging_click(this.innerText)"></a>
-                                            </li>
-                                            <li class="paginate_button page-item next" id="subTable_next">
-                                                <a class="page-link">
-                                                    <i class="fas fa-angle-double-right clickable"></i>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
                             </div>
-                        </div>
 
-                    </div>
-                    <div class="card-footer">
-                        <div class="d-flex text-white">
-                            <button class="btn-primary btn  d-flex justify-content-start" id="add_btn"><i class="fas fa-plus mt-1"></i><p class="mb-0 ml-2">Thêm môn thi mới</p></button>
-                            <button class="btn btn-primary ml-auto d-flex justify-content-end" id="confirmButton" onclick="getRequest()">Ghi nhận</button>
                         </div>
-
                     </div>
+
                 </div>
-
+                <!-- End of Page Content -->
             </div>
-            <!-- End of Page Content -->
+            <!-- End of Main Content -->
         </div>
-        <!-- End of Main Content -->
+        <!-- End of Content Wrapper -->
     </div>
-    <!-- End of Content Wrapper -->
-</div>
-<!-- End of Page Wrapper -->
-<!-- Logout Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <button class="btn btn-primary"  onclick="removeToken()">Logout</button>
+    <!-- End of Page Wrapper -->
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-primary"  onclick="removeToken()">Logout</button>
 
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Delete Modal-->
-<div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Xác nhận xóa!</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">Bạn có chắc chắn muốn xóa môn <span id="del_info"></span> ra khỏi danh sách.</div>
-            <div class="modal-footer">
-                <button class="btn btn-primary"  onclick="delete_subjectClass()" data-dismiss="modal">Xác nhận</button>
-                <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- view std Modal-->
-<div class="modal fade bd-example-modal-lg" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="table" style="width: 75%!important;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="header_name"></h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="row w-100 m-0">
-                        <div class="col-md-6">
-                            <div class="d-flex" id="viewTable_length">
-                                <div class="mt-1">
-                                    <label>Hiển thị:</label>
-                                </div>
-                                <div class="ml-2 mr-2">
-                                    <select name="viewTable_length" class="custom-select custom-select-sm form-control form-control-sm">
-                                        <option name="optionPageSize" value="10">10</option>
-                                        <option name="optionPageSize" value="20">20</option>
-                                        <option name="optionPageSize" value="40">10</option>
-                                    </select>
-                                </div>
-                                <div class="mt-1">
-                                    <label>hàng</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 p-0">
-                            <div id="viewTable_filter" class="dataTables_filter d-flex justify-content-end">
-                                <div class="mt-1"><label>Tìm kiếm:</label></div>
-                                <div class="ml-2"><input type="search" class="form-control form-control-sm" placeholder="Nhập MSSV" id="input_viewTable_keywords"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <table id="viewTable" class="table table-bordered p-0 table-striped my-table w-100"style="color: black; text-align:center;">
-
-                        <thead class="thead-dark">
-                        <tr>
-                            <th class="no-sort">Stt</th>
-                            <th>MSSV</th>
-                            <th>Họ tên</th>
-                            <th>Ngày sinh</th>
-                            <th>Điều kiện dự thi</th>
-                        </tr>
-                        </thead>
-
-                        <tbody>
-
-                        </tbody>
-                    </table>
-                    <div class="row w-100 m-0 mt-3">
-                        <div class="col-sm-18 col-md-7">
-                            <p id="viewTable_info"></p>
-                        </div>
-                        <div class="col-sm-6 col-md-5 d-flex justify-content-end p-0 clickable">
-                            <div class="dataTables_paginate paging_simple_numbers" id="viewTable_paginate">
-                                <ul class="pagination m-0" id="viewTable_paging">
-                                    <li class="paginate_button page-item previous" id="viewTable_previous">
-                                        <a class="page-link">
-                                            <i class="fas fa-angle-double-left clickable"></i>
-                                        </a>
-                                    </li>
-                                    <li class="paginate_button page-item d-none">
-                                        <a class="page-link" id="page_x" onclick="Vpaging_click(this.innerText)"></a>
-                                    </li>
-                                    <li class="paginate_button page-item d-none">
-                                        <a class="page-link" id="page_y" onclick="Vpaging_click(this.innerText)"></a>
-                                    </li>
-                                    <li class="paginate_button page-item d-none">
-                                        <a class="page-link" id="page_z" onclick="Vpaging_click(this.innerText)"></a>
-                                    </li>
-                                    <li class="paginate_button page-item next" id="viewTable_next">
-                                        <a class="page-link">
-                                            <i class="fas fa-angle-double-right clickable"></i>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+    <!-- Delete Modal-->
+    <div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Xác nhận xóa!</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Bạn có chắc chắn muốn xóa môn <span id="del_info"></span> ra khỏi danh sách.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary"  onclick="delete_examSubject()" data-dismiss="modal">Xác nhận</button>
+                    <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<!-- add Modal-->
-<div class="modal fade bd-example-modal-lg" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="table" style="width: 75%!important;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Thêm môn thi mới</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="row w-100 m-0">
-                        <div class="col-md-6">
-                            <div class="d-flex" id="ExamSubjectAddingTable_length">
-                                <div class="mt-1">
-                                    <label>Hiển thị:</label>
+
+    <!-- view std Modal-->
+    <div class="modal fade bd-example-modal-lg" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="table" style="width: 75%!important;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="header_name"></h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="row w-100 m-0">
+                            <div class="col-md-6">
+                                <div class="d-flex" id="viewTable_length">
+                                    <div class="mt-1">
+                                        <label>Hiển thị:</label>
+                                    </div>
+                                    <div class="ml-2 mr-2">
+                                        <select name="viewTable_length" class="custom-select custom-select-sm form-control form-control-sm">
+                                            <option name="optionPageSize" value="10">10</option>
+                                            <option name="optionPageSize" value="20">20</option>
+                                            <option name="optionPageSize" value="40">10</option>
+                                        </select>
+                                    </div>
+                                    <div class="mt-1">
+                                        <label>hàng</label>
+                                    </div>
                                 </div>
-                                <div class="ml-2 mr-2">
-                                    <select name="ExamSubjectAddingTable_length" aria-controls="subTable" class="custom-select custom-select-sm form-control form-control-sm">
-                                        <option name="optionPageSize" value="5">5</option>
-                                        <option name="optionPageSize" value="10">10</option>
-                                        <option name="optionPageSize" value="15">15</option>
-                                    </select>
-                                </div>
-                                <div class="mt-1">
-                                    <label>hàng</label>
+                            </div>
+                            <div class="col-md-6 p-0">
+                                <div id="viewTable_filter" class="dataTables_filter d-flex justify-content-end">
+                                    <div class="mt-1"><label>Tìm kiếm:</label></div>
+                                    <div class="ml-2"><input type="search" class="form-control form-control-sm" placeholder="Nhập MSSV" id="input_viewTable_keywords"></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 p-0">
-                            <div id="ExamSubjectAddingTable_filter" class="dataTables_filter d-flex justify-content-end">
-                                <div class="mt-1"><label>Tìm kiếm:</label></div>
-                                <div class="ml-2"><input type="search" class="form-control form-control-sm" placeholder="Nhập tên môn" id="input_ExamSubject"></div>
+                        <table id="viewTable" class="table table-bordered p-0 table-striped my-table w-100"style="color: black; text-align:center;">
+
+                            <thead class="thead-dark">
+                            <tr>
+                                <th class="no-sort">Stt</th>
+                                <th>MSSV</th>
+                                <th>Họ tên</th>
+                                <th>Ngày sinh</th>
+                                <th>Điều kiện dự thi</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                        <div class="row w-100 m-0 mt-3">
+                            <div class="col-sm-18 col-md-7">
+                                <p id="viewTable_info"></p>
+                            </div>
+                            <div class="col-sm-6 col-md-5 d-flex justify-content-end p-0 clickable">
+                                <div class="dataTables_paginate paging_simple_numbers" id="viewTable_paginate">
+                                    <ul class="pagination m-0" id="viewTable_paging">
+                                        <li class="paginate_button page-item previous" id="viewTable_previous">
+                                            <a class="page-link">
+                                                <i class="fas fa-angle-double-left clickable"></i>
+                                            </a>
+                                        </li>
+                                        <li class="paginate_button page-item d-none">
+                                            <a class="page-link" id="page_x" onclick="Vpaging_click(this.innerText)"></a>
+                                        </li>
+                                        <li class="paginate_button page-item d-none">
+                                            <a class="page-link" id="page_y" onclick="Vpaging_click(this.innerText)"></a>
+                                        </li>
+                                        <li class="paginate_button page-item d-none">
+                                            <a class="page-link" id="page_z" onclick="Vpaging_click(this.innerText)"></a>
+                                        </li>
+                                        <li class="paginate_button page-item next" id="viewTable_next">
+                                            <a class="page-link">
+                                                <i class="fas fa-angle-double-right clickable"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <table id="ExamSubjectAddingTable" class="table table-bordered p-0 table-striped my-table w-100"style="color: black; text-align:center;">
-
-                        <thead class="thead-dark">
-                        <tr>
-                            <th class="no-sort">Stt</th>
-                            <th>Mã môn</th>
-                            <th>Môn</th>
-                            <th>Số tín chỉ</th>
-                            <th>#</th>
-                        </tr>
-                        </thead>
-
-                        <tbody>
-
-                        </tbody>
-                    </table>
-                    <div class="row w-100 m-0 mt-3">
-                        <div class="col-sm-18 col-md-7">
-                            <p id="ExamSubjectAddingTable_info"></p>
-                        </div>
-                        <div class="col-sm-6 col-md-5 d-flex justify-content-end p-0 clickable">
-                            <div class="dataTables_paginate paging_simple_numbers" id="ExamSubjectAddingTable_paginate">
-                                <ul class="pagination m-0" id="">
-                                    <li class="paginate_button page-item previous" id="ExamSubjectAddingTable_previous">
-                                        <a class="page-link">
-                                            <i class="fas fa-angle-double-left clickable"></i>
-                                        </a>
-                                    </li>
-                                    <li class="paginate_button page-item d-none">
-                                        <a class="page-link" id="page_1" onclick="ESpaging_click(this.innerText)"></a>
-                                    </li>
-                                    <li class="paginate_button page-item d-none">
-                                        <a class="page-link" id="page_2" onclick="ESpaging_click(this.innerText)"></a>
-                                    </li>
-                                    <li class="paginate_button page-item d-none">
-                                        <a class="page-link" id="page_3" onclick="ESpaging_click(this.innerText)"></a>
-                                    </li>
-                                    <li class="paginate_button page-item next" id="ExamSubjectAddingTable_next">
-                                        <a class="page-link">
-                                            <i class="fas fa-angle-double-right clickable"></i>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="btn btn-primary float-right mt-3" type="button" data-dismiss="modal" onclick="postReq_addExamSub()">Ghi nhận</button>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
+    <!-- add Modal-->
+    <div class="modal fade bd-example-modal-lg" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="table" style="width: 75%!important;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thêm môn thi mới</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="row w-100 m-0">
+                            <div class="col-md-6">
+                                <div class="d-flex" id="ExamSubjectAddingTable_length">
+                                    <div class="mt-1">
+                                        <label>Hiển thị:</label>
+                                    </div>
+                                    <div class="ml-2 mr-2">
+                                        <select name="ExamSubjectAddingTable_length" aria-controls="subTable" class="custom-select custom-select-sm form-control form-control-sm">
+                                            <option name="optionPageSize" value="5">5</option>
+                                            <option name="optionPageSize" value="10">10</option>
+                                            <option name="optionPageSize" value="15">15</option>
+                                        </select>
+                                    </div>
+                                    <div class="mt-1">
+                                        <label>hàng</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 p-0">
+                                <div id="ExamSubjectAddingTable_filter" class="dataTables_filter d-flex justify-content-end">
+                                    <div class="mt-1"><label>Tìm kiếm:</label></div>
+                                    <div class="ml-2"><input type="search" class="form-control form-control-sm" placeholder="Nhập tên môn" id="input_ExamSubject"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <table id="ExamSubjectAddingTable" class="table table-bordered p-0 table-striped my-table w-100"style="color: black; text-align:center;">
 
+                            <thead class="thead-dark">
+                            <tr>
+                                <th class="no-sort">Stt</th>
+                                <th>Mã môn</th>
+                                <th>Môn</th>
+                                <th>Số tín chỉ</th>
+                                <th>#</th>
+                            </tr>
+                            </thead>
 
+                            <tbody>
 
-<!--import add modal-->
-<div class="modal fade" id="importStdModal" tabindex="-1" role="dialog" aria-labelledby="headerModal" aria-hidden="true">
-    <div class="modal-dialog " role="document">
-        <div class="modal-content"style="width: 700px;margin-left: -100px!important;">
-            <div class="modal-header">
-                <h5 class="modal-title" id="headerModal" style="color:black">Thêm danh sách sinh viên cho môn thi</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
+                            </tbody>
+                        </table>
+                        <div class="row w-100 m-0 mt-3">
+                            <div class="col-sm-18 col-md-7">
+                                <p id="ExamSubjectAddingTable_info"></p>
+                            </div>
+                            <div class="col-sm-6 col-md-5 d-flex justify-content-end p-0 clickable">
+                                <div class="dataTables_paginate paging_simple_numbers" id="ExamSubjectAddingTable_paginate">
+                                    <ul class="pagination m-0" id="">
+                                        <li class="paginate_button page-item previous" id="ExamSubjectAddingTable_previous">
+                                            <a class="page-link">
+                                                <i class="fas fa-angle-double-left clickable"></i>
+                                            </a>
+                                        </li>
+                                        <li class="paginate_button page-item d-none">
+                                            <a class="page-link" id="page_1" onclick="ESpaging_click(this.innerText)"></a>
+                                        </li>
+                                        <li class="paginate_button page-item d-none">
+                                            <a class="page-link" id="page_2" onclick="ESpaging_click(this.innerText)"></a>
+                                        </li>
+                                        <li class="paginate_button page-item d-none">
+                                            <a class="page-link" id="page_3" onclick="ESpaging_click(this.innerText)"></a>
+                                        </li>
+                                        <li class="paginate_button page-item next" id="ExamSubjectAddingTable_next">
+                                            <a class="page-link">
+                                                <i class="fas fa-angle-double-right clickable"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary float-right mt-3" type="button" data-dismiss="modal" onclick="postReq_addExamSub()">Ghi nhận</button>
+                    </form>
+                </div>
             </div>
-            <div class="modal-body">
-                <form>
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="customFile">
-                        <label class="custom-file-label" for="customFile">Choose file</label>
-                    </div>
-                    <button class="btn btn-primary float-right" id="confirmImportModal" type="button" style="margin-top: 1rem">Ghi nhận</button>
-                </form>
+        </div>
+    </div>
+
+
+
+    <!--import add modal-->
+    <div class="modal fade" id="importStdModal" tabindex="-1" role="dialog" aria-labelledby="headerModal" aria-hidden="true">
+        <div class="modal-dialog " role="document">
+            <div class="modal-content"style="width: 700px;margin-left: -100px!important;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="headerModal" style="color:black">Thêm danh sách sinh viên cho môn thi</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="customFile">
+                            <label class="custom-file-label" for="customFile">Choose file</label>
+                        </div>
+                        <button class="btn btn-primary float-right" id="confirmImportModal" type="button" style="margin-top: 1rem">Ghi nhận</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
