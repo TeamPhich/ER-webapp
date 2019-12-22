@@ -262,20 +262,27 @@ async function updateStd() {
     getRequest();
 }
 
+
 function convertTime(unixtimestamp){
     // Convert timestamp to milliseconds
     let date = new Date(unixtimestamp*1000);
     // Year
-    let year = date.getFullYear();
+    let year = formatTime(date.getFullYear());
     // Day
-    let day = date.getDate();
+    let day = formatTime(date.getDate());
     // Month
-    let month =date.getMonth()+1;
+    let month =formatTime((date.getMonth()+1));
+    let hour = formatTime(date.getHours());
+    let min = formatTime(date.getMinutes());
 
-    let convdataTime = day+'/'+month+'/'+year;
+    let convdataTime =day+'/'+month+'/'+year;
     return convdataTime;
 }
-
+function formatTime(valTime) {
+    if (valTime<10)
+        valTime='0'+valTime;
+    return valTime;
+}
 //paging
  function paging() {
      if (total_page==1){

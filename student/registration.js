@@ -34,7 +34,7 @@ async function getExam(){
 }
 var SR="";
 var srQueue = [];
-var chk;
+var chk="";
 async function getES(){
     let url =("http://er-backend.sidz.tools/api/v1/students/exam/"+exam+"/exam-subject");
     const getESRes = await fetch(url, {
@@ -56,14 +56,16 @@ async function getES(){
                 if (dt.students[0].shift_room){
                     chk='checked';
                 }
+                else
+                    chk=""
                 let dtSR = dt.students[0].exam_subject.shifts_rooms[j];
                 SR = SR + '<div class="d-flex">\n' +
                     '                                                <div class="d-flex">\n' +
-                    '                                                    <p>Ca thi từ '+ convertTime(dtSR.shift.start_time) + ' đến ' + convertTime(dtSR.shift.finish_time) + ' tại phòng ' + dtSR.room.name + '</p>\n' +
+                    '                                                    <p>Ca thi từ <span class="text-danger">'+ convertTime(dtSR.shift.start_time) + '</span> đến <span class="text-danger">' + convertTime(dtSR.shift.finish_time) + '</span> tại phòng <span class="text-danger">' + dtSR.room.name + '</span> - số slot còn lại: <span class="text-danger font-weight-bold">'+ (dtSR.room.slot-dtSR.current_slot)+ '</span> slot</p>\n' +
                     '                                                </div>\n' +
                     '\n' +
                     '                                                <div class="custom-control custom-radio ml-auto">\n' +
-                    '                                                    <input '+ chk  +' type="radio" class="custom-control-input" name=gr_"'+ dt.id +'" id="sr_'+ dtSR.id+'" onchange="queueSR('+dtSR.id +')">\n' +
+                    '                                                    <input '+ chk  +' type="radio" class="custom-control-input" name=gr_"'+ dt.id +'" id="sr_'+ dtSR.id+'" value="'+ dtSR.id +'" >\n' +
                     '                                                    <label class="custom-control-label" for="sr_'+ dtSR.id+'"></label>\n' +
                     '                                                </div>\n' +
                     '                                            </div>\n' +
@@ -76,20 +78,7 @@ async function getES(){
                 '                                </div>\n' +
                 '                                <div id="'+ dt.subject_id +'" class="collapse">\n' +
                 '                                    <div class="card-body p-3">\n' +
-                '                                        <form id="'+ dt.id +'">\n' + SR +
-                '<div class="d-flex">\n' +
-                '                                                <div class="d-flex">\n' +
-                '                                                    <p class="text-danger mb-0">Bỏ thi</p>\n' +
-                '                                                </div>\n' +
-                '\n' +
-                '                                                <div class="custom-control custom-radio ml-auto">\n' +
-                '                                                    <input type="radio" class="custom-control-input" name=gr_"'+ dt.id +'" id="bothi_'+ dt.id+'">\n' +
-                '                                                    <label class="custom-control-label" for="bothi_'+ dt.id+'"></label>\n' +
-                '                                                </div>\n' +
-                '                                            </div>\n' +
-                '                                        </form>\n' +
-                '                                    </div>\n' +
-                '                                </div>');
+                '                                        <form id="'+ dt.id +'">\n' + SR);
 
 
         }
@@ -97,37 +86,44 @@ async function getES(){
 
 }
 
-const socket = io('http://er-webapp.sidz.tools/', {
+const socket = io('http://er-backend.sidz.tools/', {
     query: {
         token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzksImVtYWlsIjpudWxsLCJpYXQiOjE1NzcwMDE2MDIsImV4cCI6MTU3OTU5MzYwMn0.wvC1elnuUV8Kaxr4MLzKh-GpT4X_byfjJcrO3azjfq4",
         exam_id: 211
     },
 
 });
+socket.on('registing.time.start', () => {
+    console.log('start time');
+});
+socket.on('registing.time.finish', () => {
+    console.log('finishing time');
+});
+socket.on("error", (data) => { console.log(data.message) })
 
-
-function queueSR(sr_id) {
-    if (jQuery.inArray(sr_id,srQueue)==-1){
-        srQueue.push(sr_id);
-    }
-    else {
-        removeA(srQueue, sr_id);
-    }
-    console.log(srQueue);
+function queueSR() {
+    console.log($(":checked"));
 }
 
 function convertTime(unixtimestamp){
     // Convert timestamp to milliseconds
     let date = new Date(unixtimestamp*1000);
     // Year
-    let year = date.getFullYear();
+    let year = formatTime(date.getFullYear());
     // Day
-    let day = date.getDate();
+    let day = formatTime(date.getDate());
     // Month
-    let month =date.getMonth()+1;
+    let month =formatTime((date.getMonth()+1));
+    let hour = formatTime(date.getHours());
+    let min = formatTime(date.getMinutes());
 
-    let convdataTime = day+'/'+month+'/'+year;
+    let convdataTime = hour+':'+min+' '+day+'/'+month+'/'+year;
     return convdataTime;
+}
+function formatTime(valTime) {
+    if (valTime<10)
+        valTime='0'+valTime;
+    return valTime;
 }
 function removeA(arr) {
     var what, a = arguments, L = a.length, ax;
