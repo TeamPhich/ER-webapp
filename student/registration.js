@@ -59,7 +59,6 @@ async function getES(onReg){
             'token': window.localStorage.token
         }
     });
-    console.log(getESRes);
     let res = await getESRes.json();
     let data = res.data.examSubjects;
     if (res['status']==21){
@@ -125,7 +124,16 @@ async function getES(onReg){
 
 
             }
-            else {
+
+        }
+        for (var i=0;i<data.rows.length;i++){
+            if (!data.rows[i].students[0].enoughCondition){
+                let dt = data.rows[i];
+                $('#ES_container').append('<div class="divBar"></div><div class="card-header card-link bg-danger" data-toggle="collapse">\n' +
+                    '                                    <a class="card-link text-white font-weight-bold">\n' +
+                    '                                        '+ dt.subject.name +'\n' +
+                    '                                    </a>\n' +
+                    '                                </div>\n');
 
             }
         }
