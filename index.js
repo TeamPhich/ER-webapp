@@ -13,7 +13,7 @@ function removeToken() {
     window.location="account/login.html";
 }
 getExam();
-var exam;
+let exam;
 $(document).ready(function(){
     $('[data-toggle="popover"]').popover();
 });
@@ -37,6 +37,16 @@ async function getExam(){
     $('#HK_info').append(opt);
 }
 async function getES(){
+    let urlExam = ("http://er-backend.sidz.tools/api/v1/exams/?page=-1");
+    const getExamRes = await fetch(urlExam, {
+        method: 'GET',
+        headers: {
+            'token': window.localStorage.token
+        }
+    });
+    let resExam = await getExamRes.json();
+    let ExamdataExam = resExam.data.exams;
+    const exam = +ExamdataExam.rows[ExamdataExam.count - 1].id;
     let url =("http://er-backend.sidz.tools/api/v1/students/exam/"+exam+"/exam-subject");
     const getESRes = await fetch(url, {
         method: 'GET',
@@ -57,7 +67,7 @@ async function getES(){
         let str_es="";
         let str_es_unavailable="";
         let str_es_available="";
-        for (var i=0;i<data.length;i++){
+        for (let i=0;i<data.length;i++){
             str_es=str_es+data[i].subject.name+'<br\>';
             if (data[i].students[0].enoughCondition){
                 str_es_available=str_es_available+data[i].subject.name+'<br\>';
@@ -88,22 +98,21 @@ async function getES(){
         },
 
     });
-    socket.on('registing.time.start', () => {
+    socket.on('registing.time.start', async () => {
         console.log('start time');
         $('#Error_info').addClass('d-none');
         $('#ES_info').removeClass('d-none');
-        console.log(exam)
-        getES();
+        await getES();
     });
-    socket.on('registing.time.finish', () => {
+    socket.on('registing.time.finish',async () => {
         console.log('finishing time');
         $('#Error_info').removeClass('d-none');
         $('#ES_info').addClass('d-none');
     });
-    socket.on('exam_subject.time.read', () => {
+    socket.on('exam_subject.time.read',async () => {
         console.log('on review');
         $('#Error_info').addClass('d-none');
         $('#ES_info').removeClass('d-none');
-        getES();
+        await getES();
     });
     socket.on("error", (data) => { console.log(data.message) })
