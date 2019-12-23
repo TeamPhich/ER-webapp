@@ -30,7 +30,6 @@ async function getExam(){
     exam = +Examdata.rows[Examdata.count-1].id;
     let opt = "<p class='m-0' id='"+Examdata.rows[Examdata.count-1].id+"'>"+Examdata.rows[Examdata.count-1].name+"</p>";
     $('#HK_info').append(opt);
-    getES();
 }
 var SR="";
 var srQueue = [];
@@ -49,55 +48,88 @@ async function getES(){
         window.alert(res['reason']);
     }
     if(res['status']==20){
+        $('#ES_container').append("");
         for (var i=0;i<data.rows.length;i++){
-            let dt = data.rows[i];
-            SR="";
-            for (var j=0;j<dt.students[0].exam_subject.shifts_rooms.length;j++){
-                if (dt.students[0].shift_room){
-                    chk='checked';
+            if (data.rows[i].students[0].enoughCondition){
+                let dt = data.rows[i];
+                SR="";
+                let Reged_SR="";
+                let dis ="";
+                for (var j=0;j<dt.students[0].exam_subject.shifts_rooms.length;j++){
+                    if (dt.students[0].shift_room){
+                        chk='checked';
+                        dis = 'disabled';
+                        break;
+                    }
                 }
-                else
-                    chk=""
-                let dtSR = dt.students[0].exam_subject.shifts_rooms[j];
-                SR = SR + '<div class="d-flex">\n' +
-                    '                                                <div class="d-flex">\n' +
-                    '                                                    <p>Ca thi từ <span class="text-danger">'+ convertTime(dtSR.shift.start_time) + '</span> đến <span class="text-danger">' + convertTime(dtSR.shift.finish_time) + '</span> tại phòng <span class="text-danger">' + dtSR.room.name + '</span> - số slot còn lại: <span class="text-danger font-weight-bold">'+ (dtSR.room.slot-dtSR.current_slot)+ '</span> slot</p>\n' +
-                    '                                                </div>\n' +
-                    '\n' +
-                    '                                                <div class="custom-control custom-radio ml-auto">\n' +
-                    '                                                    <input '+ chk  +' type="radio" class="custom-control-input" name=gr_"'+ dt.id +'" id="sr_'+ dtSR.id+'" value="'+ dtSR.id +'" >\n' +
-                    '                                                    <label class="custom-control-label" for="sr_'+ dtSR.id+'"></label>\n' +
-                    '                                                </div>\n' +
-                    '                                            </div>\n' +
-                    '                                        <div class="divBar"></div>\n'
+                for (var j=0;j<dt.students[0].exam_subject.shifts_rooms.length;j++) {
+                    if (!dt.students[0].shift_room) {
+                        let dtSR = dt.students[0].exam_subject.shifts_rooms[j];
+                        SR = SR + '<div class="d-flex">\n' +
+                            '                                                <div class="ml-2">\n' +
+                            '<button type="button"  ' + dis + ' id="sr_' + dtSR.id + '" value="' + dtSR.id + '"  class="btn btn-outline-primary mb-3"><i class="fas fa-plus"></i></button>'+
+                            '                                                </div>\n' +
+                            '                                                <div class="d-flex mt-2 ml-2">\n' +
+                            '                                                    <p>Ca thi từ <span class="text-danger">' + convertTime(dtSR.shift.start_time) + '</span> đến <span class="text-danger">' + convertTime(dtSR.shift.finish_time) + '</span> tại phòng <span class="text-danger">' + dtSR.room.name + '</span> - số slot còn lại: <span class="text-danger font-weight-bold">' + (dtSR.room.slot - dtSR.current_slot) + '</span> slots</p>\n' +
+                            '                                                </div>\n' +
+                            '\n' +
+                            '                                            </div>\n'
+                    }
+                    else {
+                        Reged_SR = '<div class="d-flex">\n' +
+                            '                                                <div class="ml-2">\n' +
+                            '<button type="button" class="btn btn-danger mb-3"><i class="far fa-trash-alt"></i></button>'+
+                            '                                                </div>\n' +
+                            '                                                <div class="d-flex">\n' +
+                            '                                                    <p>Ca thi từ <span class="text-danger">' + convertTime(dtSR.shift.start_time) + '</span> đến <span class="text-danger">' + convertTime(dtSR.shift.finish_time) + '</span> tại phòng <span class="text-danger">' + dtSR.room.name + '</span> - số slot còn lại: <span class="text-danger font-weight-bold">' + (dtSR.room.slot - dtSR.current_slot) + '</span> slot</p>\n' +
+                            '                                                </div>\n' +
+                            '\n' +
+                            '                                            </div>\n';
+                    }
+                }
+                $('#ES_container').append('<div class="card-header card-link collapsed bg-primary" data-toggle="collapse" href="#'+ dt.subject_id +'" aria-expanded="false">\n' +
+                    '                                    <a class="card-link collapsed text-white font-weight-bold" data-toggle="collapse" href="#'+ dt.subject_id +'" aria-expanded="false">\n' +
+                    '                                        '+ dt.subject.name +'\n' +
+                    '                                    </a>\n' +
+                    '                                </div>\n' +
+                    '                                <div id="'+ dt.subject_id +'" class="collapse">\n' +
+                    '                                    <div class="card-body p-3">\n' +
+                    '                                        <form id="'+ dt.id +'">\n' + SR +
+                '                                        <div class="divBar"></div>'+ Reged_SR+'</form>\n' );
+
+
             }
-            $('#ES_container').append('<div class="card-header card-link collapsed bg-primary" data-toggle="collapse" href="#'+ dt.subject_id +'" aria-expanded="false">\n' +
-                '                                    <a class="card-link collapsed text-white font-weight-bold" data-toggle="collapse" href="#'+ dt.subject_id +'" aria-expanded="false">\n' +
-                '                                        '+ dt.subject.name +'\n' +
-                '                                    </a>\n' +
-                '                                </div>\n' +
-                '                                <div id="'+ dt.subject_id +'" class="collapse">\n' +
-                '                                    <div class="card-body p-3">\n' +
-                '                                        <form id="'+ dt.id +'">\n' + SR);
+            else {
 
-
+            }
         }
     }
-
 }
 
 const socket = io('http://er-backend.sidz.tools/', {
     query: {
-        token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzksImVtYWlsIjpudWxsLCJpYXQiOjE1NzcwMDE2MDIsImV4cCI6MTU3OTU5MzYwMn0.wvC1elnuUV8Kaxr4MLzKh-GpT4X_byfjJcrO3azjfq4",
-        exam_id: 211
+        token: window.localStorage.token,
+        exam_id: window.localStorage.exam
     },
 
 });
+
 socket.on('registing.time.start', () => {
     console.log('start time');
+    $('#Error_info').addClass('d-none');
+    $('#ES_container').removeClass('d-none');
+    getES();
 });
 socket.on('registing.time.finish', () => {
     console.log('finishing time');
+    $('#Error_info').removeClass('d-none');
+    $('#ES_container').addClass('d-none');
+});
+socket.on('exam_subject.time.read', () => {
+    console.log('on review');
+    $('#Error_info').addClass('d-none');
+    $('#ES_container').removeClass('d-none');
+    getES();
 });
 socket.on("error", (data) => { console.log(data.message) })
 
