@@ -34,11 +34,12 @@ var Vtotal_page;
 var exam;
 
 
-getExam();
+
 
 var del_examSubject_id;
 var addedSub =[];
 $(document).ready(async function(){
+
             await getProfile();
     //customize table
     table = $("#subTable").DataTable( {
@@ -50,7 +51,7 @@ $(document).ready(async function(){
         "info": false,
         "autoWidth": false,
         "language": {
-            "emptyTable": "Không có môn thi."
+            "emptyTable": "Loading..."
         },
 
         "columnDefs": [ {
@@ -97,7 +98,7 @@ $(document).ready(async function(){
 
         "info": false,
         "language": {
-            "emptyTable": "Không có môn học."
+            "emptyTable": "Loading..."
         },
 
 
@@ -129,7 +130,7 @@ $(document).ready(async function(){
         "info": false,
         "autoWidth": false,
         "language": {
-            "emptyTable": "Không có sinh viên."
+            "emptyTable": "Loading..."
         },
 
         "columnDefs": [
@@ -142,7 +143,7 @@ $(document).ready(async function(){
             }],
     } );
 
-
+    getExam();
     //bat su kien nut xoa
     $('#subTable tbody').on( 'click', '#deleteBtn', function () {
         $("#delModal").modal("show");
@@ -384,6 +385,7 @@ async function getRequest(){
         else {
             $("#subTable_info")[0].innerText = "";
             $("#subTable_paginate").addClass('d-none');
+            $('#subTable .dataTables_empty')[0].innerText = "Không có môn thi nào!";
         }
     }
     else {
@@ -438,6 +440,7 @@ async function getESRequest(){
         else {
             $("#ExamSubjectAddingTable_info")[0].innerText = "";
             $("#ExamSubjectAddingTable_paginate").addClass('d-none');
+            $('#ExamSubjectAddingTable .dataTables_empty')[0].innerText = "Không có môn thi nào!";
         }
     }
     else {
@@ -485,6 +488,7 @@ async function getStd(){
         else {
             $("#viewTable_info")[0].innerText = "";
             $("#viewTable_paginate").addClass('d-none');
+            $('#viewTable .dataTables_empty')[0].innerText = "Không có sinh viên!";
         }
     }
     else {

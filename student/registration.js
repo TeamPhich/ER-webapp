@@ -87,7 +87,7 @@ async function getES(onReg){
                         }
                         Reged_SR = '<div class="d-flex">\n' +
                             '                                                <div class="ml-2">\n' +
-                            '<button type="button" '+ dis2 +'  id="sr_' + dtSR.id + '" value="' + dtSR.id + '" class="btn btn-danger mb-3" onclick="remove_SR('+dtSR.id+','+ dt.students[0].id +','+ dt.id +')"><i class="far fa-trash-alt"></i></button>'+
+                            '<button type="button" '+ dis2 +'  id="sr_' + dtSR.id + '" value="' + dtSR.id + '" class="btn btn-danger mb-3" onclick="openDelModal('+dtSR.id+','+ dt.students[0].id +','+ dt.id +')"><i class="far fa-trash-alt"></i></button>'+
                             '                                                </div>\n' +
                             '                                                <div class="d-flex mt-2 ml-2">\n' +
                             '                                                    <p>Ca thi từ <span class="text-danger">' + convertTime(dtSR.shift.start_time) + '</span> đến <span class="text-danger">' + convertTime(dtSR.shift.finish_time) + '</span> tại phòng <span class="text-danger">' + dtSR.room.name + '</span> - số slot đã đăng ký: <span class="text-danger font-weight-bold" id="'+ dtSR.id +'">' + (dtSR.current_slot) + '</span> slots</p>\n' +
@@ -113,7 +113,7 @@ async function getES(onReg){
             }
         }
         span = document.getElementsByTagName('span');
-        
+
     }
 }
 
@@ -150,7 +150,6 @@ socket.on("exam_subject.update", (data) => {
 socket.on("current-slot.shift-room.post", (data) => {
     let sh_r_id = data.shift_room_id;
     let cur_slot = data.current_slot;
-    console.log("changed");
     for (var i=0;i<span.length;i++){
         if(span[i].id==sh_r_id){
             span[i].innerText = cur_slot;
@@ -238,4 +237,23 @@ async function getProfile() {
     if(res['status']==20){
         document.getElementById("profile").innerHTML=res['data']['fullname']+"-"+"["+res['data']['user_name']+"]"
     }
+}
+
+var del_sr_info;
+ function openDelModal(shift_room_id, student_id, exam_subject_id) {
+    $('#deleteModal').modal('show');
+    del_sr_info = [shift_room_id,student_id,exam_subject_id];
+    console.log(del_sr_info);
+ }
+ function confirmDel() {
+     remove_SR(del_sr_info[0],del_sr_info[1],del_sr_info[2]);
+ }
+var reg_sr_info;
+function openRegModal(shift_room_id, student_id, exam_subject_id) {
+    $('#regModal').modal('show');
+    reg_sr_info = [shift_room_id,student_id,exam_subject_id];
+    console.log(reg_sr_info);
+}
+function confirmReg() {
+    reg_SR(reg_sr_info[0],reg_sr_info[1],reg_sr_info[2]);
 }
