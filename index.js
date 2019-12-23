@@ -16,8 +16,8 @@ let exam;
 $(document).ready(async function(){
     $('[data-toggle="popover"]').popover();
     await getProfile();
-    getExam();
 });
+getExam();
 async function getExam(){
     let url =("http://er-backend.sidz.tools/api/v1/exams/?page=-1");
     const getExamRes = await fetch(url, {
