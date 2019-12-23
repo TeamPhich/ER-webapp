@@ -63,14 +63,15 @@ async function getES(){
                     }
                 }
                 for (var j=0;j<dt.students[0].exam_subject.shifts_rooms.length;j++) {
-                    if (!dt.students[0].shift_room) {
-                        let dtSR = dt.students[0].exam_subject.shifts_rooms[j];
+                    let dtSR = dt.students[0].exam_subject.shifts_rooms[j];
+                    if (dtSR.id!=dt.students[0].shift_room) {
+
                         SR = SR + '<div class="d-flex">\n' +
                             '                                                <div class="ml-2">\n' +
-                            '<button type="button"  ' + dis + ' id="sr_' + dtSR.id + '" value="' + dtSR.id + '"  class="btn btn-outline-primary mb-3"><i class="fas fa-plus"></i></button>'+
+                            '<button type="button"  ' + dis + ' id="sr_' + dtSR.id + '" value="' + dtSR.id + '"  class="btn btn-outline-primary mb-3" onclick="reg_SR('+dtSR.id+','+ dt.students[0].id +','+ dt.id +')"><i class="fas fa-plus"></i></button>'+
                             '                                                </div>\n' +
                             '                                                <div class="d-flex mt-2 ml-2">\n' +
-                            '                                                    <p>Ca thi từ <span class="text-danger">' + convertTime(dtSR.shift.start_time) + '</span> đến <span class="text-danger">' + convertTime(dtSR.shift.finish_time) + '</span> tại phòng <span class="text-danger">' + dtSR.room.name + '</span> - số slot còn lại: <span class="text-danger font-weight-bold">' + (dtSR.room.slot - dtSR.current_slot) + '</span> slots</p>\n' +
+                            '                                                    <p>Ca thi từ <span class="text-danger">' + convertTime(dtSR.shift.start_time) + '</span> đến <span class="text-danger">' + convertTime(dtSR.shift.finish_time) + '</span> tại phòng <span class="text-danger">' + dtSR.room.name + '</span> - số slot đã đăng ký: <span class="text-danger font-weight-bold" id="'+ dtSR.id +'">' + (dtSR.current_slot) + '</span> slots</p>\n' +
                             '                                                </div>\n' +
                             '\n' +
                             '                                            </div>\n'
@@ -78,10 +79,10 @@ async function getES(){
                     else {
                         Reged_SR = '<div class="d-flex">\n' +
                             '                                                <div class="ml-2">\n' +
-                            '<button type="button" class="btn btn-danger mb-3"><i class="far fa-trash-alt"></i></button>'+
+                            '<button type="button"  id="sr_' + dtSR.id + '" value="' + dtSR.id + '" class="btn btn-danger mb-3"><i class="far fa-trash-alt"></i></button>'+
                             '                                                </div>\n' +
-                            '                                                <div class="d-flex">\n' +
-                            '                                                    <p>Ca thi từ <span class="text-danger">' + convertTime(dtSR.shift.start_time) + '</span> đến <span class="text-danger">' + convertTime(dtSR.shift.finish_time) + '</span> tại phòng <span class="text-danger">' + dtSR.room.name + '</span> - số slot còn lại: <span class="text-danger font-weight-bold">' + (dtSR.room.slot - dtSR.current_slot) + '</span> slot</p>\n' +
+                            '                                                <div class="d-flex mt-2 ml-2">\n' +
+                            '                                                    <p>Ca thi từ <span class="text-danger">' + convertTime(dtSR.shift.start_time) + '</span> đến <span class="text-danger">' + convertTime(dtSR.shift.finish_time) + '</span> tại phòng <span class="text-danger">' + dtSR.room.name + '</span> - số slot đã đăng ký: <span class="text-danger font-weight-bold" id="'+ dtSR.id +'">' + (dtSR.current_slot) + '</span> slots</p>\n' +
                             '                                                </div>\n' +
                             '\n' +
                             '                                            </div>\n';
@@ -131,10 +132,25 @@ socket.on('exam_subject.time.read', () => {
     $('#ES_container').removeClass('d-none');
     getES();
 });
+socket.on("exam_subject.update", (data) => {
+    const {shift_room_id} = data;
+    socket.emit("current-slot.shift-room.get", {shift_room_id})
+});
+console.log($('#ES_container'));
+socket.on("current-slot.shift-room.post", (data) => {
+    let sh_r_id = data.shift_room_id;
+    $("[id='']").innerText = data.current_slot;
+})
+
+
+socket.on("shift_room.resgisting.err", (data) => console.log(data));
+socket.on("shift_room.resgisting.success", (data) => console.log(data));
+
+socket.on("err", (data) => {console.log(data)});
 socket.on("error", (data) => { console.log(data.message) })
 
-function queueSR() {
-    console.log($(":checked"));
+function reg_SR(shift_room_id, student_id, exam_subject_id) {
+    socket.emit('shift_room.resgisting', {shift_room_id: +shift_room_id, student_id: +student_id, exam_subject_id: exam_subject_id.toString()});
 }
 
 function convertTime(unixtimestamp){
