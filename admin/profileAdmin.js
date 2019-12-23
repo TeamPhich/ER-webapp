@@ -23,7 +23,7 @@ $(document).ready(async function() {
                 document.getElementById('errorPass').innerHTML="Độ dài password phải lớn hơn 8"
             }
         }
-    })
+    });
     $("#oldPassWord").on('keydown',function (e){
         if(e.keyCode==13){
             $("#newPassWord").focus();
@@ -34,7 +34,7 @@ $(document).ready(async function() {
         if(this.value.length<8){
             document.getElementById('errorPass').innerHTML="Độ dài password phải lớn hơn 8"
         }
-    })
+    });
     $("#reNewPassWord").on('keydown',function (e) {
         if(e.keyCode==13){
             if(this.value!=$('#newPassWord')[0].value){
@@ -46,7 +46,7 @@ $(document).ready(async function() {
         }
     })
 
-})
+});
 async function getProfile() {
     let url="http://er-backend.sidz.tools/api/v1/accounts/profile";
     const response = await fetch(url,{
@@ -59,6 +59,7 @@ async function getProfile() {
         }
     });
     let res=await response.json();
+    console.log(res);
     document.getElementById("fullName").innerHTML=res['data']['fullname'];
     document.getElementById("birthDay").innerHTML=convertDate(res['data']['birthday']);
     document.getElementById("email").innerHTML=res['data']['email'];
@@ -113,7 +114,6 @@ async function getPro() {
     });
     let res = await response.json();
     console.log(res['data']['fullname']+"-"+"["+res['data']['user_name']+"]");
-    console.log($("#profile")[0])
     if(res['status']==20){
         document.getElementById("profile").innerHTML=res['data']['fullname']+"-"+"["+res['data']['user_name']+"]"
     }
