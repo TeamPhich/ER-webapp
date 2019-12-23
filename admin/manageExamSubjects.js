@@ -34,11 +34,12 @@ var Vtotal_page;
 var exam;
 
 
-getExam();
+
 
 var del_examSubject_id;
 var addedSub =[];
 $(document).ready(async function(){
+
             await getProfile();
     //customize table
     table = $("#subTable").DataTable( {
@@ -50,7 +51,7 @@ $(document).ready(async function(){
         "info": false,
         "autoWidth": false,
         "language": {
-            "emptyTable": "Không có môn thi."
+            "emptyTable": "Loading..."
         },
 
         "columnDefs": [ {
@@ -97,18 +98,18 @@ $(document).ready(async function(){
 
         "info": false,
         "language": {
-            "emptyTable": "Không có môn học."
+            "emptyTable": "Loading..."
         },
 
 
         "columnDefs": [ {
-            "targets": -1,
-            'width':"10%", //auto fit
+            "targets": 0,
+            'width':"7%", //auto fit
             "data": null,
             "defaultContent": "<input type='checkbox'>"
         },
             {
-                "targets": 0,
+                "targets": 1,
                 "width": "1%" //auto fit
             },
             {
@@ -129,7 +130,7 @@ $(document).ready(async function(){
         "info": false,
         "autoWidth": false,
         "language": {
-            "emptyTable": "Không có sinh viên."
+            "emptyTable": "Loading..."
         },
 
         "columnDefs": [
@@ -142,7 +143,7 @@ $(document).ready(async function(){
             }],
     } );
 
-
+    getExam();
     //bat su kien nut xoa
     $('#subTable tbody').on( 'click', '#deleteBtn', function () {
         $("#delModal").modal("show");
@@ -269,7 +270,7 @@ $(document).ready(async function(){
 
     $('#ExamSubjectAddingTable tbody').on( 'change', ':checkbox', function () {
        curRow = $(this).parent().parent();
-       sub_id = EStable.row(curRow).data()[1];
+       sub_id = EStable.row(curRow).data()[2];
        addOrRemoveSub(sub_id);
     } );
     $('#ExamSubjectAddingTable input[type="checkbox"]').click(function() {
@@ -384,10 +385,12 @@ async function getRequest(){
         else {
             $("#subTable_info")[0].innerText = "";
             $("#subTable_paginate").addClass('d-none');
+            $('#subTable .dataTables_empty')[0].innerText = "Không có môn thi nào!";
         }
     }
     else {
         console.log(getRes['reason']);
+        $('#subTable .dataTables_empty')[0].innerText = "Không có môn thi nào!";
     }
 
 }
@@ -409,7 +412,7 @@ async function getESRequest(){
         for (var i = 0; i < data.rows.length; i++) {
             {
                 currentRow = EStable.row;
-                currentRow.add([
+                currentRow.add([,
                     (ESpage-1)*ESpageSize+i+1,
                     data.rows[i].subject_id,
                     data.rows[i].name,
@@ -438,10 +441,12 @@ async function getESRequest(){
         else {
             $("#ExamSubjectAddingTable_info")[0].innerText = "";
             $("#ExamSubjectAddingTable_paginate").addClass('d-none');
+            $('#ExamSubjectAddingTable .dataTables_empty')[0].innerText = "Không có môn thi nào!";
         }
     }
     else {
         console.log(getESRes['reason']);
+        $('#ExamSubjectAddingTable .dataTables_empty')[0].innerText = "Không có môn thi nào!";
     }
 
 }
@@ -485,10 +490,12 @@ async function getStd(){
         else {
             $("#viewTable_info")[0].innerText = "";
             $("#viewTable_paginate").addClass('d-none');
+            $('#viewTable .dataTables_empty')[0].innerText = "Không có sinh viên!";
         }
     }
     else {
         console.log(getRes['reason']);
+        $('#viewTable .dataTables_empty')[0].innerText = "Không có sinh viên!";
     }
 
 }

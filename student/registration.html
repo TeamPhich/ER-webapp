@@ -181,6 +181,42 @@
         </div>
     </div>
 </div>
+<!-- Delete Modal-->
+<div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Xác nhận xóa!</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Bạn có chắc chắn muốn xóa ca thi này</div>
+            <div class="modal-footer">
+                <button class="btn btn-primary"  onclick="confirmDel()" data-dismiss="modal">Xác nhận</button>
+                <button class="btn btn-danger" type="button" data-dismiss="modal">Hủy bỏ</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Regist Modal-->
+<div class="modal fade" id="regModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Xác nhận đăng ký môn!</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Bạn có chắc chắn muốn đăng ký môn thi này.</div>
+            <div class="modal-footer">
+                <button class="btn btn-primary"  onclick="confirmReg()" data-dismiss="modal">Xác nhận</button>
+                <button class="btn btn-danger" type="button" data-dismiss="modal">Hủy bỏ</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Bootstrap core JavaScript-->
 <script src="../vendor/jquery/jquery.min.js"></script>
 <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
