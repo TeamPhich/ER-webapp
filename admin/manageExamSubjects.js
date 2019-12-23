@@ -103,13 +103,13 @@ $(document).ready(async function(){
 
 
         "columnDefs": [ {
-            "targets": -1,
-            'width':"10%", //auto fit
+            "targets": 0,
+            'width':"7%", //auto fit
             "data": null,
             "defaultContent": "<input type='checkbox'>"
         },
             {
-                "targets": 0,
+                "targets": 1,
                 "width": "1%" //auto fit
             },
             {
@@ -270,7 +270,7 @@ $(document).ready(async function(){
 
     $('#ExamSubjectAddingTable tbody').on( 'change', ':checkbox', function () {
        curRow = $(this).parent().parent();
-       sub_id = EStable.row(curRow).data()[1];
+       sub_id = EStable.row(curRow).data()[2];
        addOrRemoveSub(sub_id);
     } );
     $('#ExamSubjectAddingTable input[type="checkbox"]').click(function() {
@@ -412,7 +412,7 @@ async function getESRequest(){
         for (var i = 0; i < data.rows.length; i++) {
             {
                 currentRow = EStable.row;
-                currentRow.add([
+                currentRow.add([,
                     (ESpage-1)*ESpageSize+i+1,
                     data.rows[i].subject_id,
                     data.rows[i].name,
