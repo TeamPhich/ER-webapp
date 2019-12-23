@@ -23,6 +23,8 @@ var exam;
 var shiftId;
 var subjectId;
 var roomId;
+let roomExists=[];
+let subjectExists=[];
 $(document).ready(async function() {
     //js load data subject
     await getExam();
@@ -222,15 +224,19 @@ $(document).ready(async function() {
         });
         let res = await response.json();
         console.log(res)
-        let datatbody;
+        let datatRoom;
         if(res["status"]==20) {
+            $("#editPhong option").remove()
             for (let i = 0; i < res['data']['rooms']["rows"].length; i++) {
-                if( res['data']['rooms']["rows"][i]['name'] !=editFieldRoom[5].innerText){
-                    datatbody += "<option value='" + res['data']['rooms']["rows"][i]['id'] + "'>" + res['data']['rooms']["rows"][i]['name'] + "</option>";
+                function check(room) {
+                    return room==res['data']['rooms']["rows"][i]['name'];
+                }
+                if(roomExists.find(check)==undefined){
+                    datatRoom += "<option value='" + res['data']['rooms']["rows"][i]['id'] + "'>" + res['data']['rooms']["rows"][i]['name'] + "</option>";
                 }
             }
         }
-        $("#editPhong").append(datatbody);
+        $("#editPhong").append(datatRoom);
         $("#editPhong").val("");
     });
     $("#editPhong").on('change',function () {
@@ -287,6 +293,8 @@ $(document).ready(async function() {
     $("#addSubjectButton").on('click',async function () {
         $("#addSubject").modal({backdrop: 'static'});
         $("#addSubjectAndRoom").fadeOut();
+        $("#inputMon option").remove();
+        $("#inputPhong option").remove();
         await getSubject();
         getRoms();
     });
@@ -298,8 +306,8 @@ $(document).ready(async function() {
     });
     $("#confirmAddSubjectButton").on('click',async function () {
         $("#addSubject").modal('hide');
-        console.log($("#inputMon"));
         let url=("http://er-backend.sidz.tools/api/v1/shifts-rooms/shift/"+shiftId);
+        console.log(url);
         let dataCreate={
             "exam_subject_id": subjectId,
             "room_id":roomId
@@ -316,6 +324,7 @@ $(document).ready(async function() {
             body:JSON.stringify(dataCreate)
         });
         let res=await resCreate.json();
+        console.log(res);
         if(res['status']==20){
             await getSubjectAndRoom();
             getPageNumberSubject();
@@ -324,9 +333,11 @@ $(document).ready(async function() {
     })
     $("#inputPhong").on("change", function () {
         roomId=$("#inputPhong")[0].value;
+        console.log(roomId)
     })
     $("#inputMon").on("change", function () {
         subjectId=$("#inputMon")[0].value;
+        console.log(subjectId);
     })
 });
 async function getShifts() {
@@ -484,10 +495,14 @@ async function getSubjectAndRoom(){
     console.log(res)
     lengthSub=res['data']['shifts_rooms']['count'];
     let dataTable;
+    roomExists=[];
+    subjectExists=[];
     if(res['status']==20){
         console.log(res['data']['shifts_rooms']['rows'].length);
         for(let i=0;i<res['data']['shifts_rooms']['rows'].length;i++){
             let stt=(pageSub-1)*pageSizeSub+i+1;
+            roomExists.push(res['data']['shifts_rooms']['rows'][i]['room']['name']);
+            subjectExists.push(res['data']['shifts_rooms']['rows'][i]['exam_subject']['subject']['name']);
             dataTable+="<tr><td>"+stt
                 +"</td><td class='d-none'>"+res['data']['shifts_rooms']['rows'][i]['id']
                 +"</td><td class='d-none'>"+res['data']['shifts_rooms']['rows'][i]['exam_subject_id']
@@ -539,7 +554,12 @@ async function getRoms(){
     let datatbody;
     if(res["status"]==20) {
         for (let i = 0; i < res['data']['rooms']["rows"].length; i++) {
-            datatbody += "<option value='" + res['data']['rooms']["rows"][i]['id'] + "'>" +  res['data']['rooms']["rows"][i]['name']+ "</option>";
+            function checkRoom(room) {
+                return room==res['data']['rooms']["rows"][i]['name'];
+            }
+            if(roomExists.find(checkRoom)==undefined){
+                datatbody += "<option value='" + res['data']['rooms']["rows"][i]['id'] + "'>" + res['data']['rooms']["rows"][i]['name'] + "</option>";
+            }
         }
         $("#inputPhong").append(datatbody);
     }
