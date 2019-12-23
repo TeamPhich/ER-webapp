@@ -21,7 +21,7 @@ $(document).ready(async function() {
     await getSubject();
     getPageNumber();
     //js show add modal
-    $("#addButton").on("click",function () {
+    $("#add_btn").on("click",function () {
         $("#addModal").modal("show");
     });
     //js confirm and close add modal
