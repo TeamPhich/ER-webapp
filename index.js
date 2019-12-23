@@ -51,11 +51,8 @@ async function getProfile() {
     let res = await response.json();
     console.log(res['data']['fullname']+"-"+"["+res['data']['user_name']+"]");
     if(res['status']==20){
-        document.getElementById("profile").innerHTML=res['data']['fullname']+"-"+"["+res['data']['user_name']+"]"
-        document.getElementById("name").innerHTML=res['data']['fullname'];
-        document.getElementById("birthDay").innerHTML=convertDate(res['data']['birthday']);
-        document.getElementById("mssv").innerHTML=res['data']['user_name'];
-        document.getElementById("exam").innerHTML=exam
+        document.getElementById("profile").innerHTML=res.data.fullname+"-"+"["+res.data.user_name+"]";
+
     }
 }
 async function getES(){
