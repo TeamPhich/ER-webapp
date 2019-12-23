@@ -390,6 +390,7 @@ async function getRequest(){
     }
     else {
         console.log(getRes['reason']);
+        $('#subTable .dataTables_empty')[0].innerText = "Không có môn thi nào!";
     }
 
 }
@@ -445,6 +446,7 @@ async function getESRequest(){
     }
     else {
         console.log(getESRes['reason']);
+        $('#ExamSubjectAddingTable .dataTables_empty')[0].innerText = "Không có môn thi nào!";
     }
 
 }
@@ -493,6 +495,7 @@ async function getStd(){
     }
     else {
         console.log(getRes['reason']);
+        $('#viewTable .dataTables_empty')[0].innerText = "Không có sinh viên!";
     }
 
 }

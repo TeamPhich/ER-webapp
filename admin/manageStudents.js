@@ -197,6 +197,7 @@ async function getRequest(){
     }
     else {
         console.log(getRes['reason']);
+        $('.dataTables_empty')[0].innerText = "Không có sinh viên nào";
     }
 
 }
