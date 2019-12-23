@@ -112,17 +112,20 @@ async function getSubject() {
     let data;
     for(let i=0;i<res['data']['examSubjects']['rows'].length;i++){
         let stt=i+1;
-        data+="<tr><td style=\"border-top: 1px solid #000;text-align: center\">"+stt
-            +"</td><td style=\"border-top: 1px solid #000;text-align: center\">" +res['data']['examSubjects']['rows'][i]['subject_id']
-            +"</td><td style=\"border-top: 1px solid #000;text-align: center\">" +res['data']['examSubjects']['rows'][i]['subject']['name']
-            +"</td><td style=\"border-top: 1px solid #000;text-align: center\">" +res['data']['examSubjects']['rows'][i]['subject']['credit']
-            +"</td><td style=\"border-top: 1px solid #000;text-align: center\">" +convertDate(res['data']['examSubjects']['rows'][i]['students']['exam_subject']['shifts_rooms']['shift']['start_time'])
-            +"</td><td style=\"border-top: 1px solid #000;text-align: center\">" +convertTime(res['data']['examSubjects']['rows'][i]['students']['exam_subject']['shifts_rooms']['shift']['start_time'])
-            +"</td><td style=\"border-top: 1px solid #000;text-align: center\">" +convertTime(res['data']['examSubjects']['rows'][i]['students']['exam_subject']['shifts_rooms']['shift']['finish_time'])
-            +"</td><td style=\"border-top: 1px solid #000;text-align: center\">" +res['data']['examSubjects']['rows'][i]['students']['exam_subject']['shifts_rooms']['room']['name']
-            +"</td></tr>"
+        if(res['data']['examSubjects']['rows'][i]['students'][0]['exam_subject']['shifts_rooms'].length>0){
+            data+="<tr><td style=\"border: 1px solid #000;text-align: center\">"+stt
+                +"</td><td style=\"border: 1px solid #000;text-align: center\">" +res['data']['examSubjects']['rows'][i]['subject_id']
+                +"</td><td style=\"border: 1px solid #000;text-align: center\">" +res['data']['examSubjects']['rows'][i]['subject']['name']
+                +"</td><td style=\"border: 1px solid #000;text-align: center\">" +res['data']['examSubjects']['rows'][i]['subject']['credit']
+                +"</td><td style=\"border: 1px solid #000;text-align: center\">" +convertDate(res['data']['examSubjects']['rows'][i]['students'][0]['exam_subject']['shifts_rooms'][0]['shift']['start_time'])
+                +"</td><td style=\"border: 1px solid #000;text-align: center\">" +convertTime(res['data']['examSubjects']['rows'][i]['students'][0]['exam_subject']['shifts_rooms'][0]['shift']['start_time'])
+                +"</td><td style=\"border: 1px solid #000;text-align: center\">" +convertTime(res['data']['examSubjects']['rows'][i]['students'][0]['exam_subject']['shifts_rooms'][0]['shift']['finish_time'])
+                +"</td><td style=\"border: 1px solid #000;text-align: center\">" +res['data']['examSubjects']['rows'][i]['students'][0]['exam_subject']['shifts_rooms'][0]['room']['name']
+                +"</td></tr>"
+
+        }
 
     }
-    $("#subject tbody").append(data);
+    $("#subjectTable>tbody").append(data);
 
 }
