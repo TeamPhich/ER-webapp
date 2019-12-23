@@ -115,4 +115,4 @@ async function getES(){
         $('#ES_info').removeClass('d-none');
         await getES();
     });
-    socket.on("error", (data) => { console.log(data.message) })
+    socket.on("error", (data) => { console.log(data) })

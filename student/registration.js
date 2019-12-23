@@ -36,7 +36,6 @@ $(document).ready(function () {
 
     getProfile();
 });
-let exam = "";
 
 getExam();
 async function getExam() {
@@ -49,7 +48,6 @@ async function getExam() {
     });
     let res = await getExamRes.json();
     let Examdata = res.data.exams;
-    exam = +Examdata.rows[Examdata.count - 1].id;
     let opt = "<p class='m-0' id='" + Examdata.rows[Examdata.count - 1].id + "'>" + Examdata.rows[Examdata.count - 1].name + "</p>";
     $('#HK_info').append(opt);
 
