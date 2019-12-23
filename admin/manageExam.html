@@ -157,7 +157,7 @@
                                     <th>Stt</th>
                                     <th>Mã kì thi</th>
                                     <th>Tên Kỳ thi</th>
-                                    <th>Bắt đầu đăng ký</th>
+                                    <th>Mở đăng ký</th>
                                     <th>Kết thúc đăng ký</th>
                                     <th style="width: 8%">#</th>
                                 </tr>
@@ -223,7 +223,7 @@
         </div>
     </div>
 </div>
-<!--add subject modal-->
+<!--add exam modal-->
 <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="headerAddModal" aria-hidden="true">
     <div class="modal-dialog " role="document">
         <div class="modal-content"style="width: 700px;margin-left: -100px!important;">
@@ -243,6 +243,14 @@
                         <label for="inputTenKy">Tên kỳ thi</label>
                         <input type="text"class="form-control" id="inputTenKy">
                     </div>
+                    <div class="form-group">
+                        <label for="inputBatDau">Mở đăng ký</label>
+                        <input type="text"class="form-control" id="inputBatDau" >
+                    </div>
+                    <div class="form-group">
+                        <label for="inputKetThuc">Kết thúc đăng ký</label>
+                        <input type="text"class="form-control" id="inputKetThuc">
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -251,7 +259,7 @@
         </div>
     </div>
 </div>
-<!--edit subject modal-->
+<!--edit exam modal-->
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="headerModal" aria-hidden="true">
     <div class="modal-dialog " role="document">
         <div class="modal-content"style="width: 700px;margin-left: -100px!important;">
@@ -272,8 +280,8 @@
                         <input type="text"class="form-control" id="editTenKy">
                     </div>
                     <div class="form-group">
-                        <label for="editBatDau">Bat dau đăng ký</label>
-                        <input type="text"class="form-control" id="editBatDau">
+                        <label for="editBatDau">Mở đăng ký</label>
+                        <input type="text"class="form-control" id="editBatDau" data-date-format="dd/mm/yyyy hh:mm">
                     </div>
                     <div class="form-group">
                         <label for="editKetThuc">Kết thúc đăng ký</label>

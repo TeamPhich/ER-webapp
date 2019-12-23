@@ -26,10 +26,22 @@ $(document).ready(async function() {
     });
     //js confirm and close add modal
     $("#confirmAddButton").on("click",async function () {
+        let start=$("#inputBatDau")[0].value;
+        let finish=$("#inputKetThuc")[0].value;
+        let date=(start.toString()).split(" ");
+        let dateStart=(date[1].toString()).split("/");
+        let timeStart=(date[0].toString()).split(":");
+        let start_time=new Date(dateStart[2],dateStart[0]-1, dateStart[1],timeStart[0],timeStart[1]).getTime()/1000;
+        let date2=(finish.toString()).split(" ");
+        let dateFinish=(date2[1].toString()).split("/");
+        let timeFinish=(date2[0].toString()).split(":");
+        let finish_time=new Date(dateFinish[2],dateFinish[0]-1, dateFinish[1],timeFinish[0],timeFinish[1]).getTime()/1000;
         let urlCreate="http://er-backend.sidz.tools/api/v1/exams//";
         let dataCreate={
             "id": $("#inputMaKy").val(),
-            "name":$("#inputTenKy").val()
+            "name":$("#inputTenKy").val(),
+            "start_time":parseInt(start_time),
+            "finish_time":parseInt(finish_time)
         }
         const resCreate= await fetch(urlCreate,{
             method: 'POST',
@@ -46,10 +58,6 @@ $(document).ready(async function() {
         console.log(res)
         //location.reload();
         if(res["status"]==20){
-            let addSubject="<tr><td></td><td>" + $("#inputMaKy").val()
-                + "</td><td>" + $("#inputTenKy").val()
-                + "</td><td class='no-sort'><div class='d-flex'><button class=\"btn btn-info\"><i class=\"far fa-edit\" ></i></button><button class=\"btn btn-danger\"><i class=\"far fa-trash-alt\"></i></button></div></td></tr>";
-            $("#subTable>tbody").append(addSubject);
             $("#addModal").modal("hide");
             await getExam();
             getPageNumber()
@@ -107,22 +115,33 @@ $(document).ready(async function() {
         let start=$("#editBatDau")[0].value;
         let finish=$("#editKetThuc")[0].value;
         let date=(start.toString()).split(" ");
-        let dateStart=(date[0].toString()).split("/");
-        let timeStart=(date[1].toString()).split(":");
-        let start_time=new Date(dateStart[2],dateStart[1]-1, dateStart[0],timeStart[0],timeStart[1]).getTime()/1000;
+        let dateStart=(date[1].toString()).split("/");
+        let timeStart=(date[0].toString()).split(":");
+        let start_time=new Date(dateStart[2],dateStart[0]-1, dateStart[1],timeStart[0],timeStart[1]).getTime()/1000;
         let date2=(finish.toString()).split(" ");
-        let dateFinish=(date2[0].toString()).split("/");
-        let timeFinish=(date2[1].toString()).split(":");
-        let finish_time=new Date(dateFinish[2],dateFinish[1]-1, dateFinish[0],timeFinish[0],timeFinish[1]).getTime()/1000;
-
+        let dateFinish=(date2[1].toString()).split("/");
+        let timeFinish=(date2[0].toString()).split(":");
+        let finish_time=new Date(dateFinish[2],dateFinish[0]-1, dateFinish[1],timeFinish[0],timeFinish[1]).getTime()/1000;
         let urlUpdate="http://er-backend.sidz.tools/api/v1/exams";
-        let dataUpdate={
-            "id":examIdOld,
-            "new_id":$("#editMaKy")[0].value,
-            "new_name":$("#editTenKy")[0].value,
-            "finish_time":parseInt(dateFinish),
-            "start_time":parseInt(dateStart)
+        let dataUpdate
+        if(examIdOld!=$("#editMaKy")[0].value){
+            dataUpdate={
+                "id":examIdOld,
+                "new_id":$("#editMaKy")[0].value,
+                "new_name":$("#editTenKy")[0].value,
+                "finish_time":parseInt(finish_time),
+                "start_time":parseInt(start_time)
+            }
         }
+        else{
+            dataUpdate={
+                "id":examIdOld,
+                "new_name":$("#editTenKy")[0].value,
+                "finish_time":parseInt(finish_time),
+                "start_time":parseInt(start_time)
+            }
+        }
+        console.log(dataUpdate)
         const resUpdate= await fetch(urlUpdate,{
             method: 'PUT',
             mode: 'cors',
@@ -158,20 +177,29 @@ $(document).ready(async function() {
         await getExam();
         getPageNumber();
     })
-});
     $("#editBatDau").datetimepicker({
-        format: "dd/mm/yyyy hh:mm",
         uiLibrary: 'bootstrap4',
         modal: true,
         footer: true
-
     });
     $("#editKetThuc").datetimepicker({
-        format: "dd/mm/yyyy hh:mm",
         uiLibrary: 'bootstrap4',
         modal: true,
         footer: true
     })
+    $("#inputBatDau").datetimepicker({
+        uiLibrary: 'bootstrap4',
+        modal: true,
+        footer: true
+    });
+    $("#inputKetThuc").datetimepicker({
+        uiLibrary: 'bootstrap4',
+        modal: true,
+        footer: true
+    })
+});
+
+
 async function getExam() {
     let url=("http://er-backend.sidz.tools/api/v1/exams/?page="+page+"&pageSize="+pageSize+"&keywords="+keywords);
     const response = await fetch(url,{
@@ -271,7 +299,7 @@ function convertDate(unixtimestamp){
     if(hours<10){
         hours='0'+hours;
     }
-    let convdataTime = day+'/'+month+'/'+year+" "+hours+":"+minutes;
+    let convdataTime = hours+":"+minutes+" "+day+'/'+month+'/'+year;
     return convdataTime;
 }
 async function getProfile() {

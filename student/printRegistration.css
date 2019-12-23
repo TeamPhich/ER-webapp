@@ -1,0 +1,8 @@
+@media print{
+    #topBar{
+        display: none !important;
+    }
+    #sidebar{
+        display: none !important;
+    }
+}
