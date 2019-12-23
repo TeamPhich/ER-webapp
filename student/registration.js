@@ -10,12 +10,29 @@ function removeToken() {
     window.localStorage.removeItem('token');
     window.location="../account/login.html";
 }
-$(document).ready(async function () {
-    await getProfile()
+var del_sr_info;
+var reg_sr_info;
+function openDelModal(shift_room_id, student_id, exam_subject_id) {
+    $('#delModal').modal('show');
+    del_sr_info = [shift_room_id,student_id,exam_subject_id];
+}
+function confirmDel() {
+    remove_SR(del_sr_info[0],del_sr_info[1],del_sr_info[2]);
+}
+function openRegModal(shift_room_id, student_id, exam_subject_id) {
+    $('#regModal').modal('show');
+    reg_sr_info = [shift_room_id,student_id,exam_subject_id];
+}
+function confirmReg() {
+    reg_SR(reg_sr_info[0],reg_sr_info[1],reg_sr_info[2]);
+}
+$(document).ready(function () {
+    getExam();
+    getProfile();
 });
 
-var exam;
-getExam();
+var exam="";
+
 
 async function getExam(){
     let url =("http://er-backend.sidz.tools/api/v1/exams/?page=-1");
@@ -26,7 +43,6 @@ async function getExam(){
         }
     });
     let res = await getExamRes.json();
-    console.log(res);
     let Examdata = res.data.exams;
     exam = +Examdata.rows[Examdata.count-1].id;
     let opt = "<p class='m-0' id='"+Examdata.rows[Examdata.count-1].id+"'>"+Examdata.rows[Examdata.count-1].name+"</p>";
@@ -36,13 +52,14 @@ var SR="";
 var chk="";
 var span;
 async function getES(onReg){
-    let url =("http://er-backend.sidz.tools/api/v1/students/exam/"+exam+"/exam-subject");
+    let url =await  ("http://er-backend.sidz.tools/api/v1/students/exam/"+exam+"/exam-subject");
     const getESRes = await fetch(url, {
         method: 'GET',
         headers: {
             'token': window.localStorage.token
         }
     });
+    console.log(getESRes);
     let res = await getESRes.json();
     let data = res.data.examSubjects;
     if (res['status']==21){
@@ -73,7 +90,7 @@ async function getES(onReg){
 
                         SR = SR + '<div class="d-flex">\n' +
                             '                                                <div class="ml-2">\n' +
-                            '<button type="button"  ' + dis + ' id="sr_' + dtSR.id + '" value="' + dtSR.id + '"  class="btn btn-outline-primary mb-3" onclick="reg_SR('+dtSR.id+','+ dt.students[0].id +','+ dt.id +')"><i class="fas fa-plus"></i></button>'+
+                            '<button type="button"  ' + dis + ' id="sr_' + dtSR.id + '" value="' + dtSR.id + '"  class="btn btn-outline-primary mb-3" onclick="openRegModal('+dtSR.id+','+ dt.students[0].id +','+ dt.id +')"><i class="fas fa-plus"></i></button>'+
                             '                                                </div>\n' +
                             '                                                <div class="d-flex mt-2 ml-2">\n' +
                             '                                                    <p>Ca thi từ <span class="text-danger">' + convertTime(dtSR.shift.start_time) + '</span> đến <span class="text-danger">' + convertTime(dtSR.shift.finish_time) + '</span> tại phòng <span class="text-danger">' + dtSR.room.name + '</span> - số slot đã đăng ký: <span class="text-danger font-weight-bold" id="'+ dtSR.id +'">' + (dtSR.current_slot) + '</span> slots</p>\n' +
@@ -129,18 +146,23 @@ socket.on('registing.time.start', () => {
     console.log('start time');
     $('#Error_info').addClass('d-none');
     $('#ES_container').removeClass('d-none');
-    getES(true);
+        getES(true);
 });
 socket.on('registing.time.finish', () => {
     console.log('finishing time');
     $('#Error_info').removeClass('d-none');
     $('#ES_container').addClass('d-none');
+
+        getES(false);
+
 });
 socket.on('exam_subject.time.read', () => {
     console.log('on review');
     $('#Error_info').addClass('d-none');
     $('#ES_container').removeClass('d-none');
-    getES(false);
+
+        getES(false);
+
 });
 socket.on("exam_subject.update", (data) => {
     const {shift_room_id} = data;
@@ -160,20 +182,28 @@ socket.on("current-slot.shift-room.post", (data) => {
 
 socket.on("shift_room.resgisting.err", (data) => {
     window.alert("Đăng ký môn không thành công");
-    getES(true);
+
+        getES(true);
+
 });
 socket.on("shift_room.resgisting.success", (data) => {
     window.alert("Đăng ký môn thành công");
-    getES(true);
+
+        getES(true);
+
 });
 
 socket.on("shift_room.removing.success", (data) => {
     window.alert("Hủy đăng ký môn thành công");
-    getES(true);
+
+        getES(true);
+
 });
 socket.on("shift_room.removing.err", (data) => {
     window.alert("Hủy đăng ký môn không thành công");
-    getES(true);
+
+        getES(true);
+
 });
 
 socket.on("err", (data) => {
@@ -230,21 +260,4 @@ async function getProfile() {
     }
 }
 
-var del_sr_info;
- function openDelModal(shift_room_id, student_id, exam_subject_id) {
-    $('#deleteModal').modal('show');
-    del_sr_info = [shift_room_id,student_id,exam_subject_id];
-    console.log(del_sr_info);
- }
- function confirmDel() {
-     remove_SR(del_sr_info[0],del_sr_info[1],del_sr_info[2]);
- }
-var reg_sr_info;
-function openRegModal(shift_room_id, student_id, exam_subject_id) {
-    $('#regModal').modal('show');
-    reg_sr_info = [shift_room_id,student_id,exam_subject_id];
-    console.log(reg_sr_info);
-}
-function confirmReg() {
-    reg_SR(reg_sr_info[0],reg_sr_info[1],reg_sr_info[2]);
-}
+
