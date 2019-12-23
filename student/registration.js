@@ -10,8 +10,8 @@ function removeToken() {
     window.localStorage.removeItem('token');
     window.location="../account/login.html";
 }
-var del_sr_info;
-var reg_sr_info;
+let del_sr_info;
+let reg_sr_info;
 function openDelModal(shift_room_id, student_id, exam_subject_id) {
     $('#delModal').modal('show');
     del_sr_info = [shift_room_id,student_id,exam_subject_id];
@@ -31,7 +31,7 @@ $(document).ready(function () {
     getProfile();
 });
 
-var exam="";
+let exam="";
 
 
 async function getExam(){
@@ -48,14 +48,16 @@ async function getExam(){
     let opt = "<p class='m-0' id='"+Examdata.rows[Examdata.count-1].id+"'>"+Examdata.rows[Examdata.count-1].name+"</p>";
     $('#HK_info').append(opt);
 }
-var SR="";
-var chk="";
-var span;
+let SR="";
+let chk="";
+let span;
 async function getES(onReg){
-    let url =await  ("http://er-backend.sidz.tools/api/v1/students/exam/"+exam+"/exam-subject");
+    console.log(exam)
+    let url = ("http://er-backend.sidz.tools/api/v1/students/exam/"+exam+"/exam-subject");
     const getESRes = await fetch(url, {
         method: 'GET',
         headers: {
+            "Content-Type": "application/json",
             'token': window.localStorage.token
         }
     });
@@ -66,14 +68,14 @@ async function getES(onReg){
     }
     if(res['status']==20){
         $('#ES_container').empty();
-        for (var i=0;i<data.rows.length;i++){
+        for (let i=0;i<data.rows.length;i++){
             if (data.rows[i].students[0].enoughCondition){
                 let dt = data.rows[i];
                 SR="";
                 let Reged_SR="";
                 let dis ="";
                 let dis2="";
-                for (var j=0;j<dt.students[0].exam_subject.shifts_rooms.length;j++){
+                for (let j=0;j<dt.students[0].exam_subject.shifts_rooms.length;j++){
                     if (dt.students[0].shift_room){
                         chk='checked';
                         dis = 'disabled';
@@ -83,7 +85,7 @@ async function getES(onReg){
                 if (!onReg){
                     dis = 'disabled'
                 }
-                for (var j=0;j<dt.students[0].exam_subject.shifts_rooms.length;j++) {
+                for (let j=0;j<dt.students[0].exam_subject.shifts_rooms.length;j++) {
                     let dtSR = dt.students[0].exam_subject.shifts_rooms[j];
                     if (dtSR.id!=dt.students[0].shift_room) {
 
@@ -126,7 +128,7 @@ async function getES(onReg){
             }
 
         }
-        for (var i=0;i<data.rows.length;i++){
+        for (let i=0;i<data.rows.length;i++){
             if (!data.rows[i].students[0].enoughCondition){
                 let dt = data.rows[i];
                 $('#ES_container').append('<div class="divBar"></div><div class="card-header card-link bg-danger" data-toggle="collapse">\n' +
@@ -150,37 +152,37 @@ const socket = io('http://er-backend.sidz.tools/', {
 
 });
 
-socket.on('registing.time.start', () => {
+socket.on('registing.time.start', async () => {
     console.log('start time');
     $('#Error_info').addClass('d-none');
     $('#ES_container').removeClass('d-none');
-        getES(true);
+       await getES(true);
 });
-socket.on('registing.time.finish', () => {
+socket.on('registing.time.finish', async () => {
     console.log('finishing time');
     $('#Error_info').removeClass('d-none');
     $('#ES_container').addClass('d-none');
 
-        getES(false);
+       await getES(false);
 
 });
-socket.on('exam_subject.time.read', () => {
+socket.on('exam_subject.time.read', async () => {
     console.log('on review');
     $('#Error_info').addClass('d-none');
     $('#ES_container').removeClass('d-none');
 
-        getES(false);
+     await   getES(false);
 
 });
-socket.on("exam_subject.update", (data) => {
+socket.on("exam_subject.update", async (data) => {
     const {shift_room_id} = data;
     socket.emit("current-slot.shift-room.get", {shift_room_id})
 });
 
-socket.on("current-slot.shift-room.post", (data) => {
+socket.on("current-slot.shift-room.post",async (data) => {
     let sh_r_id = data.shift_room_id;
     let cur_slot = data.current_slot;
-    for (var i=0;i<span.length;i++){
+    for (let i=0;i<span.length;i++){
         if(span[i].id==sh_r_id){
             span[i].innerText = cur_slot;
             break;
@@ -188,29 +190,29 @@ socket.on("current-slot.shift-room.post", (data) => {
     }
 })
 
-socket.on("shift_room.resgisting.err", (data) => {
+socket.on("shift_room.resgisting.err", async (data) => {
     window.alert("Đăng ký môn không thành công");
 
-        getES(true);
+      await  getES(true);
 
 });
-socket.on("shift_room.resgisting.success", (data) => {
+socket.on("shift_room.resgisting.success",async (data) => {
     window.alert("Đăng ký môn thành công");
 
-        getES(true);
+      await  getES(true);
 
 });
 
-socket.on("shift_room.removing.success", (data) => {
+socket.on("shift_room.removing.success",async (data) => {
     window.alert("Hủy đăng ký môn thành công");
 
-        getES(true);
+       await getES(true);
 
 });
-socket.on("shift_room.removing.err", (data) => {
+socket.on("shift_room.removing.err",async (data) => {
     window.alert("Hủy đăng ký môn không thành công");
 
-        getES(true);
+       await getES(true);
 
 });
 

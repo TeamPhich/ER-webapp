@@ -13,6 +13,7 @@ function removeToken() {
     window.location="account/login.html";
 }
 getExam();
+var exam;
 $(document).ready(function(){
     $('[data-toggle="popover"]').popover();
 });
@@ -91,6 +92,7 @@ async function getES(){
         console.log('start time');
         $('#Error_info').addClass('d-none');
         $('#ES_info').removeClass('d-none');
+        console.log(exam)
         getES();
     });
     socket.on('registing.time.finish', () => {
