@@ -12,6 +12,16 @@ function removeToken() {
     window.localStorage.removeItem('token');
     window.location="account/login.html";
 }
+<<<<<<< HEAD
+getProfile()
+async function getProfile() {
+    let url=("http://er-backend.sidz.tools/api/v1/accounts/profile");
+    const response = await fetch(url,{
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+=======
 getExam();
 $(document).ready(function(){
     $('[data-toggle="popover"]').popover();
@@ -20,10 +30,19 @@ async function getExam(){
     let url =("http://er-backend.sidz.tools/api/v1/exams/?page=-1");
     const getExamRes = await fetch(url, {
         method: 'GET',
+>>>>>>> d033ab3d3d942220eeca35871ee06035d5f34312
         headers: {
             'token': window.localStorage.token
         }
     });
+<<<<<<< HEAD
+    let res = await response.json();
+    console.log(res['data']['fullname']+"-"+"["+res['data']['user_name']+"]");
+    if(res['status']==20){
+        document.getElementById("profile").innerHTML=res['data']['fullname']+"-"+"["+res['data']['user_name']+"]"
+    }
+}
+=======
     let res=await getExamRes.json();
 
     let Examdata = res.data.exams;
@@ -102,3 +121,4 @@ async function getES(){
         getES();
     });
     socket.on("error", (data) => { console.log(data.message) })
+>>>>>>> d033ab3d3d942220eeca35871ee06035d5f34312

@@ -44,3 +44,6 @@ table tr td:first-child::before
 .select2-selection {
     height: 34px !important;
 }
+.gj-icon{
+    top:5px!important;
+}
