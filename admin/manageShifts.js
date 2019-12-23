@@ -27,8 +27,9 @@ let roomExists=[];
 let subjectExists=[];
 $(document).ready(async function() {
     //js load data subject
+    await getProfile();
     await getExam();
-    await getShifts();
+    await getShifts()
     getPageNumber();
     //js show add modal
     $("#addButton").on("click",function () {
@@ -37,14 +38,15 @@ $(document).ready(async function() {
     //js confirm and close add modal
     $("#confirmAddButton").on("click",async function () {
         let date=$("#inputNgay")[0].value;
+        console.log(date);
         let start=$("#inputBatDau")[0].value;
         let finish=$("#inputKetThuc")[0].value;
-        date=(date.toString()).split("-");
+        date=(date.toString()).split("/");
         start=(start.toString()).split(":");
         finish=(finish.toString()).split(":");
         console.log(date);
-        let start_time=new Date(date[0],date[1]-1, date[2],start[0],start[1]).getTime()/1000;
-        let finish_time=new Date(date[0],date[1]-1, date[2],finish[0],finish[1]).getTime()/1000;
+        let start_time=new Date(date[2],date[1]-1, date[0],start[0],start[1]).getTime()/1000;
+        let finish_time=new Date(date[2],date[1]-1, date[0],finish[0],finish[1]).getTime()/1000;
         console.log(start_time)
         let urlCreate="http://er-backend.sidz.tools/api/v1/shifts/exam/"+exam;
         let dataCreate={
@@ -339,6 +341,22 @@ $(document).ready(async function() {
         subjectId=$("#inputMon")[0].value;
         console.log(subjectId);
     })
+    $("#editBatDau").timepicker({
+        uiLibrary: 'bootstrap4',
+    });
+    $("#editKetThuc").timepicker({
+        uiLibrary: 'bootstrap4',
+    });
+    $("#inputBatDau").timepicker({
+        uiLibrary: 'bootstrap4',
+    });
+    $("#inputKetThuc").timepicker({
+        uiLibrary: 'bootstrap4',
+    })
+    $("#inputNgay").datepicker({
+        format:"dd/mm/yyyy",
+        uiLibrary: 'bootstrap4',
+    })
 });
 async function getShifts() {
     let url=("http://er-backend.sidz.tools/api/v1/shifts/exam/"+exam+"?page="+page+"&pageSize="+pageSize);
@@ -585,32 +603,51 @@ async function getPageNumberSubject(){
     }
     $(".preSub").after(syntaxPage);
 }
-async function activePageSub(e) {
+function activePageSub(e) {
     $(".page_sub_active").removeClass('active');
-    $(".page_sub_active").removeClass('page_active');
-    e.parentNode.className+=' active page_active';
+    $(".page_sub_active").removeClass('page_sub_active');
+    e.parentNode.className+=' active page_sub_active';
     pageSub=e.firstChild.nodeValue;
     getSubjectAndRoom();
 }
-async function previousPageSub() {
+function previousPageSub() {
     let elementPrev= $(".page_sub_active").prev();
     if($(".page_sub_active")[0].childNodes[0].firstChild.nodeValue>1){
         $(".page_sub_active").removeClass('active');
-        $(".page_sub_active").removeClass('page_active');
-        elementPrev[0].className+=" active page_active";
+        $(".page_sub_active").removeClass('page_sub_active');
+        elementPrev[0].className+=" active page_sub_active";
         pageSub= elementPrev[0].childNodes[0].firstChild.nodeValue;
+        console.log(pageSub)
         getSubjectAndRoom();
     }
 }
-async function nextPageSub() {
+function nextPageSub() {
     let elementNext;
     elementNext= $(".page_sub_active").next();
-    if($(".page_sub_active")[0].childNodes[0].firstChild.nodeValue <pageNumber){
+    if($(".page_sub_active")[0].childNodes[0].firstChild.nodeValue <pageNumberSub){
         $(".page_sub_active").removeClass('active');
-        $(".page_sub_active").removeClass('page_active');
-        elementNext[0].className+=" active page_active";
+        $(".page_sub_active").removeClass('page_sub_active');
+        elementNext[0].className+=" active page_sub_active";
         pageSub= elementNext[0].childNodes[0].firstChild.nodeValue;
+        console.log(pageSub)
         getSubjectAndRoom();
     }
-
+}
+async function getProfile() {
+    let url=("http://er-backend.sidz.tools/api/v1/accounts/profile");
+    const response = await fetch(url,{
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'token': window.localStorage.token
+        }
+    });
+    let res = await response.json();
+    console.log(res['data']['fullname']+"-"+"["+res['data']['user_name']+"]");
+    console.log($("#profile")[0])
+    if(res['status']==20){
+        document.getElementById("profile").innerHTML=res['data']['fullname']+"-"+"["+res['data']['user_name']+"]"
+    }
 }

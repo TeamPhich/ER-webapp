@@ -21,7 +21,7 @@ getRequest();
 var del_std_id;
 var data_upd_std;
 $(document).ready(async function(){
-
+        await getProfile();
     //customize table
     table = $("#subTable").DataTable( {
         retrieve: true,
@@ -356,7 +356,24 @@ function formatTime(valTime) {
      page=page_id;
      getRequest();
  }
-
+async function getProfile() {
+    let url=("http://er-backend.sidz.tools/api/v1/accounts/profile");
+    const response = await fetch(url,{
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'token': window.localStorage.token
+        }
+    });
+    let res = await response.json();
+    console.log(res['data']['fullname']+"-"+"["+res['data']['user_name']+"]");
+    console.log($("#profile")[0])
+    if(res['status']==20){
+        document.getElementById("profile").innerHTML=res['data']['fullname']+"-"+"["+res['data']['user_name']+"]"
+    }
+}
 
 
 

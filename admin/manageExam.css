@@ -29,6 +29,9 @@ table tr td:first-child::before
 .collapse-item{
     padding-left: 45px!important;
 }
+.gj-icon{
+    top:5px!important;
+}
 /*.nav-link[data-toggle="collapse"]::after{*/
 /*    content: '\f107' !important;*/
 /*}*/
