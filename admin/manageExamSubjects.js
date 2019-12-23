@@ -64,7 +64,7 @@ $(document).ready(async function(){
                 "targets": 5,
                 'width':"1%", //auto fit
                 "data": null,
-                "defaultContent": "<div class='d-flex'><button style='width: 45px' class=\"btn\" id='viewStdBtn'><i class=\"far fa-eye\"></i></button></div>"
+                "defaultContent": "<div class='d-flex'><button style='width: 45px' class=\"btn btn-secondary\" id='viewStdBtn'><i class=\"far fa-eye\"></i></button></div>"
 },
             {
                 "targets": 1,

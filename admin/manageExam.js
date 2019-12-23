@@ -21,7 +21,7 @@ $(document).ready(async function() {
     await getExam();
     getPageNumber();
     //js show add modal
-    $("#addButton").on("click",function () {
+    $("#add_btn").on("click",function () {
         $("#addModal").modal("show");
     });
     //js confirm and close add modal
@@ -159,10 +159,8 @@ $(document).ready(async function() {
             window.alert("Mã Kỳ học hoặc tên đã tồn tại");
         }
         else {
-            editField[1].innerText=$("#editMaKy")[0].value;
-            editField[2].innerText=$("#editTenKy")[0].value;
-            editField[3].innerText=$("#editBatDau")[0].value;
-            editField[4].innerText=$("#editKetThuc")[0].value;
+            await getExam();
+            getPageNumber();
         }
     });
     $('select[name="subTable_length"]').on("change",async function () {
@@ -299,7 +297,7 @@ function convertDate(unixtimestamp){
     if(hours<10){
         hours='0'+hours;
     }
-    let convdataTime = hours+":"+minutes+" "+day+'/'+month+'/'+year;
+    let convdataTime = hours+":"+minutes+" "+month+'/'+day+'/'+year;
     return convdataTime;
 }
 async function getProfile() {

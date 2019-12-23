@@ -12,10 +12,11 @@ function removeToken() {
     window.localStorage.removeItem('token');
     window.location="account/login.html";
 }
-getExam();
 let exam;
-$(document).ready(function(){
+$(document).ready(async function(){
     $('[data-toggle="popover"]').popover();
+    await getProfile();
+    getExam();
 });
 async function getExam(){
     let url =("http://er-backend.sidz.tools/api/v1/exams/?page=-1");
@@ -35,6 +36,27 @@ async function getExam(){
     localStorage.setItem('exam',exam);
     let opt = "<p class='m-0' id='"+Examdata.rows[Examdata.count-1].id+"'>"+Examdata.rows[Examdata.count-1].name+"</p>";
     $('#HK_info').append(opt);
+}
+async function getProfile() {
+    let url=("http://er-backend.sidz.tools/api/v1/accounts/profile");
+    const response = await fetch(url,{
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'token': window.localStorage.token
+        }
+    });
+    let res = await response.json();
+    console.log(res['data']['fullname']+"-"+"["+res['data']['user_name']+"]");
+    if(res['status']==20){
+        document.getElementById("profile").innerHTML=res['data']['fullname']+"-"+"["+res['data']['user_name']+"]"
+        document.getElementById("name").innerHTML=res['data']['fullname'];
+        document.getElementById("birthDay").innerHTML=convertDate(res['data']['birthday']);
+        document.getElementById("mssv").innerHTML=res['data']['user_name'];
+        document.getElementById("exam").innerHTML=exam
+    }
 }
 async function getES(){
     let urlExam = ("http://er-backend.sidz.tools/api/v1/exams/?page=-1");

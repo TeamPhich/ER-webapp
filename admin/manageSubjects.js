@@ -21,7 +21,7 @@ $(document).ready(async function() {
     await getSubject();
     getPageNumber();
     //js show add modal
-    $("#addButton").on("click",function () {
+    $("#add_btn").on("click",function () {
         $("#addModal").modal("show");
     });
     //js confirm and close add modal
@@ -65,7 +65,7 @@ $(document).ready(async function() {
     //js delete row
     $('#subTable tbody').on( 'click', '.btn-danger',function () {
         let subject_id=$(this).parent().parent().parent().children();
-        let subject=$(this).parent().parent().parent();
+        let subjectDelete=$(this).parent().parent().parent();
         $("#deleteModal").modal("show");
         $("#confirmDelete").on('click',async function() {
             $("#deleteModal").modal("hide");
@@ -81,7 +81,7 @@ $(document).ready(async function() {
             });
             let res = await resDelete.json();
             if(res["status"]==20){
-                subject.remove();
+                subjectDelete.remove();
                 await getSubject()
                 getPageNumber();
             }

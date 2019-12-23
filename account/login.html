@@ -12,41 +12,33 @@
     <!-- Custom styles for this template-->
     <link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap.css">
 </head>
-<body class="bg-gradient-primary">
+<body class="bg-gray-100">
 
 <div class="container">
 
     <!-- Outer Row -->
     <div class="row justify-content-center">
 
-        <div class="col-xl-10 col-lg-12 col-md-9">
-
+        <div class="col-xl-5 col-lg-5 col-md-5 "style="margin-top: 100px">
             <div class="card o-hidden border-0 shadow-lg my-5">
                 <div class="card-body p-0">
-                    <div class="row">
-                        <div class="col-lg-6 d-none d-lg-block">
-                            <img src="../image/icon_dhcn.jpg" style="padding-left: 100px;padding-top: 50px">
-                        </div>
-                        <div class="col-lg-6">
                             <div class="p-5">
                                 <div class="text-center">
-                                    <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                    <h1 class="h2 text-gray-900 mb-4 font-weight-bold"style="color: #1c294e">LOGIN</h1>
                                     <span id="loi_user" style="color: red"></span>
                                 </div>
                                 <form class="user" action="http://18.162.125.153/ER-backend/api/v1/accounts/login" method="post">
                                     <div class="form-group">
-                                        <input type="text" class="form-control form-control-user" id="inputUserName" placeholder="Enter user name...">
+                                        <input type="text" class="form-control " id="inputUserName" placeholder="Enter user name...">
                                     </div>
                                     <div class="form-group">
-                                        <input type="password" class="form-control form-control-user" id="inputPassword" placeholder="Password">
+                                        <input type="password" class="form-control " id="inputPassword" placeholder="Password">
                                     </div>
-                                    <a class="btn btn-primary btn-user btn-block" id="login" onclick="postRequest()" href="#">
+                                    <a class="btn btn-primary btn-block" id="login" onclick="postRequest()" href="#">
                                         Login
                                     </a>
                                 </form>
                             </div>
-                        </div>
-                    </div>
                 </div>
             </div>
 
