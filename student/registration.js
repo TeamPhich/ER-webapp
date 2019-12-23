@@ -25,14 +25,14 @@ async function getExam(){
             'token': window.localStorage.token
         }
     });
-    let res=await getExamRes.json();
+    let res = await getExamRes.json();
+    console.log(res);
     let Examdata = res.data.exams;
     exam = +Examdata.rows[Examdata.count-1].id;
     let opt = "<p class='m-0' id='"+Examdata.rows[Examdata.count-1].id+"'>"+Examdata.rows[Examdata.count-1].name+"</p>";
     $('#HK_info').append(opt);
 }
 var SR="";
-var srQueue = [];
 var chk="";
 var span;
 async function getES(onReg){
@@ -212,16 +212,7 @@ function formatTime(valTime) {
         valTime='0'+valTime;
     return valTime;
 }
-function removeA(arr) {
-    var what, a = arguments, L = a.length, ax;
-    while (L > 1 && arr.length) {
-        what = a[--L];
-        while ((ax= arr.indexOf(what)) !== -1) {
-            arr.splice(ax, 1);
-        }
-    }
-    return arr;
-}
+
 async function getProfile() {
     let url=("http://er-backend.sidz.tools/api/v1/accounts/profile");
     const response = await fetch(url,{
