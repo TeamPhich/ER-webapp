@@ -164,7 +164,7 @@ async function getRooms() {
         }
         $("#subTable>tbody").append(datatbody)
         if(length>0){
-            $("#subTable_info")[0].innerText = "Hiển thị từ " + (1 + (page - 1) * pageSize) + " đến " + ((page - 1) * pageSize + res['data']['rooms']["rows"].length) + " của " + length + " kỳ thi.";
+            $("#subTable_info")[0].innerText = "Hiển thị từ " + (1 + (page - 1) * pageSize) + " đến " + ((page - 1) * pageSize + res['data']['rooms']["rows"].length) + " của " + length + " phòng thi.";
         }
     }
 }
