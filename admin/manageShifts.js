@@ -10,19 +10,19 @@ function removeToken() {
     window.localStorage.removeItem('isAdmin');
     window.location="../account/login.html";
 }
-var page=1;
-var pageSize=10;
-var length;
-var pageNumber;
-var pageNumberSub;
-var keywordsSub="";
-var pageSub=1;
-var lengthSub;
-var pageSizeSub=5;
-var exam;
-var shiftId;
-var subjectId;
-var roomId;
+let page=1;
+let pageSize=10;
+let length;
+let pageNumber;
+let pageNumberSub=0;
+let keywordsSub="";
+let pageSub=1;
+let lengthSub;
+let pageSizeSub=5;
+let exam;
+let shiftId;
+let subjectId;
+let roomId;
 let roomExists=[];
 let subjectExists=[];
 let ex_name="";
@@ -591,7 +591,7 @@ async function getSubjectAndRoom(){
                 +"</td><td class='d-none'>"+res['data']['shifts_rooms']['rows'][i]['room']['id']
                 +"</td><td>"+res['data']['shifts_rooms']['rows'][i]['exam_subject']['subject']['name']
                 +"</td><td>"+res['data']['shifts_rooms']['rows'][i]['room']['name']
-                +"</td><td><button class=\"btn btn-info in_sub\">In</button>"
+                +"</td><td><button class=\"btn btn-info in_sub\"><i class=\"fas fa-fw fa-print\" ></i></button>"
                 + "</td><td class='no-sort'><div class='d-flex '><button class=\"btn btn-info edit_room\"><i class=\"far fa-edit\" ></i></button><button class=\"btn btn-danger delete_subject\"><i class=\"far fa-trash-alt\"></i></button></div></td></tr>";
         }
         $("#subjectAndRoomTable>tbody").append(dataTable);
@@ -611,7 +611,7 @@ async function getSubject() {
         }
     });
     let res=await getESResponse.json();
-    let datatbody;
+    let datatbody="<option class='d-none h-0'></option>";
     if(res["status"]==20) {
         for (let i = 0; i < res['data']['exam_subjects']["rows"].length; i++) {
             datatbody +="<option value="+res['data']['exam_subjects']['rows'][i]['id']+">"+res['data']['exam_subjects']['rows'][i]['subject']['name']+"</option>"
@@ -634,7 +634,7 @@ async function getRoms(){
     });
     let res = await response.json();
     console.log(res)
-    let datatbody;
+    let datatbody="<option class='d-none'></option>";;
     if(res["status"]==20) {
         for (let i = 0; i < res['data']['rooms']["rows"].length; i++) {
             function checkRoom(room) {
@@ -651,17 +651,17 @@ async function getPageNumberSubject(){
     pageNumberSub=lengthSub/pageSizeSub;
     let num;
     let syntaxPage="";
-    $("[name='new']").remove();
+    $("[name='new1']").remove();
     for (let i = 0; i < Math.ceil(pageNumberSub); i++) {
         num = 1+i;
         if(num==1){
             syntaxPage += "</div><li class=\"paginate_button page-item active page_sub_active\">"
-                + "<a class=\"page-link\"id='"+num+"' name='new' onclick='activePageSub(this)'>" + num + "</a>"
+                + "<a class=\"page-link\"id='"+num+"' name='new1' onclick='activePageSub(this)'>" + num + "</a>"
                 + "</li>"
         }
         else{
             syntaxPage += "</div><li class=\"paginate_button page-item\">"
-                + "<a class=\"page-link\"id='"+num+"' name='new' onclick='activePageSub(this)'>" + num + "</a>"
+                + "<a class=\"page-link\"id='"+num+"' name='new1' onclick='activePageSub(this)'>" + num + "</a>"
                 + "</li>"
         }
 
