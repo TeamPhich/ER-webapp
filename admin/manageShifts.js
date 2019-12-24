@@ -10,19 +10,19 @@ function removeToken() {
     window.localStorage.removeItem('isAdmin');
     window.location="../account/login.html";
 }
-var page=1;
-var pageSize=10;
-var length;
-var pageNumber;
-var pageNumberSub;
-var keywordsSub="";
-var pageSub=1;
-var lengthSub;
-var pageSizeSub=5;
-var exam;
-var shiftId;
-var subjectId;
-var roomId;
+let page=1;
+let pageSize=10;
+let length;
+let pageNumber;
+let pageNumberSub=0;
+let keywordsSub="";
+let pageSub=1;
+let lengthSub;
+let pageSizeSub=5;
+let exam;
+let shiftId;
+let subjectId;
+let roomId;
 let roomExists=[];
 let subjectExists=[];
 let ex_name="";
@@ -651,17 +651,17 @@ async function getPageNumberSubject(){
     pageNumberSub=lengthSub/pageSizeSub;
     let num;
     let syntaxPage="";
-    $("[name='new']").remove();
+    $("[name='new1']").remove();
     for (let i = 0; i < Math.ceil(pageNumberSub); i++) {
         num = 1+i;
         if(num==1){
             syntaxPage += "</div><li class=\"paginate_button page-item active page_sub_active\">"
-                + "<a class=\"page-link\"id='"+num+"' name='new' onclick='activePageSub(this)'>" + num + "</a>"
+                + "<a class=\"page-link\"id='"+num+"' name='new1' onclick='activePageSub(this)'>" + num + "</a>"
                 + "</li>"
         }
         else{
             syntaxPage += "</div><li class=\"paginate_button page-item\">"
-                + "<a class=\"page-link\"id='"+num+"' name='new' onclick='activePageSub(this)'>" + num + "</a>"
+                + "<a class=\"page-link\"id='"+num+"' name='new1' onclick='activePageSub(this)'>" + num + "</a>"
                 + "</li>"
         }
 
