@@ -591,7 +591,7 @@ async function getSubjectAndRoom(){
                 +"</td><td class='d-none'>"+res['data']['shifts_rooms']['rows'][i]['room']['id']
                 +"</td><td>"+res['data']['shifts_rooms']['rows'][i]['exam_subject']['subject']['name']
                 +"</td><td>"+res['data']['shifts_rooms']['rows'][i]['room']['name']
-                +"</td><td><button class=\"btn btn-info in_sub\">In</button>"
+                +"</td><td><button class=\"btn btn-info in_sub\"><i class=\"fas fa-fw fa-print\" ></i></button>"
                 + "</td><td class='no-sort'><div class='d-flex '><button class=\"btn btn-info edit_room\"><i class=\"far fa-edit\" ></i></button><button class=\"btn btn-danger delete_subject\"><i class=\"far fa-trash-alt\"></i></button></div></td></tr>";
         }
         $("#subjectAndRoomTable>tbody").append(dataTable);
@@ -611,7 +611,7 @@ async function getSubject() {
         }
     });
     let res=await getESResponse.json();
-    let datatbody;
+    let datatbody="<option class='d-none h-0'></option>";
     if(res["status"]==20) {
         for (let i = 0; i < res['data']['exam_subjects']["rows"].length; i++) {
             datatbody +="<option value="+res['data']['exam_subjects']['rows'][i]['id']+">"+res['data']['exam_subjects']['rows'][i]['subject']['name']+"</option>"
@@ -634,7 +634,7 @@ async function getRoms(){
     });
     let res = await response.json();
     console.log(res)
-    let datatbody;
+    let datatbody="<option class='d-none'></option>";;
     if(res["status"]==20) {
         for (let i = 0; i < res['data']['rooms']["rows"].length; i++) {
             function checkRoom(room) {
