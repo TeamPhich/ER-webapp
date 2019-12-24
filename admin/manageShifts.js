@@ -25,6 +25,7 @@ var subjectId;
 var roomId;
 let roomExists=[];
 let subjectExists=[];
+let ex_name="";
 $(document).ready(async function() {
     //js load data subject
     await getProfile();
@@ -166,10 +167,12 @@ $(document).ready(async function() {
         await getShifts();
         getPageNumber();
     });
+    let thoigianthi;
     $('#subTable tbody').on( 'click','.btn-secondary',async function () {
         $("#addSubjectAndRoom").modal({backdrop:"static"});
         let shift_id=$(this).parent().parent().parent().children();
         shiftId=shift_id[1].innerText;
+        thoigianthi=$(this).parent().parent().parent().children()[3].innerText+" "+$(this).parent().parent().parent().children()[2].innerText;
         await getSubjectAndRoom();
         getPageNumberSubject();
     });
@@ -357,6 +360,66 @@ $(document).ready(async function() {
         format:"dd/mm/yyyy",
         uiLibrary: 'bootstrap4',
     })
+    $("#subjectAndRoomTable tbody").on('click','.in_sub',async function () {
+        let shiftRoom_id=$(this).parent().parent().children();
+        let mon=$(this).parent().parent().children()[4].innerText;
+        let phong=$(this).parent().parent().children()[5].innerText;
+        console.log(shiftRoom_id[1].innerText);
+        let url=("http://er-backend.sidz.tools/api/v1/shifts-rooms/"+shiftRoom_id[1].innerText+"/students");
+        const resGetStudent= await fetch(url,{
+            method: 'GET',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+                'token': window.localStorage.token
+            },
+        });
+        let res= await resGetStudent.json();
+        console.log(res);
+        $("#subjectTable tbody tr").remove();
+        let data="";
+        for(let i=0;i<res['data']["students"].length;i++){
+            let stt=i+1;
+            data+="<tr><td style=\"border: 1px solid #000;text-align: center\">"+stt
+                +"</td><td style=\"border: 1px solid #000;text-align: center\">" +res['data']['students'][i]['account']['fullname']
+                +"</td><td style=\"border: 1px solid #000;text-align: center\">" +res['data']['students'][i]['account']['user_name']
+                +"</td></tr>\n"
+            console.log(data);
+        }
+        let html="<div class=\"container-fluid\" id=\"contentPrint\">\n" +
+            "    <h1 style=\"text-align: center; text-transform: uppercase; font-weight: bold; font-size: 14pt; margin: 30px 0 0 0; padding: 0;\">KẾT QUẢ ĐĂNG KÝ THI "+ex_name +"</h1>\n" +
+            "    <p style=\"text-align: center; font-weight: bold; margin: 0; padding: 0; font-size: 14pt;\" id=\"timeThi\">\n" +
+            "    </p>\n" +
+            "    <table  style=\"width: 100%; border: none; border-collapse: collapse; margin-top: 30px; margin-bottom: 30px\">\n" +
+            "        <tr>\n" +
+            "            <td>Môn: </td>\n" +
+            "            <td><b id=\"mon\">"+mon+"</b></td>\n" +
+            "            <td>Phòng: </td>\n" +
+            "            <td><b id=\"phong\">"+phong+"</b></td>\n" +
+            "            <td>Thời gian thi: </td>\n" +
+            "            <td><b id=\"time\">"+thoigianthi+"</b></td>\n" +
+            "        </tr>\n" +
+            "    </table>\n" +
+
+            "    <table style=\"border:none; width: 100%; border-collapse:collapse;\">\n" +
+            "        <thead>\n" +
+            "        <tr>\n" +
+            "            <th style=\"border:1px solid #000; text-align:center;\">STT</th>\n" +
+            "            <th style=\"border: 1px solid #000; text-align: center;\">Họ và tên</th>\n" +
+            "            <th style=\"border: 1px solid #000; text-align: center;\">MSSV</th>\n" +
+            "        </tr>\n" +
+            "        </thead>\n" +
+            "        <tbody>\n" +
+            "\n" + data +
+            "        </tbody>\n" +
+            "    </table>\n" +
+            "</div>"
+        let w = window.open();
+        $(w.document.body).html(html);
+        w.print();
+    })
+
 });
 async function getShifts() {
     let url=("http://er-backend.sidz.tools/api/v1/shifts/exam/"+exam+"?page="+page+"&pageSize="+pageSize);
@@ -445,8 +508,8 @@ async function nexPage() {
     }
 
 }
-//get exam
 
+//get exam
 async function getExam(){
     let url =("http://er-backend.sidz.tools/api/v1/exams/?page=-1");
     const getExamRes = await fetch(url, {
@@ -458,6 +521,7 @@ async function getExam(){
     let res=await getExamRes.json();
     let Examdata = res.data.exams;
     exam = +Examdata.rows[Examdata.count-1].id;
+    ex_name = Examdata.rows[Examdata.count-1].name;
     for (let i=Examdata.count-1;i>=0;i--){
         let opt = "<option value='"+Examdata.rows[i].id+"'>"+Examdata.rows[i].name+"</option>";
         $('#inputHK').append(opt);
@@ -527,6 +591,7 @@ async function getSubjectAndRoom(){
                 +"</td><td class='d-none'>"+res['data']['shifts_rooms']['rows'][i]['room']['id']
                 +"</td><td>"+res['data']['shifts_rooms']['rows'][i]['exam_subject']['subject']['name']
                 +"</td><td>"+res['data']['shifts_rooms']['rows'][i]['room']['name']
+                +"</td><td><button class=\"btn btn-info in_sub\">In</button>"
                 + "</td><td class='no-sort'><div class='d-flex '><button class=\"btn btn-info edit_room\"><i class=\"far fa-edit\" ></i></button><button class=\"btn btn-danger delete_subject\"><i class=\"far fa-trash-alt\"></i></button></div></td></tr>";
         }
         $("#subjectAndRoomTable>tbody").append(dataTable);
