@@ -476,7 +476,7 @@ async function getPageNumber(){
         }
 
     }
-    $(".previous").after(syntaxPage);
+    $("#subTable_previous").after(syntaxPage);
 
 }
 async function activePage(e) {
@@ -651,6 +651,7 @@ async function getPageNumberSubject(){
     pageNumberSub=lengthSub/pageSizeSub;
     let num;
     let syntaxPage="";
+    console.log("hello");
     $("[name='new1']").remove();
     for (let i = 0; i < Math.ceil(pageNumberSub); i++) {
         num = 1+i;

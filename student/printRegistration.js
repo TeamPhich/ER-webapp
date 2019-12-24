@@ -113,9 +113,11 @@ async function getSubject() {
     let res = await response.json();
     console.log(res);
     let data;
+    let stt=0;
     for(let i=0;i<res['data']['examSubjects']['rows'].length;i++){
-        let stt=i+1;
-        if(res['data']['examSubjects']['rows'][i]['students'][0]['exam_subject']['shifts_rooms'].length>0){
+
+        if(!res['data']['examSubjects']['rows'][i]['students'][0]['shift_room']){
+            stt++;
             data+="<tr><td style=\"border: 1px solid #000;text-align: center\">"+stt
                 +"</td><td style=\"border: 1px solid #000;text-align: center\">" +res['data']['examSubjects']['rows'][i]['subject_id']
                 +"</td><td style=\"border: 1px solid #000;text-align: center\">" +res['data']['examSubjects']['rows'][i]['subject']['name']
