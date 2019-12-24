@@ -101,12 +101,12 @@ async function getES(onReg) {
                     if (!onReg) {
                         dis = 'disabled'
                     }
+                    let dtSub_id = dt.subject_id.trim();
                     for (let j = 0; j < dt.students[0].exam_subject.shifts_rooms.length; j++) {
                         let dtSR = dt.students[0].exam_subject.shifts_rooms[j];
-                        if (dtSR.id != dt.students[0].shift_room) {
-
+                        if (dtSR.id !== dt.students[0].shift_room) {
                             SR = SR + '<div class="d-flex">\n' +
-                                '                                                <div class="ml-2">\n' +
+                                 '                                               <div class="ml-2">\n' +
                                 '<button type="button"  ' + dis + ' id="sr_' + dtSR.id + '" value="' + dtSR.id + '"  class="btn btn-outline-primary mb-3" onclick="openRegModal(' + dtSR.id + ',' + dt.students[0].id + ',' + dt.id + ')"><i class="fas fa-plus"></i></button>' +
                                 '                                                </div>\n' +
                                 '                                                <div class="d-flex mt-2 ml-2">\n' +
@@ -129,12 +129,12 @@ async function getES(onReg) {
                                 '                                            </div>\n';
                         }
                     }
-                    $('#ES_container').append('<div class="card-header card-link bg-primary" data-toggle="collapse" href="#' + dt.subject_id + '" aria-expanded="true">\n' +
-                        '                                    <a class="card-link text-white font-weight-bold" data-toggle="collapse" href="#' + dt.subject_id + '" aria-expanded="true">\n' +
+                    $('#ES_container').append('<div class="card-header card-link bg-primary" data-toggle="collapse" href="#' + dtSub_id + '">\n' +
+                        '                                    <a class="text-white font-weight-bold">\n' +
                         '                                        ' + dt.subject.name + '\n' +
                         '                                    </a>\n' +
                         '                                </div>\n' +
-                        '                                <div id="' + dt.subject_id + '" class="collapse show">\n' +
+                        '                                <div id="' + dtSub_id + '" class="collapse show">\n' +
                         '                                    <div class="card-body p-3">\n' +
                         '                                        <form id="' + dt.id + '">\n' + SR +
                         '                                        <div class="divBar"></div>' + Reged_SR + '</form>\n');
@@ -302,5 +302,6 @@ async function getProfile() {
         document.getElementById("profile").innerHTML = res['data']['fullname'] + "-" + "[" + res['data']['user_name'] + "]"
     }
 }
+
 
 
